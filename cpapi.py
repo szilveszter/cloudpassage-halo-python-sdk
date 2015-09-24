@@ -19,6 +19,7 @@ class CPAPI:
         self.key_id = None
         self.secret = None
         self.authToken = None
+        self.authTokenScope = None
         self.lock = threading.RLock()
         self.api_count = 0
         self.api_time = 0.0
@@ -192,6 +193,8 @@ class CPAPI:
                 self.authToken = authRespObj['access_token']
             if ('expires_in' in authRespObj):
                 self.expires = authRespObj['expires_in']
+            if ('scope' in authRespObj):
+                self.authTokenScope = authRespObj['scope']
         # dumpToken(token,expires)
         return self.authToken
 
