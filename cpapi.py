@@ -249,14 +249,22 @@ class CPAPI:
         else:
             return (None, authError)
 
-    def createServerGroup(self, groupName, linuxFirewallPolicy, windowsFirewallPolicy):
+    def createServerGroup(self, groupName):
         url = "%s:%d/%s/groups" % (self.base_url, self.port, self.api_ver)
         groupData = {"name": groupName, "policy_ids": [], "tag": None}
-        groupData["linux_firewall_policy_id"] = linuxFirewallPolicy
-        groupData["windows_firewall_policy_id"] = windowsFirewallPolicy
+        #groupData["linux_firewall_policy_id"] = linuxFirewallPolicy
+        #groupData["windows_firewall_policy_id"] = windowsFirewallPolicy
         reqData = {"group": groupData}
         jsonData = json.dumps(reqData)
         (data, authError) = self.doPostRequest(url, self.authToken, jsonData)
+        if (data):
+            return (json.loads(data), authError)
+        else:
+            return (None, authError)
+
+    def deleteServerGroup(self, group_id):
+        url = "%s:%d/%s/groups/%s" % (self.base_url, self.port, self.api_ver, group_id)
+        (data, authError) = self.doDeleteRequest(url, self.authToken)
         if (data):
             return (json.loads(data), authError)
         else:
