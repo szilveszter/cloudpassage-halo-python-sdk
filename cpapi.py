@@ -120,7 +120,7 @@ class CPAPI:
                 print >> sys.stderr, "Failed to connect [%s] to '%s'" % (e.reason, url)
                 if (e.reason == "Unauthorized"):
                     authError = True
-            elif hasattr(e, 'code'):
+            if hasattr(e, 'code'):
                 msg = self.getHttpStatus(e.code)
                 print >> sys.stderr, "Failed to fetch events [%s] from '%s'" % (msg, url)
                 if (e.code == 401) or (e.code == 403):
@@ -277,6 +277,77 @@ class CPAPI:
         reqData = {"group": { attrName: policyID}}
         jsonData = json.dumps(reqData)
         (data, authError) = self.doPutRequest(url, self.authToken, jsonData)
+        if (data):
+            return (json.loads(data), authError)
+        else:
+            return (None, authError)
+
+    def doDeleteRequest(self, url, token):
+        opener = urllib2.build_opener(urllib2.HTTPHandler)
+        req = urllib2.Request(url)
+        req.add_header("Authorization", "Bearer " + token)
+        req.add_header("Content-Type", "application/json")
+        req.get_method = lambda: 'DELETE'
+        try:
+            fh = opener.open(req)
+            return (fh.read(), False)
+        except IOError, e:
+            authError = False
+            if hasattr(e, 'reason'):
+                print >> sys.stderr, "Failed to connect [%s] to '%s'" % (e.reason, url)
+            if hasattr(e, 'code'):
+                msg = self.getHttpStatus(e.code)
+                print >> sys.stderr, "Failed to make request: [%s] from '%s'" % (msg, url)
+                if (e.code == 401):
+                    authError = True
+            if (not hasattr(e, 'reason')) and (not hasattr(e, 'code')):
+                print >> sys.stderr, "Unknown error fetching '%s'" % url
+            return (None, authError)
+
+    def createConfigurationPolicy(self, policyData):
+        url = "%s:%d/%s/policies" % (self.base_url, self.port, self.api_ver)
+        jsonData = json.dumps(policyData)
+        # print jsonData # for debugging
+        (data, authError) = self.doPostRequest(url, self.authToken, jsonData)
+        # print data
+        if (data):
+            return (json.loads(data), authError)
+        else:
+            return (None, authError)
+
+    def listConfigurationPolicies(self):
+        url = "%s:%d/%s/policies" % (self.base_url, self.port, self.api_ver)
+        (data, authError) = self.doGetRequest(url, self.authToken)
+        if (data):
+            return (json.loads(data), authError)
+        else:
+            return (None, authError)
+
+    def deleteConfigurationPolicy(self, policyID):
+        url = "%s:%d/%s/policies/%s" % (self.base_url, self.port, self.api_ver, policyID)
+        (data, authError) = self.doDeleteRequest(url, self.authToken)
+        if (data):
+            return (json.loads(data), authError)
+        else:
+            return (None, authError)
+
+    def createFIMPolicy(self, policyData):
+        url = "%s:%d/%s/fim_policies" % (self.base_url, self.port, self.api_ver)
+        jsonData = json.dumps(policyData)
+        # print jsonData # for debugging
+        (data, authError) = self.doPostRequest(url, self.authToken, jsonData)
+        # print data
+        if (data):
+            return (json.loads(data), authError)
+        else:
+            return (None, authError)
+
+    def createLIDSPolicy(self, policyData):
+        url = "%s:%d/%s/lids_policies" % (self.base_url, self.port, self.api_ver)
+        jsonData = json.dumps(policyData)
+        # print jsonData # for debugging
+        (data, authError) = self.doPostRequest(url, self.authToken, jsonData)
+        # print data
         if (data):
             return (json.loads(data), authError)
         else:
