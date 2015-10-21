@@ -360,3 +360,11 @@ class CPAPI:
             return (json.loads(data), authError)
         else:
             return (None, authError)
+
+    def getAnnouncements(self):
+        url = "%s:%d/%s/system_announcements" % (self.base_url, self.port, self.api_ver)
+        (data, authError) = self.doGetRequest(url, self.authToken)
+        if (data):
+            return (json.loads(data), authError)
+        else:
+            return (None, authError)
