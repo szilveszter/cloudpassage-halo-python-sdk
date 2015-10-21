@@ -368,3 +368,22 @@ class CPAPI:
             return (json.loads(data), authError)
         else:
             return (None, authError)
+
+    def initiateScan(self, serverId, scan_type):
+        url = "%s:%d/%s/servers/%s/scans" % (self.base_url, self.port, self.api_ver, serverId)
+        module_ref = {"sca": "sca",
+                      "csm": "sca",
+                      "sva": "svm",
+                      "svm": "svm",
+                      "fim": "fim",
+                      "sam": "sam"}
+        module = module_ref.get(scan_type)
+        if module == None:
+            bad_scan_msg = "Invalid scan type: " + str(scan_type)
+            return (None, bad_scan_msg)
+        jsondata = {"scan": {"module": module}}
+        (data, authError) = self.doPostRequest(url, self.authToken, json.dumps(jsondata))
+        if (data):
+            return (json.loads(data), authError)
+        else:
+            return (None, authError)
