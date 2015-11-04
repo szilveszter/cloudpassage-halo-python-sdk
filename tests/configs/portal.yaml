@@ -1,0 +1,7 @@
+defaults:
+  portal: portal.cloudpassage.com
+  grid: grid.cloudpassage.com
+  repo: packages.cloudpassage.com
+  key_id: 
+  secret_key: 
+  api_hostname: api.cloudpassage.com
