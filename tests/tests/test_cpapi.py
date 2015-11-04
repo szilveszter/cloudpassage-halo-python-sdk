@@ -247,7 +247,7 @@ class TestAPI:
         fw_del = api.deleteFirewallPolicy(fw_id)
         csm_del = api.deleteConfigurationPolicy(csm_id)
         fim_del = api.deleteFIMPolicy(fim_id)
-        lids_del = api.deleteLIDSPolicy(fim_id)
+        lids_del = api.deleteLIDSPolicy(lids_id)
         for delete in [fw_del, csm_del, fim_del, lids_del]:
             if delete[1] != False:
                 print("Delete job failed: %s") % str(delete)

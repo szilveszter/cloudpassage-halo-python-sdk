@@ -1,3 +1,5 @@
-*old
-*local
-*pyc
+*.old
+*.local
+*.pyc
+.cache
+tests/public
