@@ -11,8 +11,10 @@ import base64
 import threading
 import datetime
 
+
 # Class with calls to CloudPassage API
 class HALO:
+
     def __init__(self):
         self.auth_url = 'oauth/access_token'
         self.auth_args = {'grant_type': 'client_credentials'}
@@ -69,10 +71,12 @@ class HALO:
             return fh.read()
         except IOError, e:
             if hasattr(e, 'reason'):
-                print >> sys.stderr, "Failed to connect [%s] to '%s'" % (e.reason, url)
+                print >> sys.stderr, "Failed to connect [%s] to '%s'" % (
+                    e.reason, url)
             elif hasattr(e, 'code'):
                 msg = self.getHttpStatus(e.code)
-                print >> sys.stderr, "Failed to authorize [%s] at '%s'" % (msg, url)
+                print >> sys.stderr, "Failed to authorize [%s] at '%s'" % (
+                    msg, url)
                 data = e.read()
                 if data:
                     print >> sys.stderr, "Extra data: %s" % data
@@ -115,7 +119,7 @@ class HALO:
             contentType = fh.info().getheader('Content-type')
             (mimetype, encoding) = contentType.split("charset=")
             # print >> sys.stderr, "Type=%s  Encoding=%s" % (mimetype, encoding)
-            translatedData = data.decode(encoding,'ignore').encode('utf-8')
+            translatedData = data.decode(encoding, 'ignore').encode('utf-8')
             results = (translatedData, False)
             end_time = datetime.datetime.now()
             self.logTime(start_time, end_time)
@@ -123,12 +127,14 @@ class HALO:
         except IOError, e:
             authError = False
             if hasattr(e, 'reason'):
-                print >> sys.stderr, "Failed to connect [%s] to '%s'" % (e.reason, url)
+                print >> sys.stderr, "Failed to connect [%s] to '%s'" % (
+                    e.reason, url)
                 if (e.reason == "Unauthorized"):
                     authError = True
             if hasattr(e, 'code'):
                 msg = self.getHttpStatus(e.code)
-                print >> sys.stderr, "Failed to fetch events [%s] from '%s'" % (msg, url)
+                print >> sys.stderr, "Failed to fetch events [%s] from '%s'" % (
+                    msg, url)
                 if (e.code == 401) or (e.code == 403):
                     authError = True
                 print >> sys.stderr, "Error response: %s" % e.read()
@@ -152,10 +158,12 @@ class HALO:
         except IOError, e:
             authError = False
             if hasattr(e, 'reason'):
-                print >> sys.stderr, "Failed to connect [%s] to '%s'" % (e.reason, url)
+                print >> sys.stderr, "Failed to connect [%s] to '%s'" % (
+                    e.reason, url)
             if hasattr(e, 'code'):
                 msg = self.getHttpStatus(e.code)
-                print >> sys.stderr, "Failed to make request: [%s] from '%s'" % (msg, url)
+                print >> sys.stderr, "Failed to make request: [%s] from '%s'" % (
+                    msg, url)
                 if (e.code == 401) or (e.code == 403):
                     authError = True
                 print >> sys.stderr, "Error response: %s" % e.read()
@@ -178,10 +186,12 @@ class HALO:
         except IOError, e:
             authError = False
             if hasattr(e, 'reason'):
-                print >> sys.stderr, "Failed to connect [%s] to '%s'" % (e.reason, url)
+                print >> sys.stderr, "Failed to connect [%s] to '%s'" % (
+                    e.reason, url)
             if hasattr(e, 'code'):
                 msg = self.getHttpStatus(e.code)
-                print >> sys.stderr, "Failed to make request: [%s] from '%s'" % (msg, url)
+                print >> sys.stderr, "Failed to make request: [%s] from '%s'" % (
+                    msg, url)
                 if (e.code == 401) or (e.code == 403):
                     authError = True
                 print >> sys.stderr, "Error response: %s" % e.read()
@@ -201,10 +211,12 @@ class HALO:
         except IOError, e:
             authError = False
             if hasattr(e, 'reason'):
-                print >> sys.stderr, "Failed to connect [%s] to '%s'" % (e.reason, url)
+                print >> sys.stderr, "Failed to connect [%s] to '%s'" % (
+                    e.reason, url)
             if hasattr(e, 'code'):
                 msg = self.getHttpStatus(e.code)
-                print >> sys.stderr, "Failed to make request: [%s] from '%s'" % (msg, url)
+                print >> sys.stderr, "Failed to make request: [%s] from '%s'" % (
+                    msg, url)
                 if (e.code == 401):
                     authError = True
             if (not hasattr(e, 'reason')) and (not hasattr(e, 'code')):
@@ -214,7 +226,8 @@ class HALO:
     def authenticateClient(self):
         url = "%s:%d/%s" % (self.base_url, self.port, self.auth_url)
         self.token = None
-        response = self.getAuthToken(url, self.auth_args, self.key_id, self.secret)
+        response = self.getAuthToken(
+            url, self.auth_args, self.key_id, self.secret)
         if (response):
             authRespObj = json.loads(response)
             if ('access_token' in authRespObj):
@@ -242,7 +255,7 @@ class HALO:
         else:
             return (None, authError)
 
-    def getServersInGroup(self,groupID):
+    def getServersInGroup(self, groupID):
         url = "%s:%d/%s/groups/%s/servers" % (self.base_url,
                                               self.port,
                                               self.api_ver,
@@ -303,10 +316,10 @@ class HALO:
     def deleteServerGroup(self, group_id, **kwargs):
         if (("force" in kwargs) and (kwargs["force"] == True)):
             url = "%s:%d/%s/groups/%s%s" % (self.base_url,
-                                          self.port,
-                                          self.api_ver,
-                                          group_id,
-                                          "?move_to_parent=true")
+                                            self.port,
+                                            self.api_ver,
+                                            group_id,
+                                            "?move_to_parent=true")
         else:
             url = "%s:%d/%s/groups/%s" % (self.base_url,
                                           self.port,
@@ -356,7 +369,7 @@ class HALO:
                                       self.port,
                                       self.api_ver,
                                       groupID)
-        reqData = {"group": { attrName: policyID}}
+        reqData = {"group": {attrName: policyID}}
         jsonData = json.dumps(reqData)
         (data, authError) = self.doPutRequest(url, self.authToken, jsonData)
         if (data):
@@ -419,9 +432,9 @@ class HALO:
 
     def deleteFIMPolicy(self, policyID):
         url = "%s:%d/%s/fim_policies/%s" % (self.base_url,
-                                        self.port,
-                                        self.api_ver,
-                                        policyID)
+                                            self.port,
+                                            self.api_ver,
+                                            policyID)
         (data, authError) = self.doDeleteRequest(url, self.authToken)
         if (data):
             return (json.loads(data), authError)
@@ -429,7 +442,8 @@ class HALO:
             return (None, authError)
 
     def createLIDSPolicy(self, policyData):
-        url = "%s:%d/%s/lids_policies" % (self.base_url, self.port, self.api_ver)
+        url = "%s:%d/%s/lids_policies" % (self.base_url,
+                                          self.port, self.api_ver)
         jsonData = json.dumps(policyData)
         # print jsonData # for debugging
         (data, authError) = self.doPostRequest(url, self.authToken, jsonData)
