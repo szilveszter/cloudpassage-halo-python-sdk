@@ -304,10 +304,23 @@ class HALO:
     def createServerGroup(self, groupName, **kwargs):
         url = "%s:%d/%s/groups" % (self.base_url, self.port, self.api_ver)
         groupData = {"name": groupName, "policy_ids": [], "tag": None}
-        sanity.validate_server_args(kwargs)
+        sanity.validate_servergroup_create_args(kwargs)
         reqData = {"group": fn.merge_dicts(groupData, kwargs)}
         jsonData = json.dumps(reqData)
         (data, authError) = self.doPostRequest(url, self.authToken, jsonData)
+        if (data):
+            return (json.loads(data), authError)
+        else:
+            return (None, authError)
+
+    def updateServerGroup(self, groupId, **kwargs):
+        url = "%s:%d/%s/groups/%s" % (self.base_url, self.port,
+                                      self.api_ver, groupId)
+        groupData = {}
+        sanity.validate_servergroup_update_args(kwargs)
+        reqData = {"group": fn.merge_dicts(groupData, kwargs)}
+        jsonData = json.dumps(reqData)
+        (data, authError) = self.doPutRequest(url, self.authToken, jsonData)
         if (data):
             return (json.loads(data), authError)
         else:
