@@ -247,6 +247,17 @@ class HALO:
         else:
             return (None, authError)
 
+    def getServerDetails(self,serverId):
+        url = "%s:%d/%s/servers/%s" % (self.base_url,
+                                     self.port,
+                                     self.api_ver,
+                                     serverId)
+        (data, authError) = self.doGetRequest(url, self.authToken)
+        if (data):
+            return (json.loads(data), authError)
+        else:
+            return (None, authError)
+
     def getServerGroupList(self):
         url = "%s:%d/%s/groups" % (self.base_url, self.port, self.api_ver)
         (data, authError) = self.doGetRequest(url, self.authToken)
@@ -326,6 +337,19 @@ class HALO:
         else:
             return (None, authError)
 
+    def updateServerGroup(self, groupId, **kwargs):
+        url = "%s:%d/%s/groups/%s" % (self.base_url, self.port,
+                                      self.api_ver, groupId)
+        groupData = {}
+        sanity.validate_servergroup_update_args(kwargs)
+        reqData = {"group": fn.merge_dicts(groupData, kwargs)}
+        jsonData = json.dumps(reqData)
+        (data, authError) = self.doPutRequest(url, self.authToken, jsonData)
+        if (data):
+            return (json.loads(data), authError)
+        else:
+            return (None, authError)
+            
     def deleteServerGroup(self, group_id, **kwargs):
         if (("force" in kwargs) and (kwargs["force"] == True)):
             url = "%s:%d/%s/groups/%s%s" % (self.base_url,
