@@ -89,6 +89,15 @@ class TestAPI:
         resp = api.getServersInGroup(target_server_grp_id)
         assert 'servers' in resp[0]
 
+    def test_get_server_details(self):
+        api = api_calls()
+        token = get_token()
+        api.authToken = token
+        servers = api.getServerList()
+        server_id = servers[0]["servers"][0]["id"]
+        server_details = api.getServerDetails(server_id)
+        assert server_id in server_details[0]["server"]["id"]
+
     def test_firewall_policy_list(self):
         api = api_calls()
         token = get_token()
@@ -237,6 +246,15 @@ class TestAPI:
             success = False
         if lids_id not in json.dumps(api.listLIDSPolicies()[0]):
             print("Failed to find LIDS policy in list!!")
+            success = False
+        # Update server group, removing all policies
+        grp_mod_ret = api.updateServerGroup(grp_id,
+                                            linux_firewall_policy_id=None,
+                                            policy_ids=[],
+                                            linux_fim_policy_ids=[],
+                                            lids_policy_ids=[])
+        if grp_mod_ret[0] != None:
+            print("Call to updateServerGroup failed.")
             success = False
         # Delete Group
         grp_delete_ret = api.deleteServerGroup(grp_id)
