@@ -1,15 +1,340 @@
 #!/usr/bin/env python
 
-
 import sys
+import time
 import json
 import urllib
 import urllib2
+import requests
 import sanity
 import fn
 import base64
 import threading
 import datetime
+from exceptions import CloudPassageAuthentication as exc_cp_authe
+from exceptions import CloudPassageAuthorization as exc_cp_authz
+from exceptions import CloudPassageValidation as exc_cp_val
+from exceptions import CloudPassageCollision as exc_cp_coll
+from exceptions import CloudPassageInternalError as exc_cp_internal
+from exceptions import CloudPassageResourceExistence as exc_cp_exist
+from exceptions import CloudPassageGeneral as exc_cp_general
+
+class HaloSession:
+    def __init__(self, apikey, apisecret, **kwargs):
+        """ Create a Halo API connection object.
+
+        On instantiation, it will attempt to authenticate
+        against the Halo API using the apikey and apisecret
+        provided, together with any overrides passed in through
+        kwargs.
+
+        Arguments:
+        apikey     -- API key
+        apisecret  -- API key secret
+
+        Keyword arguments:
+        api_host   -- Override the API endpoint hostname.
+                      Defaults to api.cloudpassage.com.
+        api_port   -- Override the API HTTPS port
+                      Defaults to 443.
+        proxy_host -- Hostname or IP address of proxy
+        proxy_port -- Port for proxy.  Ignored if proxy_host is not set
+        user_agent -- Override for UserAgent string.  We set this so that
+                      we can see what tools are being used in the field and
+                      set our development focus accordingly.  To override
+                      the default, feel free to pass this kwarg in.
+        """
+
+        self.auth_url = 'oauth/access_token'
+        self.api_host = 'api.cloudpassage.com'
+        self.api_port = 443
+        self.user_agent = 'CloudPassage Halo Python SDK v1.0'
+        self.key_id = apikey
+        self.secret = apisecret
+        self.auth_token = None
+        self.auth_scope = None
+        self.proxy_host = None
+        self.proxy_port = None
+        self.lock = threading.RLock()
+        self.api_count = 0
+        self.api_time = 0.0
+        # Override defaults for proxy
+        if "proxy_host" in kwargs:
+            self.proxy_host = kwargs["proxy_host"]
+            if "proxy_port" in kwargs:
+                self.proxy_port = kwargs["proxy_port"]
+        # Override defaults for api host and port
+        if "api_host" in kwargs:
+            self.api_host = kwargs["api_host"]
+        if "api_port" in kwargs:
+            self.api_port = kwargs["api_port"]
+        if "user_agent" in kwargs:
+            self.user_agent = kwargs["user_agent"]
+
+    def build_proxy_struct(host, port):
+        """This builds a structure describing the environment's HTTP
+        proxy requirements.
+
+        It returns a dictionary object that can be passed to the
+        requests module.
+        """
+
+        ret_struct = { "https": ""}
+        if port is not None:
+            ret_struct["https"] = "http://" + str(host) + ":" + str(port)
+        else:
+            ret_struct["https"] = "http://" + str(host) + ":8080"
+        return(ret_struct)
+
+    def get_auth_token(self, url, headers):
+        """This method takes url and header info, and returns the
+        oauth token and scope.
+
+        url     -- Full URL, including schema.
+            Ex: https://api.cloudpassage.com:443/oauth/access_token?grant_type=client_credentials"
+        headers -- Dictionary, containing header with encoded
+                   credentials.
+            Ex: {"Authorization": str("Basic " + encoded)}
+        """
+
+        token = None
+        scope = None
+        resp = requests.post(url, headers=headers)
+        if resp.status_code == 200:
+            auth_resp_json = resp.json()
+            token = auth_resp_json["access_token"]
+            scope = auth_resp_json["scope"]
+        if resp.status_code == 401:
+            token = "BAD"
+        return(token, scope)
+
+    def authenticate_client(self):
+        """This method attempts to set an OAuth token
+
+        Call this method and it will use the API key and secret
+        as well as the proxy settings (if used) to authenticate
+        this HaloSession instance.
+
+        """
+
+        success = False
+        #prefix = "https://" + self.api_host + ":" + str(self.api_port)
+        prefix = self.build_url_prefix()
+        url = prefix + "/oauth/access_token?grant_type=client_credentials"
+        combined = self.key_id + ':' + self.secret
+        encoded = base64.b64encode(combined)
+        headers = {"Authorization": str("Basic " + encoded)}
+        max_tries = 5
+        for i in range(max_tries):
+            token, scope = self.get_auth_token(url, headers)
+            if token == "BAD":
+                # Add message for IP restrictions
+                exc_msg = "Invalid credentials- unable to obtain session token."
+                raise exc_cp_authe(exc_msg)
+            if token is not None:
+                self.auth_token = token
+                self.auth_scope = scope
+                success = True
+                break
+            else:
+                time.sleep(1)
+        return(success)
+
+    def build_url_prefix(self):
+        """This constructs everything to the left of the file path in the URL.
+
+        """
+
+        prefix = "https://" + self.api_host + ":" + str(self.api_port)
+        return(prefix)
+
+    def build_header(self):
+        """This constructs the auth header, required for all API interaction.
+
+        """
+
+        authstring = "Bearer "+ self.auth_token
+        header = {"Authorization": authstring,
+                  "Content-Type": "application/json",
+                  "User-Agent": self.user_agent}
+
+        return(header)
+
+    def delete(self, path):
+        """This method performs a DELETE against Halo's API.
+
+        It will attempt to authenticate using the credentials (required
+        to instantiate the object) if the session has either:
+        1) Not been authenticated yet
+        2) OAuth Token has expired
+
+        This is a primary method, meaning it reaches out directly to the Halo
+        API, and should only be utilized by secondary methods with a more
+        specific purpose, like deleting server groups.  If you're
+        using this method because the SDK doesn't provide a more specific
+        method, please reach out to toolbox@cloudpassage.com so we can get
+        an enhancement request in place for you.
+        """
+
+        if self.auth_token == None:
+            self.authenticate_client()
+        prefix = self.build_url_prefix()
+        url = prefix + path
+        headers = self.build_header()
+        resp = requests.delete(url, headers=headers)
+        if resp.status_code not in [200, 204]:
+            if resp.status_code == 500:
+                raise exc_cp_internal(resp.text)
+            elif resp.status_code == 404:
+                raise exc_cp_exist(url, resp.text)
+            elif resp.status_code == 403:
+                raise exc_cp_authz(resp.text)
+            elif resp.status_code == 401:
+                self.authenticate_client()
+                headers = self.build_header()
+                resp = requests.delete(url, headers=headers)
+                if resp.status_code not in [200, 204]:
+                    raise exc_cp_authz(resp.text)
+            else:
+                raise exc_cp_general(resp.text)
+        return(resp.json())
+
+    def get(self, path):
+        """This method performs a GET against Halo's API.
+
+        It will attempt to authenticate using the credentials (required
+        to instantiate the object) if the session has either:
+        1) Not been authenticated yet
+        2) OAuth Token has expired
+
+        This is a primary method, meaning it reaches out directly to the Halo
+        API, and should only be utilized by secondary methods with a more
+        specific purpose, like gathering events from /v1/events.  If you're
+        using this method because the SDK doesn't provide a more specific
+        method, please reach out to toolbox@cloudpassage.com so we can get
+        an enhancement request in place for you.
+        """
+
+        if self.auth_token == None:
+            self.authenticate_client()
+        prefix = self.build_url_prefix()
+        url = prefix + path
+        headers = self.build_header()
+        resp = requests.get(url, headers=headers)
+        if resp.status_code != 200:
+            if resp.status_code == 500:
+                raise exc_cp_internal(resp.text)
+            elif resp.status_code == 404:
+                raise exc_cp_exist(url)
+            elif resp.status_code == 403:
+                raise exc_cp_authz(resp.text)
+            elif resp.status_code == 401:
+                self.authenticate_client()
+                headers = self.build_header()
+                resp = requests.get(url, headers=headers)
+                if resp.status_code != 200:
+                    raise exc_cp_authz(resp.text)
+            else:
+                raise exc_cp_general(resp.text)
+        return(resp.json())
+
+    def post(self, path, reqbody):
+        """This method performs a POST against Halo's API.
+
+        As with the GET method, it will attempt to (re)authenticate
+        the session if the key is expired or has not yet been retrieved.
+
+        Also like the GET method, it is not intended for direct use (though
+        we won't stop you).  If you need something that the SDK doesn't
+        already provide, please reach out to toolbox@cloudpassage.com and
+        let us get an enhancement request submitted for you.
+        """
+
+        ret_body = None
+        if self.auth_token == None:
+            self.authenticate_client()
+        prefix = self.build_url_prefix()
+        url = prefix + path
+        headers = self.build_header()
+        resp = requests.post(url, headers=headers, data=json.dumps(reqbody))
+        if resp.status_code == 201:
+            ret_body = resp.json()
+        elif resp.status_code == 202:
+            ret_body = resp.json()
+        elif resp.status_code == 204:
+            ret_body = {"status": "success"}
+        elif resp.status_code == 400:
+            raise exc_cp_val(resp.text)
+        elif resp.status_code == 401:
+            self.authenticate_client()
+            headers = self.build_header()
+            resp = requests.post(url, headers=headers, data=json.dumps(reqbody))
+            if resp.status_code not in [200, 202, 204]:
+                raise exc_cp_authz(resp.text)
+            elif resp.status_code == 204:
+                ret_body = {"status": "success"}
+            else:
+                ret_body = resp.json()
+        elif resp.status_code == 403:
+            raise exc_cp_authz(resp.text)
+        elif resp.status_code == 404:
+            raise exc_cp_exist(url, resp.text)
+        elif resp.status_code == 422:
+            raise exc_cp_val(resp.text)
+        elif resp.status_code == 500:
+            raise exc_cp_internal(resp.text)
+        else:
+            raise exc_cp_general(resp.text)
+        return(ret_body)
+
+    def put(self, path, reqbody):
+        """This method performs a PUT against Halo's API.
+
+        As with the GET method, it will attempt to (re)authenticate
+        the session if the key is expired or has not yet been retrieved.
+
+        Also like the GET method, it is not intended for direct use (though
+        we won't stop you).  If you need something that the SDK doesn't
+        already provide, please reach out to toolbox@cloudpassage.com and
+        let us get an enhancement request submitted for you.
+        """
+
+        ret_body = None
+        if self.auth_token == None:
+            self.authenticate_client()
+        prefix = self.build_url_prefix()
+        url = prefix + path
+        headers = self.build_header()
+        resp = requests.put(url, headers=headers, data=json.dumps(reqbody))
+        if resp.status_code == 201:
+            ret_body = resp.json()
+        elif resp.status_code == 202:
+            ret_body = resp.json()
+        elif resp.status_code == 204:
+            ret_body = {"status": "success"}
+        elif resp.status_code == 400:
+            raise exc_cp_val(resp.text)
+        elif resp.status_code == 401:
+            self.authenticate_client()
+            headers = self.build_header()
+            resp = requests.post(url, headers=headers, data=json.dumps(reqbody))
+            if resp.status_code not in [200, 202, 204]:
+                raise exc_cp_authz(resp.text)
+            elif resp.status_code == 204:
+                ret_body = {"status": "success"}
+            else:
+                ret_body = resp.json()
+        elif resp.status_code == 403:
+            raise exc_cp_authz(resp.text)
+        elif resp.status_code == 404:
+            raise exc_cp_exist(resp.url)
+        elif resp.status_code == 422:
+            raise exc_cp_val(resp.text)
+        elif resp.status_code == 500:
+            raise exc_cp_internal(resp.text)
+        else:
+            raise exc_cp_general(resp.text)
+        return(ret_body)
 
 
 # Class with calls to CloudPassage API
@@ -349,7 +674,7 @@ class HALO:
             return (json.loads(data), authError)
         else:
             return (None, authError)
-            
+
     def deleteServerGroup(self, group_id, **kwargs):
         if (("force" in kwargs) and (kwargs["force"] == True)):
             url = "%s:%d/%s/groups/%s%s" % (self.base_url,
