@@ -19,6 +19,8 @@ with open('configs/{}'.format(sys.argv[1]), 'r') as f:
 os.environ['HALO_API_HOSTNAME'] = 'https://{}'.format(env['api_hostname'])
 os.environ['HALO_KEY_ID'] = env['key_id']
 os.environ['HALO_SECRET_KEY'] = env['secret_key']
+os.environ['RO_HALO_KEY_ID'] = env['ro_key_id']
+os.environ['RO_HALO_SECRET_KEY'] = env['ro_secret_key']
 
 # pytest.main(['--pylama', '-x', 'tests/',
 #              '--junit-xml', 'public/reports/%s.xml' % env_name])

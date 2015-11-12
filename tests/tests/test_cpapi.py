@@ -4,6 +4,8 @@ import pytest
 import json
 import datetime
 
+
+
 module_path = os.path.abspath('../')
 #path = os.path.abspath('../cloudpassage/halo.py')
 policy_path = os.path.abspath('./policies/')
@@ -271,3 +273,4 @@ class TestAPI:
                 print("Delete job failed: %s") % str(delete)
                 success = False
         assert success == True
+

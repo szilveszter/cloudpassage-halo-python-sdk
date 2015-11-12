@@ -4,4 +4,6 @@ defaults:
   repo: packages.cloudpassage.com
   key_id: 
   secret_key: 
+  ro_key_id:
+  ro_secret_key:
   api_hostname: api.cloudpassage.com
