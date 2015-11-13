@@ -6,7 +6,6 @@ import datetime
 import hashlib
 
 
-
 module_path = os.path.abspath('../')
 policy_path = os.path.abspath('./policies/')
 
@@ -25,8 +24,9 @@ proxy_port = '1080'
 
 # This will make cleaning up easier...
 content_prefix = '_SDK_test-'
+content_name = str(content_prefix +
+                   str(hashlib.md5(str(datetime.datetime.now())).hexdigest()))
 
-content_name = content_prefix + str(hashlib.md5(str(datetime.datetime.now())).hexdigest())
 
 class TestGet:
     def test_get_404(self):
@@ -48,6 +48,7 @@ class TestGet:
         req = http_helper.HttpHelper(session)
         json_response = req.get(endpoint)
         assert "servers" in json_response
+
 
 class TestPost:
     def test_post_404(self):
@@ -76,6 +77,7 @@ class TestPost:
             rejected = True
         assert rejected
 
+
 class TestPut:
     def test_put_bad_endpoint(self):
         endpoint = "/v1/barf"
@@ -102,6 +104,7 @@ class TestPut:
         except http_helper.http_helper.CloudPassageResourceExistence:
             rejected = True
         assert rejected
+
 
 class TestDelete:
     def test_delete_404(self):

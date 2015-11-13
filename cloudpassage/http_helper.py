@@ -42,11 +42,11 @@ class HttpHelper:
             if resp.status_code == 401:
                 self.connection.authenticate_client()
                 headers = self.connection.build_header()
-                resp = requests.get(endpoint, headers=headers)
-                success, exc = fn.parse_status(endpoint, resp.status_code,
-                                               resp.text)
+                response = requests.get(endpoint, headers=headers)
+                success, exc = fn.parse_status(endpoint, response.status_code,
+                                               response.text)
                 if success is True:
-                    return(resp.json())
+                    return(response.json())
             raise exc
         else:
             return(resp.json())
@@ -63,28 +63,29 @@ class HttpHelper:
         let us get an enhancement request submitted for you.
         """
 
-        ret_body = None
         if self.connection.auth_token is None:
             self.connection.authenticate_client()
         prefix = self.connection.build_endpoint_prefix()
         endpoint = prefix + path
         headers = self.connection.build_header()
-        resp = requests.post(endpoint, headers=headers, data=json.dumps(reqbody))
-        success, exc = fn.parse_status(endpoint, resp.status_code, resp.text)
+        response = requests.post(endpoint, headers=headers,
+                                 data=json.dumps(reqbody))
+        success, exc = fn.parse_status(endpoint,
+                                       response.status_code, response.text)
         if success is False:
             # If we get a 401, it could be an expired key.  We retry once.
-            if resp.status_code == 401:
+            if response.status_code == 401:
                 self.connection.authenticate_client()
                 headers = self.connection.build_header()
-                resp = requests.post(endpoint, headers=headers,
-                                     data=json.dumps(reqbody))
-                success, exc = fn.parse_status(endpoint, resp.status_code,
-                                               resp.text)
+                response = requests.post(endpoint, headers=headers,
+                                         data=json.dumps(reqbody))
+                success, exc = fn.parse_status(endpoint, response.status_code,
+                                               response.text)
                 if success is True:
-                    return(resp.json())
+                    return(response.json())
             raise exc
         else:
-            return(resp.json())
+            return(response.json())
 
     def put(self, path, reqbody):
         """This method performs a PUT against Halo's API.
@@ -98,28 +99,29 @@ class HttpHelper:
         let us get an enhancement request submitted for you.
         """
 
-        ret_body = None
         if self.connection.auth_token is None:
             self.connection.authenticate_client()
         prefix = self.connection.build_endpoint_prefix()
         endpoint = prefix + path
         headers = self.connection.build_header()
-        resp = requests.put(endpoint, headers=headers, data=json.dumps(reqbody))
-        success, exc = fn.parse_status(endpoint, resp.status_code, resp.text)
+        response = requests.put(endpoint, headers=headers,
+                                data=json.dumps(reqbody))
+        success, exc = fn.parse_status(endpoint, response.status_code,
+                                       response.text)
         if success is False:
             # If we get a 401, it could be an expired key.  We retry once.
-            if resp.status_code == 401:
+            if response.status_code == 401:
                 self.connection.authenticate_client()
                 headers = self.connection.build_header()
-                resp = requests.put(endpoint, headers=headers,
-                                    data=json.dumps(reqbody))
-                success, exc = fn.parse_status(endpoint, resp.status_code,
-                                               resp.text)
+                response = requests.put(endpoint, headers=headers,
+                                        data=json.dumps(reqbody))
+                success, exc = fn.parse_status(endpoint, response.status_code,
+                                               response.text)
                 if success is True:
-                    return(resp.json())
+                    return(response.json())
             raise exc
         else:
-            return(resp.json())
+            return(response.json())
 
     def delete(self, path):
         """This method performs a Delete against Halo's API.
@@ -142,18 +144,19 @@ class HttpHelper:
         prefix = self.connection.build_endpoint_prefix()
         endpoint = prefix + path
         headers = self.connection.build_header()
-        resp = requests.delete(endpoint, headers=headers)
-        success, exc = fn.parse_status(endpoint, resp.status_code, resp.text)
+        response = requests.delete(endpoint, headers=headers)
+        success, exc = fn.parse_status(endpoint, response.status_code,
+                                       response.text)
         if success is False:
             # If we get a 401, it could be an expired key.  We retry once.
-            if resp.status_code == 401:
+            if response.status_code == 401:
                 self.connection.authenticate_client()
                 headers = self.connection.build_header()
-                resp = requests.delete(endpoint, headers=headers)
-                success, exc = fn.parse_status(endpoint, resp.status_code,
-                                               resp.text)
+                response = requests.delete(endpoint, headers=headers)
+                success, exc = fn.parse_status(endpoint, response.status_code,
+                                               response.text)
                 if success is True:
-                    return(resp.json())
+                    return(response.json())
             raise exc
         else:
-            return(resp.json())
+            return(response.json())

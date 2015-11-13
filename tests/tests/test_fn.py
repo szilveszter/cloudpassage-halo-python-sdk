@@ -26,7 +26,7 @@ class TestFn:
 
     def test_parse_status200(self):
         resp_text = "Test text, yo."
-        url = "https://whatever.notevenpayingattention.because/its-not-critical"
+        url = "https://whatever.because.none/its-not-critical"
         code_exc = {200: None,
                     201: None,
                     202: None,
@@ -46,7 +46,7 @@ class TestFn:
                      403: False,
                      404: False,
                      422: False,
-                     "ARBLEGARBLE" : False}
+                     "ARBLEGARBLE": False}
         for r, o in code_exc.items():
             success, exc = fn.parse_status(url, r, resp_text)
             assert type(o) == type(exc)
