@@ -2,6 +2,7 @@ from halo import HALO
 from halo import HaloSession
 from http_helper import HttpHelper
 from server_group import ServerGroup
+from system_announcement import SystemAnnouncement
 from exceptions import CloudPassageAuthentication
 from exceptions import CloudPassageAuthorization
 from exceptions import CloudPassageValidation

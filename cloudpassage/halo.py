@@ -71,6 +71,7 @@ class HaloSession:
             self.api_port = kwargs["api_port"]
         if "user_agent" in kwargs:
             self.user_agent = kwargs["user_agent"]
+        return None
 
     def build_proxy_struct(host, port):
         """This builds a structure describing the environment's HTTP
