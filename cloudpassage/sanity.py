@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#Validation routines for cpapi
+
 
 def validate_servergroup_create_args(a):
     val_struct = {"firewall_policy_id": unicode,
@@ -19,10 +19,12 @@ def validate_servergroup_create_args(a):
             if isinstance(v, val_struct[k]):
                 continue
             else:
-                raise TypeError("Type incorrect for %s.  Is %s and should be %s." % (k, type(v), val_struct[k]))
+                raise TypeError("Type incorrect for %s.  Is %s.  Should be %s."
+                                % (k, type(v), val_struct[k]))
         else:
             raise KeyError("Invalid server group attribute: %s") % k
     return(True)
+
 
 def validate_servergroup_update_args(a):
     val_struct = {"firewall_policy_id": unicode,
@@ -42,13 +44,15 @@ def validate_servergroup_update_args(a):
         if k in val_struct:
             if isinstance(v, val_struct[k]):
                 continue
-            elif ((val_struct[k] == unicode) and (v == None)):
+            elif ((val_struct[k] == unicode) and (v is None)):
                 continue
             else:
-                raise TypeError("Type incorrect for %s.  Is %s and should be %s." % (k, type(v), val_struct[k]))
+                raise TypeError("Type incorrect for %s.  Is %s.  Should be %s."
+                                % (k, type(v), val_struct[k]))
         else:
             raise KeyError("Invalid server group attribute: %s") % k
     return(True)
+
 
 def validate_servergroup_update_args(a):
     val_struct = {"firewall_policy_id": unicode,
@@ -67,10 +71,11 @@ def validate_servergroup_update_args(a):
         if k in val_struct:
             if isinstance(v, val_struct[k]):
                 continue
-            elif ((val_struct[k] == unicode) and (v == None)):
+            elif ((val_struct[k] == unicode) and (v is None)):
                 continue
             else:
-                raise TypeError("Type incorrect for %s.  Is %s and should be %s." % (k, type(v), val_struct[k]))
+                raise TypeError("Type incorrect for %s.  Is %s.  Should be %s."
+                                % (k, type(v), val_struct[k]))
         else:
             raise KeyError("Invalid server group attribute: %s") % k
     return(True)

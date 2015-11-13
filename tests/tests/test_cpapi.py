@@ -18,6 +18,7 @@ key_id = os.environ.get('HALO_KEY_ID')
 secret_key = os.environ.get('HALO_SECRET_KEY')
 api_hostname = os.environ.get('HALO_API_HOSTNAME')
 
+"""
 @pytest.fixture(scope='class')
 def api_calls():
     return halo.HALO()
@@ -274,3 +275,4 @@ class TestAPI:
                 success = False
         assert success == True
 
+"""

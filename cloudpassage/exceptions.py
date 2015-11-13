@@ -7,6 +7,7 @@ class CloudPassageAuthentication(Exception):
     def __init__(self, error_msg):
         self.msg = error_msg
 
+
 class CloudPassageAuthorization(Exception):
     """Exception related to authorization.
 
@@ -17,6 +18,7 @@ class CloudPassageAuthorization(Exception):
     def __init__(self, error_msg):
         self.msg = error_msg
 
+
 class CloudPassageValidation(Exception):
     """Exception related to request validation.
 
@@ -25,6 +27,7 @@ class CloudPassageValidation(Exception):
 
     def __init__(self, error_msg):
         self.msg = error_msg
+
 
 class CloudPassageCollision(Exception):
     """Exception indicates a resource collision.
@@ -36,6 +39,7 @@ class CloudPassageCollision(Exception):
     def __init__(self, error_msg):
         self.msg = error_msg
 
+
 class CloudPassageInternalError(Exception):
     """This exception indicates an error in the Analytics Engine.
 
@@ -45,14 +49,17 @@ class CloudPassageInternalError(Exception):
     def __init__(self, error_msg):
         self.msg = error_msg
 
+
 class CloudPassageResourceExistence(Exception):
-    """This exception indicates that you're trying to access a resource that doesn't exist.
+    """This exception indicates that you're trying to access a
+       resource that doesn't exist.
 
     This is oftentimes thrown in response to a 404 from the API.
     """
 
     def __init__(self, error_msg):
         self.msg = error_msg
+
 
 class CloudPassageGeneral(Exception):
     """This is thrown when a more specific exception type is unavailable.
