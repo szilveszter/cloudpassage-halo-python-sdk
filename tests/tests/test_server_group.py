@@ -17,6 +17,7 @@ halo = imp.load_module('halo', file, filename, data)
 server_group = imp.load_module('ServerGroup', file, filename, data)
 sanity = imp.load_module('sanity', file, filename, data)
 
+
 class TestServerGroup:
     def test_instantiation(self):
         session = halo.HaloSession(key_id, secret_key)
