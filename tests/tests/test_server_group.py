@@ -27,3 +27,11 @@ class TestServerGroup:
         s_grp = server_group.ServerGroup(session)
         groups = s_grp.list_all()
         assert "id" in groups[0]
+
+    def test_describe(self):
+        session = halo.HaloSession(key_id, secret_key)
+        s_grp = server_group.ServerGroup(session)
+        groups = s_grp.list_all()
+        target_group_id = groups[0]["id"]
+        target_group_object = s_grp.describe(target_group_id)
+        assert "id" in target_group_object
