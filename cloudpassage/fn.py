@@ -8,10 +8,12 @@ from exceptions import CloudPassageResourceExistence
 from exceptions import CloudPassageCollision
 from exceptions import CloudPassageGeneral
 
+
 def merge_dicts(first, second):
     final = first.copy()
     final.update(second)
     return(final)
+
 
 def parse_status(url, resp_code, resp_text):
     success = True

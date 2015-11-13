@@ -19,6 +19,7 @@ from exceptions import CloudPassageInternalError as exc_cp_internal
 from exceptions import CloudPassageResourceExistence as exc_cp_exist
 from exceptions import CloudPassageGeneral as exc_cp_general
 
+
 class HaloSession:
     def __init__(self, apikey, apisecret, **kwargs):
         """ Create a Halo API connection object.
@@ -45,7 +46,7 @@ class HaloSession:
                       the default, feel free to pass this kwarg in.
         """
 
-        self.auth_url = 'oauth/access_token'
+        self.auth_endpoint = 'oauth/access_token'
         self.api_host = 'api.cloudpassage.com'
         self.api_port = 443
         self.user_agent = 'CloudPassage Halo Python SDK v1.0'
@@ -79,19 +80,18 @@ class HaloSession:
         requests module.
         """
 
-        ret_struct = { "https": ""}
+        ret_struct = {"https": ""}
         if port is not None:
             ret_struct["https"] = "http://" + str(host) + ":" + str(port)
         else:
             ret_struct["https"] = "http://" + str(host) + ":8080"
         return(ret_struct)
 
-    def get_auth_token(self, url, headers):
-        """This method takes url and header info, and returns the
+    def get_auth_token(self, endpoint, headers):
+        """This method takes endpoint and header info, and returns the
         oauth token and scope.
 
-        url     -- Full URL, including schema.
-            Ex: https://api.cloudpassage.com:443/oauth/access_token?grant_type=client_credentials"
+        endpoint     -- Full URL, including schema.
         headers -- Dictionary, containing header with encoded
                    credentials.
             Ex: {"Authorization": str("Basic " + encoded)}
@@ -99,7 +99,7 @@ class HaloSession:
 
         token = None
         scope = None
-        resp = requests.post(url, headers=headers)
+        resp = requests.post(endpoint, headers=headers)
         if resp.status_code == 200:
             auth_resp_json = resp.json()
             token = auth_resp_json["access_token"]
@@ -118,18 +118,17 @@ class HaloSession:
         """
 
         success = False
-        #prefix = "https://" + self.api_host + ":" + str(self.api_port)
-        prefix = self.build_url_prefix()
-        url = prefix + "/oauth/access_token?grant_type=client_credentials"
+        prefix = self.build_endpoint_prefix()
+        endpoint = prefix + "/oauth/access_token?grant_type=client_credentials"
         combined = self.key_id + ':' + self.secret
         encoded = base64.b64encode(combined)
         headers = {"Authorization": str("Basic " + encoded)}
         max_tries = 5
         for i in range(max_tries):
-            token, scope = self.get_auth_token(url, headers)
+            token, scope = self.get_auth_token(endpoint, headers)
             if token == "BAD":
                 # Add message for IP restrictions
-                exc_msg = "Invalid credentials- unable to obtain session token."
+                exc_msg = "Invalid credentials- can not obtain session token."
                 raise exc_cp_authe(exc_msg)
             if token is not None:
                 self.auth_token = token
@@ -140,7 +139,7 @@ class HaloSession:
                 time.sleep(1)
         return(success)
 
-    def build_url_prefix(self):
+    def build_endpoint_prefix(self):
         """This constructs everything to the left of the file path in the URL.
 
         """
@@ -153,188 +152,11 @@ class HaloSession:
 
         """
 
-        authstring = "Bearer "+ self.auth_token
+        authstring = "Bearer " + self.auth_token
         header = {"Authorization": authstring,
                   "Content-Type": "application/json",
                   "User-Agent": self.user_agent}
-
         return(header)
-
-    def delete(self, path):
-        """This method performs a DELETE against Halo's API.
-
-        It will attempt to authenticate using the credentials (required
-        to instantiate the object) if the session has either:
-        1) Not been authenticated yet
-        2) OAuth Token has expired
-
-        This is a primary method, meaning it reaches out directly to the Halo
-        API, and should only be utilized by secondary methods with a more
-        specific purpose, like deleting server groups.  If you're
-        using this method because the SDK doesn't provide a more specific
-        method, please reach out to toolbox@cloudpassage.com so we can get
-        an enhancement request in place for you.
-        """
-
-        if self.auth_token == None:
-            self.authenticate_client()
-        prefix = self.build_url_prefix()
-        url = prefix + path
-        headers = self.build_header()
-        resp = requests.delete(url, headers=headers)
-        if resp.status_code not in [200, 204]:
-            if resp.status_code == 500:
-                raise exc_cp_internal(resp.text)
-            elif resp.status_code == 404:
-                raise exc_cp_exist(url, resp.text)
-            elif resp.status_code == 403:
-                raise exc_cp_authz(resp.text)
-            elif resp.status_code == 401:
-                self.authenticate_client()
-                headers = self.build_header()
-                resp = requests.delete(url, headers=headers)
-                if resp.status_code not in [200, 204]:
-                    raise exc_cp_authz(resp.text)
-            else:
-                raise exc_cp_general(resp.text)
-        return(resp.json())
-
-    def get(self, path):
-        """This method performs a GET against Halo's API.
-
-        It will attempt to authenticate using the credentials (required
-        to instantiate the object) if the session has either:
-        1) Not been authenticated yet
-        2) OAuth Token has expired
-
-        This is a primary method, meaning it reaches out directly to the Halo
-        API, and should only be utilized by secondary methods with a more
-        specific purpose, like gathering events from /v1/events.  If you're
-        using this method because the SDK doesn't provide a more specific
-        method, please reach out to toolbox@cloudpassage.com so we can get
-        an enhancement request in place for you.
-        """
-
-        if self.auth_token == None:
-            self.authenticate_client()
-        prefix = self.build_url_prefix()
-        url = prefix + path
-        headers = self.build_header()
-        resp = requests.get(url, headers=headers)
-        if resp.status_code != 200:
-            if resp.status_code == 500:
-                raise exc_cp_internal(resp.text)
-            elif resp.status_code == 404:
-                raise exc_cp_exist(url)
-            elif resp.status_code == 403:
-                raise exc_cp_authz(resp.text)
-            elif resp.status_code == 401:
-                self.authenticate_client()
-                headers = self.build_header()
-                resp = requests.get(url, headers=headers)
-                if resp.status_code != 200:
-                    raise exc_cp_authz(resp.text)
-            else:
-                raise exc_cp_general(resp.text)
-        return(resp.json())
-
-    def post(self, path, reqbody):
-        """This method performs a POST against Halo's API.
-
-        As with the GET method, it will attempt to (re)authenticate
-        the session if the key is expired or has not yet been retrieved.
-
-        Also like the GET method, it is not intended for direct use (though
-        we won't stop you).  If you need something that the SDK doesn't
-        already provide, please reach out to toolbox@cloudpassage.com and
-        let us get an enhancement request submitted for you.
-        """
-
-        ret_body = None
-        if self.auth_token == None:
-            self.authenticate_client()
-        prefix = self.build_url_prefix()
-        url = prefix + path
-        headers = self.build_header()
-        resp = requests.post(url, headers=headers, data=json.dumps(reqbody))
-        if resp.status_code == 201:
-            ret_body = resp.json()
-        elif resp.status_code == 202:
-            ret_body = resp.json()
-        elif resp.status_code == 204:
-            ret_body = {"status": "success"}
-        elif resp.status_code == 400:
-            raise exc_cp_val(resp.text)
-        elif resp.status_code == 401:
-            self.authenticate_client()
-            headers = self.build_header()
-            resp = requests.post(url, headers=headers, data=json.dumps(reqbody))
-            if resp.status_code not in [200, 202, 204]:
-                raise exc_cp_authz(resp.text)
-            elif resp.status_code == 204:
-                ret_body = {"status": "success"}
-            else:
-                ret_body = resp.json()
-        elif resp.status_code == 403:
-            raise exc_cp_authz(resp.text)
-        elif resp.status_code == 404:
-            raise exc_cp_exist(url, resp.text)
-        elif resp.status_code == 422:
-            raise exc_cp_val(resp.text)
-        elif resp.status_code == 500:
-            raise exc_cp_internal(resp.text)
-        else:
-            raise exc_cp_general(resp.text)
-        return(ret_body)
-
-    def put(self, path, reqbody):
-        """This method performs a PUT against Halo's API.
-
-        As with the GET method, it will attempt to (re)authenticate
-        the session if the key is expired or has not yet been retrieved.
-
-        Also like the GET method, it is not intended for direct use (though
-        we won't stop you).  If you need something that the SDK doesn't
-        already provide, please reach out to toolbox@cloudpassage.com and
-        let us get an enhancement request submitted for you.
-        """
-
-        ret_body = None
-        if self.auth_token == None:
-            self.authenticate_client()
-        prefix = self.build_url_prefix()
-        url = prefix + path
-        headers = self.build_header()
-        resp = requests.put(url, headers=headers, data=json.dumps(reqbody))
-        if resp.status_code == 201:
-            ret_body = resp.json()
-        elif resp.status_code == 202:
-            ret_body = resp.json()
-        elif resp.status_code == 204:
-            ret_body = {"status": "success"}
-        elif resp.status_code == 400:
-            raise exc_cp_val(resp.text)
-        elif resp.status_code == 401:
-            self.authenticate_client()
-            headers = self.build_header()
-            resp = requests.post(url, headers=headers, data=json.dumps(reqbody))
-            if resp.status_code not in [200, 202, 204]:
-                raise exc_cp_authz(resp.text)
-            elif resp.status_code == 204:
-                ret_body = {"status": "success"}
-            else:
-                ret_body = resp.json()
-        elif resp.status_code == 403:
-            raise exc_cp_authz(resp.text)
-        elif resp.status_code == 404:
-            raise exc_cp_exist(resp.url)
-        elif resp.status_code == 422:
-            raise exc_cp_val(resp.text)
-        elif resp.status_code == 500:
-            raise exc_cp_internal(resp.text)
-        else:
-            raise exc_cp_general(resp.text)
-        return(ret_body)
 
 
 # Class with calls to CloudPassage API
@@ -387,8 +209,6 @@ class HALO:
     def getAuthToken(self, url, args, kid, sec):
         req = urllib2.Request(url)
         self.addAuth(req, kid, sec)
-        # print >> sys.stderr, "getAuthToken: key=%s secret=%s" % (kid, sec)
-        # createPasswordMgr(url, kid, sec)
         if (args):
             args = urllib.urlencode(args)
         try:
@@ -405,7 +225,7 @@ class HALO:
                 data = e.read()
                 if data:
                     print >> sys.stderr, "Extra data: %s" % data
-                print >> sys.stderr, "Likely cause: incorrect API keys, id=%s" % kid
+                print >> sys.stderr, "Likely incorrect API keys, id=%s" % kid
             else:
                 print >> sys.stderr, "Unknown error fetching '%s'" % url
             return None
@@ -443,7 +263,6 @@ class HALO:
             data = fh.read()
             contentType = fh.info().getheader('Content-type')
             (mimetype, encoding) = contentType.split("charset=")
-            # print >> sys.stderr, "Type=%s  Encoding=%s" % (mimetype, encoding)
             translatedData = data.decode(encoding, 'ignore').encode('utf-8')
             results = (translatedData, False)
             end_time = datetime.datetime.now()
@@ -458,8 +277,8 @@ class HALO:
                     authError = True
             if hasattr(e, 'code'):
                 msg = self.getHttpStatus(e.code)
-                print >> sys.stderr, "Failed to fetch events [%s] from '%s'" % (
-                    msg, url)
+                print >> sys.stderr, ("Failed to fetch events [%s] from '%s'"
+                                      % (msg, url))
                 if (e.code == 401) or (e.code == 403):
                     authError = True
                 print >> sys.stderr, "Error response: %s" % e.read()
@@ -487,8 +306,8 @@ class HALO:
                     e.reason, url)
             if hasattr(e, 'code'):
                 msg = self.getHttpStatus(e.code)
-                print >> sys.stderr, "Failed to make request: [%s] from '%s'" % (
-                    msg, url)
+                print >> sys.stderr, ("Failed to make request: [%s] from '%s'"
+                                      % (msg, url))
                 if (e.code == 401) or (e.code == 403):
                     authError = True
                 print >> sys.stderr, "Error response: %s" % e.read()
@@ -515,8 +334,8 @@ class HALO:
                     e.reason, url)
             if hasattr(e, 'code'):
                 msg = self.getHttpStatus(e.code)
-                print >> sys.stderr, "Failed to make request: [%s] from '%s'" % (
-                    msg, url)
+                print >> sys.stderr, ("Failed to make request: [%s] from '%s'"
+                                      % (msg, url))
                 if (e.code == 401) or (e.code == 403):
                     authError = True
                 print >> sys.stderr, "Error response: %s" % e.read()
@@ -540,8 +359,8 @@ class HALO:
                     e.reason, url)
             if hasattr(e, 'code'):
                 msg = self.getHttpStatus(e.code)
-                print >> sys.stderr, "Failed to make request: [%s] from '%s'" % (
-                    msg, url)
+                print >> sys.stderr, ("Failed to make request: [%s] from '%s'"
+                                      % (msg, url))
                 if (e.code == 401):
                     authError = True
             if (not hasattr(e, 'reason')) and (not hasattr(e, 'code')):
@@ -572,24 +391,25 @@ class HALO:
         else:
             return (None, authError)
 
-    def getServerDetails(self,serverId):
+    def getServerDetails(self, serverId):
         url = "%s:%d/%s/servers/%s" % (self.base_url,
-                                     self.port,
-                                     self.api_ver,
-                                     serverId)
+                                       self.port,
+                                       self.api_ver,
+                                       serverId)
         (data, authError) = self.doGetRequest(url, self.authToken)
         if (data):
             return (json.loads(data), authError)
         else:
             return (None, authError)
 
-    def getServerGroupList(self):
-        url = "%s:%d/%s/groups" % (self.base_url, self.port, self.api_ver)
-        (data, authError) = self.doGetRequest(url, self.authToken)
-        if (data):
-            return (json.loads(data), authError)
-        else:
-            return (None, authError)
+#
+#    def getServerGroupList(self):
+#        url = "%s:%d/%s/groups" % (self.base_url, self.port, self.api_ver)
+#        (data, authError) = self.doGetRequest(url, self.authToken)
+#        if (data):
+#            return (json.loads(data), authError)
+#        else:
+#            return (None, authError)
 
     def getServersInGroup(self, groupID):
         url = "%s:%d/%s/groups/%s/servers" % (self.base_url,
@@ -637,17 +457,17 @@ class HALO:
         else:
             return (None, authError)
 
-    def createServerGroup(self, groupName, **kwargs):
-        url = "%s:%d/%s/groups" % (self.base_url, self.port, self.api_ver)
-        groupData = {"name": groupName, "policy_ids": [], "tag": None}
-        sanity.validate_servergroup_create_args(kwargs)
-        reqData = {"group": fn.merge_dicts(groupData, kwargs)}
-        jsonData = json.dumps(reqData)
-        (data, authError) = self.doPostRequest(url, self.authToken, jsonData)
-        if (data):
-            return (json.loads(data), authError)
-        else:
-            return (None, authError)
+#    def createServerGroup(self, groupName, **kwargs):
+#        url = "%s:%d/%s/groups" % (self.base_url, self.port, self.api_ver)
+#        groupData = {"name": groupName, "policy_ids": [], "tag": None}
+#        sanity.validate_servergroup_create_args(kwargs)
+#        reqData = {"group": fn.merge_dicts(groupData, kwargs)}
+#        jsonData = json.dumps(reqData)
+#        (data, authError) = self.doPostRequest(url, self.authToken, jsonData)
+#        if (data):
+#            return (json.loads(data), authError)
+#        else:
+#            return (None, authError)
 
     def updateServerGroup(self, groupId, **kwargs):
         url = "%s:%d/%s/groups/%s" % (self.base_url, self.port,
@@ -836,15 +656,15 @@ class HALO:
         else:
             return (None, authError)
 
-    def getAnnouncements(self):
-        url = "%s:%d/%s/system_announcements" % (self.base_url,
-                                                 self.port,
-                                                 self.api_ver)
-        (data, authError) = self.doGetRequest(url, self.authToken)
-        if (data):
-            return (json.loads(data), authError)
-        else:
-            return (None, authError)
+#    def getAnnouncements(self):
+#        url = "%s:%d/%s/system_announcements" % (self.base_url,
+#                                                 self.port,
+#                                                 self.api_ver)
+#        (data, authError) = self.doGetRequest(url, self.authToken)
+#        if (data):
+#            return (json.loads(data), authError)
+#        else:
+#            return (None, authError)
 
     def initiateScan(self, serverId, scan_type):
         url = "%s:%d/%s/servers/%s/scans" % (self.base_url,
@@ -858,7 +678,7 @@ class HALO:
                       "fim": "fim",
                       "sam": "sam"}
         module = module_ref.get(scan_type)
-        if module == None:
+        if module is None:
             bad_scan_msg = "Invalid scan type: " + str(scan_type)
             return (None, bad_scan_msg)
         jsondata = {"scan": {"module": module}}

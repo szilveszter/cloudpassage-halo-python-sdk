@@ -1,10 +1,8 @@
+from http_helper import HttpHelper
 import urlparse
 import sanity
-import delete
-import post
-import put
-import get
 import fn
+
 
 class ServerGroup:
 
@@ -23,29 +21,29 @@ class ServerGroup:
 
         session = self.session
         more_pages = True
-        url = "/v1/groups"
+        endpoint = "/v1/groups"
         groups = []
-        conn = get.Get(session)
+        request = HttpHelper(session)
         while more_pages:
-            page = conn.get(url)
+            page = request.get(endpoint)
             for group in page["groups"]:
                 groups.append(group)
             if "pagination" in page:
                 if "next" in page["pagination"]:
-                    url = urlparse(page["pagination"]["next"]).path
+                    endpoint = urlparse(page["pagination"]["next"]).path
             else:
                 more_pages = False
         return(groups)
 
     def create(self, group_name, **kwargs):
         session = self.session
-        url = "/v1/groups"
+        endpoint = "/v1/groups"
         group_data = {"name": group_name, "policy_ids": [], "tag": None}
         sanity.validate_servergroup_create_args(kwargs)
-        req_data = {"group": fn.merge_dicts(group_data, kwargs)}
-        conn = post.Post(session)
+        body = {"group": fn.merge_dicts(group_data, kwargs)}
+        request = HttpHelper(session)
         try:
-            response = conn.post(url, req_data)
+            response = request.post(endpoint, body)
         except post.CloudPassageAuthorization as e:
             raise CloudPassageAuthorization(e.msg)
         return(response)
