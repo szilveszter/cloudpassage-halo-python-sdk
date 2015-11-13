@@ -1,6 +1,7 @@
 from http_helper import HttpHelper
 import urlparse
 
+
 class SystemAnnouncement:
     def __init__(self, session):
         self.session = session

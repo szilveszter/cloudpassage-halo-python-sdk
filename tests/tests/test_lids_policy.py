@@ -14,17 +14,11 @@ proxy_port = '1080'
 
 file, filename, data = imp.find_module('cloudpassage', [module_path])
 halo = imp.load_module('halo', file, filename, data)
-system_announcement = imp.load_module('system_announcement', file,
-                                      filename, data)
+lids_policy = imp.load_module('lids_policy', file,
+                              filename, data)
 
 
-class TestSystemAnnouncement:
+class TestLidsPolicy:
     def test_instantiation(self):
         session = halo.HaloSession(key_id, secret_key)
-        assert system_announcement.SystemAnnouncement(session)
-
-    def test_list_all(self):
-        session = halo.HaloSession(key_id, secret_key)
-        announcement = system_announcement.SystemAnnouncement(session)
-        announcement_list = announcement.list_all()
-        assert "announcement" in announcement_list[0]
+        assert lids_policy.LidsPolicy(session)

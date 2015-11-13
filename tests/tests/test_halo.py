@@ -6,15 +6,11 @@ import datetime
 import hashlib
 
 
-
 module_path = os.path.abspath('../')
 policy_path = os.path.abspath('./policies/')
 
 file, filename, data = imp.find_module('cloudpassage', [module_path])
 halo = imp.load_module('halo', file, filename, data)
-
-# Temporary...
-#get = imp.load_module('get', file, filename, data)
 
 key_id = os.environ.get('HALO_KEY_ID')
 secret_key = os.environ.get('HALO_SECRET_KEY')
@@ -28,7 +24,9 @@ proxy_port = '1080'
 # This will make cleaning up easier...
 content_prefix = '_SDK_test-'
 
-content_name = content_prefix + str(hashlib.md5(str(datetime.datetime.now())).hexdigest())
+content_name = str(content_prefix +
+                   str(hashlib.md5(str(datetime.datetime.now())).hexdigest()))
+
 
 class TestHaloSession:
     def test_halosession_instantiation(self):
@@ -58,8 +56,8 @@ class TestHaloSession:
 
     def test_halosession_with_proxy(self):
         session = halo.HaloSession(key_id, secret_key,
-                            proxy_host=proxy_host,
-                            proxy_port=proxy_port)
+                                   proxy_host=proxy_host,
+                                   proxy_port=proxy_port)
         assert ((session.proxy_host == proxy_host) and
                 (session.proxy_port == proxy_port))
 
@@ -150,7 +148,7 @@ class TestHaloSession:
             rejected = True
         assert rejected
 """
-#Will re-enable as part of a test that cleans up after itself
+# Will re-enable as part of a test that cleans up after itself
 #    def test_halosession_post_success(self):
 #        groupname = content_name
 #        url = "/v1/groups"
