@@ -50,6 +50,70 @@ class TestGet:
         assert "servers" in json_response
 
 
+class TestGetPaginated:
+    def test_get_paginated_404(self):
+        endpoint = "/v1/barf"
+        key = "barfs"
+        pages = 5
+        pathfailed = False
+        session = halo.HaloSession(key_id, secret_key)
+        session.authenticate_client()
+        req = http_helper.HttpHelper(session)
+        try:
+            json_response = req.get_paginated(endpoint, key, pages)
+        except http_helper.http_helper.CloudPassageResourceExistence:
+            pathfailed = True
+        assert pathfailed
+
+    def test_get_paginated_rekey(self):
+        endpoint = "/v1/events"
+        key = "events"
+        pages = 5
+        session = halo.HaloSession(key_id, secret_key)
+        session.auth_token = "abc123"
+        req = http_helper.HttpHelper(session)
+        json_response = req.get_paginated(endpoint, key, pages)
+        assert "id" in json_response[0]
+
+    def test_get_paginated_events_99(self):
+        endpoint = "/v1/events"
+        key = "events"
+        pages = 5
+        session = halo.HaloSession(key_id, secret_key)
+        session.auth_token = "abc123"
+        req = http_helper.HttpHelper(session)
+        json_response = req.get_paginated(endpoint, key, pages)
+        assert "id" in json_response[0]
+
+    def test_get_paginated_toomany(self):
+        rejected = False
+        endpoint = "/v1/events"
+        key = "events"
+        pages = 101
+        session = halo.HaloSession(key_id, secret_key)
+        session.auth_token = "abc123"
+        req = http_helper.HttpHelper(session)
+        try:
+            json_response = req.get_paginated(endpoint, key, pages)
+        except http_helper.http_helper.CloudPassageValidation:
+            rejected = True
+        assert rejected
+
+    def test_get_paginated_badkey(self):
+        rejected = False
+        endpoint = "/v1/events"
+        key = "badkey"
+        pages = 2
+        session = halo.HaloSession(key_id, secret_key)
+        session.auth_token = "abc123"
+        req = http_helper.HttpHelper(session)
+        try:
+            json_response = req.get_paginated(endpoint, key, pages)
+        except http_helper.http_helper.CloudPassageValidation:
+            rejected = True
+        assert rejected
+
+
 class TestPost:
     def test_post_404(self):
         endpoint = "/v1/barf"

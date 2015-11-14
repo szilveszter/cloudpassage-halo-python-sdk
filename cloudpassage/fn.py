@@ -15,6 +15,17 @@ def merge_dicts(first, second):
     return(final)
 
 
+def verify_pages(max_pages):
+    exc = None
+    if type(max_pages) is not int:
+        fail_msg = "Type wrong for max_pages.  Should be int."
+        exc = CloudPassageValidation(fail_msg)
+    if max_pages > 100:
+        fail_msg = "You're asking for too many pages.  100 max."
+        exc = CloudPassageValidation(fail_msg)
+    return exc
+
+
 def parse_status(url, resp_code, resp_text):
     success = True
     exc = None
