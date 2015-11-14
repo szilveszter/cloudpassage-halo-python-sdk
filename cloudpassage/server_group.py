@@ -15,24 +15,18 @@ class ServerGroup:
 
         This is represented as a list of dictionaries
 
-        This handles pagination internally, so please
-        be patient with high-volume requests.
+        This will only return a maximum of 20 pages, which amounts to
+        200 groups.  If you have more than that, you should consider
+        using the SDK within a multi-threaded application so you don't
+        spend the rest of your life waiting on a list of groups.
         """
 
         session = self.session
-        more_pages = True
+        max_pages = 20
+        key = "groups"
         endpoint = "/v1/groups"
-        groups = []
         request = HttpHelper(session)
-        while more_pages:
-            page = request.get(endpoint)
-            for group in page["groups"]:
-                groups.append(group)
-            if "pagination" in page:
-                if "next" in page["pagination"]:
-                    endpoint = urlparse(page["pagination"]["next"]).path
-            else:
-                more_pages = False
+        groups = request.get_paginated(endpoint, key, max_pages)
         return(groups)
 
     def create(self, group_name, **kwargs):

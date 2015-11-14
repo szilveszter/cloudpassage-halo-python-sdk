@@ -1,6 +1,7 @@
 import fn
 import json
 import requests
+import urlparse
 from exceptions import CloudPassageAuthentication
 from exceptions import CloudPassageAuthorization
 from exceptions import CloudPassageValidation
@@ -35,21 +36,69 @@ class HttpHelper:
         prefix = self.connection.build_endpoint_prefix()
         endpoint = prefix + path
         headers = self.connection.build_header()
-        resp = requests.get(endpoint, headers=headers)
-        success, exc = fn.parse_status(endpoint, resp.status_code, resp.text)
-        if success is False:
-            # If we get a 401, it could be an expired key.  We retry once.
-            if resp.status_code == 401:
-                self.connection.authenticate_client()
-                headers = self.connection.build_header()
-                response = requests.get(endpoint, headers=headers)
-                success, exc = fn.parse_status(endpoint, response.status_code,
-                                               response.text)
-                if success is True:
-                    return(response.json())
-            raise exc
-        else:
-            return(resp.json())
+        response = requests.get(endpoint, headers=headers)
+        success, exc = fn.parse_status(endpoint, response.status_code,
+                                       response.text)
+        if success is True:
+            return(response.json())
+        # If we get a 401, it could be an expired key.  We retry once.
+        if response.status_code == 401:
+            self.connection.authenticate_client()
+            headers = self.connection.build_header()
+            response = requests.get(endpoint, headers=headers)
+            success, exc = fn.parse_status(endpoint, response.status_code,
+                                           response.text)
+            if success is True:
+                return(response.json())
+        raise exc
+
+    def get_paginated(self, endpoint, key, max_pages):
+        """This method returns a concatenated list of objects
+        from the Halo API.
+
+        It's really a wrapper for the get() method.  Pass in the
+        path as with the get() method, and a maxpages number.
+        Maxpages is expected to be an integer between 2 and 100
+
+        endpoint  -- Path for initial query
+        key       -- The key in the response containing the objects
+                     of interest.  For instance, the /v1/events endpoint
+                     will have the "events" key, which contains a list
+                     of dictionary objects representing Halo events.
+        maxpages  -- This is a number from 2-100.  More than 100 pages
+                     can take quite a while to return, so beyond that
+                     you should consider using this SDK as a component
+                     in  multi-threaded tool.
+        """
+
+        exception = fn.verify_pages(max_pages)
+        if exception:
+            raise exception
+        more_pages = True
+        response_accumulator = []
+        pages_parsed = 0
+        while more_pages:
+            page = self.get(endpoint)
+            if key not in page:
+                fail_msg = ("Requested key %s not found in page %s"
+                            % (key, endpoint))
+                raise CloudPassageValidation(fail_msg)
+            for k in page[key]:
+                response_accumulator.append(k)
+            pages_parsed += 1
+            # If we hit our limit for parsed pages, return out!
+            if pages_parsed >= max_pages:
+                return response_accumulator
+            if "pagination" in page:
+                if "next" in page["pagination"]:
+                    nextpage = page["pagination"]["next"]
+                    endpoint = str(urlparse.urlsplit(nextpage)[2] + "?" +
+                                   urlparse.urlsplit(nextpage)[3])
+                else:
+                    more_pages = False
+            else:
+                more_pages = False
+        return response_accumulator
 
     def post(self, path, reqbody):
         """This method performs a POST against Halo's API.
