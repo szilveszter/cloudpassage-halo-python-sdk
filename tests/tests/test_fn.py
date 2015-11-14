@@ -1,9 +1,13 @@
 import pytest
+import pep8
 import imp
 import json
 import os
 
 module_path = os.path.abspath('../cloudpassage')
+
+file_location = os.path.abspath('../cloudpassage/fn.py')
+this_file = os.path.abspath(__file__)
 
 file, filename, data = imp.find_module('exceptions', [module_path])
 exceptions = imp.load_module('exceptions', file, filename, data)
@@ -12,6 +16,11 @@ fn = imp.load_module('fn', file, filename, data)
 
 
 class TestFn:
+    def test_pep8(self):
+        pep8style = pep8.StyleGuide(quiet=True)
+        result = pep8style.check_files([file_location, this_file])
+        assert result.total_errors == 0
+
     def test_merge_dicts(self):
         one = {"a": "Alpha",
                "b": "Bravo",

@@ -1,9 +1,13 @@
 import pytest
+import pep8
 import imp
 import json
 import os
 
 module_path = os.path.abspath('../')
+
+file_location = os.path.abspath('../cloudpassage/server_group.py')
+this_file = os.path.abspath(__file__)
 
 key_id = os.environ.get('HALO_KEY_ID')
 secret_key = os.environ.get('HALO_SECRET_KEY')
@@ -19,6 +23,11 @@ sanity = imp.load_module('sanity', file, filename, data)
 
 
 class TestServerGroup:
+    def test_pep8(self):
+        pep8style = pep8.StyleGuide(quiet=True)
+        result = pep8style.check_files([file_location, this_file])
+        assert result.total_errors == 0
+
     def test_instantiation(self):
         session = halo.HaloSession(key_id, secret_key)
         assert server_group.ServerGroup(session)
