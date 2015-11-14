@@ -1,4 +1,5 @@
 import os
+import pep8
 import imp
 import pytest
 import json
@@ -8,6 +9,9 @@ import hashlib
 
 module_path = os.path.abspath('../')
 policy_path = os.path.abspath('./policies/')
+
+file_location = os.path.abspath('../cloudpassage/halo.py')
+this_file = os.path.abspath(__file__)
 
 file, filename, data = imp.find_module('cloudpassage', [module_path])
 halo = imp.load_module('halo', file, filename, data)
@@ -29,6 +33,11 @@ content_name = str(content_prefix +
 
 
 class TestHaloSession:
+    def test_pep8(self):
+        pep8style = pep8.StyleGuide(quiet=True)
+        result = pep8style.check_files([file_location, this_file])
+        assert result.total_errors == 0
+
     def test_halosession_instantiation(self):
         session = halo.HaloSession(key_id, secret_key)
         assert session
