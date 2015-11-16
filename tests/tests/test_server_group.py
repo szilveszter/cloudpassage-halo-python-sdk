@@ -11,6 +11,8 @@ this_file = os.path.abspath(__file__)
 
 key_id = os.environ.get('HALO_KEY_ID')
 secret_key = os.environ.get('HALO_SECRET_KEY')
+ro_key_id = os.environ.get('RO_HALO_KEY_ID')
+ro_secret_key = os.environ.get('RO_HALO_SECRET_KEY')
 bad_key = "abad53c"
 api_hostname = os.environ.get('HALO_API_HOSTNAME')
 proxy_host = '190.109.164.81'
