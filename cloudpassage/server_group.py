@@ -2,6 +2,13 @@ from http_helper import HttpHelper
 import urlparse
 import sanity
 import fn
+from exceptions import CloudPassageAuthentication
+from exceptions import CloudPassageAuthorization
+from exceptions import CloudPassageValidation
+from exceptions import CloudPassageCollision
+from exceptions import CloudPassageInternalError
+from exceptions import CloudPassageResourceExistence
+from exceptions import CloudPassageGeneral
 
 
 class ServerGroup:
@@ -34,6 +41,7 @@ class ServerGroup:
         things via kwargs.
 
         Optional kwargs and expected daya types:
+        name                         -- unicode
         firewall_policy_id           -- unicode
                                      (deprecated- use linux_firewall_policy_id)
         linux_firewall_policy_id     -- unicode
@@ -52,7 +60,10 @@ class ServerGroup:
         session = self.session
         endpoint = "/v1/groups"
         group_data = {"name": group_name, "policy_ids": [], "tag": None}
-        sanity.validate_servergroup_create_args(kwargs)
+        try:
+            sanity.validate_servergroup_create_args(kwargs)
+        except TypeError as e:
+            raise CloudPassageValidation(e)
         body = {"group": fn.merge_dicts(group_data, kwargs)}
         request = HttpHelper(session)
         try:
@@ -73,3 +84,41 @@ class ServerGroup:
         response = request.get(endpoint)
         group = response["group"]
         return(group)
+
+    def update(self, groupId, **kwargs):
+        """Updates a ServerGroup.  Requires a group ID, other
+        things via kwargs.
+
+        Optional kwargs and expected daya types:
+        name                         -- unicode
+        firewall_policy_id           -- unicode
+                                     (deprecated- use linux_firewall_policy_id)
+        linux_firewall_policy_id     -- unicode
+        windows_firewall_policy_id   -- unicode
+        policy_ids                   -- list
+        windows_policy_ids           -- list
+        fim_policy_ids               -- list
+        linux_fim_policy_ids         -- list
+        windows_fim_policy_ids       -- list
+        lids_policy_ids              -- list
+        tag                          -- unicode
+        events_policy                -- unicode
+        alert_profiles               -- list
+        """
+
+        endpoint = "/v1/groups/%s" % groupId
+        response = None
+        groupData = {}
+        try:
+            sanity.validate_servergroup_update_args(kwargs)
+        except TypeError as e:
+            raise CloudPassageValidation(e)
+        body = {"group": fn.merge_dicts(groupData, kwargs)}
+        request = HttpHelper(session)
+        try:
+            response = request.put(endpoint, body)
+        except put.CloudPassageAuthorization as e:
+            raise CloudPassageAuthorization(e.msg)
+        except put.CloudPassageValdiation as e:
+            raise CloudPassageValidation(e.msg)
+        return(response)
