@@ -62,3 +62,7 @@ class TestFn:
         for r, o in code_succ.items():
             success, exc = fn.parse_status(url, r, resp_text)
             assert success == o
+
+    def test_verify_pages(self):
+        assert fn.verify_pages("cats") is not None
+        assert fn.verify_pages(101) is not None
