@@ -9,6 +9,7 @@ from fim_policy import FimPolicy
 from lids_policy import LidsPolicy
 from server_group import ServerGroup
 from system_announcement import SystemAnnouncement
+from special_events_policy import SpecialEventsPolicy
 from exceptions import CloudPassageAuthentication
 from exceptions import CloudPassageAuthorization
 from exceptions import CloudPassageValidation
