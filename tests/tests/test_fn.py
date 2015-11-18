@@ -5,7 +5,7 @@ import json
 import os
 
 module_path = os.path.abspath('../cloudpassage')
-
+policy_path = os.path.abspath('./policies')
 file_location = os.path.abspath('../cloudpassage/fn.py')
 this_file = os.path.abspath(__file__)
 
@@ -66,3 +66,33 @@ class TestFn:
     def test_verify_pages(self):
         assert fn.verify_pages("cats") is not None
         assert fn.verify_pages(101) is not None
+
+    def test_determine_policy_metadata(self):
+        test_csm_lin = {"file": str(policy_path +
+                        "/cis-benchmark-for-centos-7-v1.policy.json"),
+                        "type": "CSM",
+                        "platform": "Linux"}
+        test_fim_lin = {"file": str(policy_path +
+                        "/core-system-files-centos-v1.fim.json"),
+                        "type": "FIM",
+                        "platform": "Linux"}
+        test_lids_lin = {"file": str(policy_path +
+                         "/core-system-centos-v1-1.lids.json"),
+                         "type": "LIDS",
+                         "platform": "Linux"}
+        test_firewall_lin = {"file": str(policy_path +
+                             "/firewall.json"),
+                             "type": "Firewall",
+                             "platform": "Linux"}
+        for policy in [test_csm_lin,
+                       test_fim_lin,
+                       test_lids_lin,
+                       test_firewall_lin]:
+            with open(policy["file"], 'r') as f:
+                policy_string = f.read()
+                policy_json = json.loads(policy_string)
+            meta_from_str = fn.determine_policy_metadata(policy_string)
+            meta_from_json = fn.determine_policy_metadata(policy_json)
+            assert meta_from_str == meta_from_json
+            assert meta_from_str["policy_type"] == policy["type"]
+            assert meta_from_str["target_platform"] == policy["platform"]

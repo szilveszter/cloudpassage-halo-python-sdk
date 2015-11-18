@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # Some basic data handling functions
+import json
 from exceptions import CloudPassageValidation
 from exceptions import CloudPassageInternalError
 from exceptions import CloudPassageAuthentication
@@ -7,6 +8,67 @@ from exceptions import CloudPassageAuthorization
 from exceptions import CloudPassageResourceExistence
 from exceptions import CloudPassageCollision
 from exceptions import CloudPassageGeneral
+
+
+def determine_policy_metadata(policy):
+    """Accepts string or dict.  Returns dict of policy
+    type, name, and target platform.
+
+    If string, attempts to convert to dict to parse.
+    Possible return values for policy_type:
+    CSM      -- Configuration Security Monitoring
+    FIM      -- File Integrity Monitoring
+    LIDS     -- Log Intrusion Detection System
+    Firewall -- Firewall Policy
+    None     -- Unable to determine poolicy type
+
+    Possible return values for target_platform:
+    Windows
+    Linux
+    None
+
+    Example:
+    determine_policy_type(string_from_file)
+    {"policy_type": "CSM",
+     "policy_name": "Test policy",
+     "target_platform": "Windows"}
+
+    """
+
+    return_body = {"policy_type": None,
+                   "policy_name": None,
+                   "target_platform": None}
+    if type(policy) is str:
+        working_pol = json.loads(policy)
+    elif type(policy) is dict:
+        working_pol = policy.copy()
+    else:
+        print("Policy type must be str or dict!")
+    try:
+        derived_type = working_pol.items()[0][0]
+        if derived_type == "fim_policy":
+            return_body["policy_type"] = "FIM"
+        if derived_type == "policy":
+            return_body["policy_type"] = "CSM"
+        if derived_type == "lids_policy":
+            return_body["policy_type"] = "LIDS"
+        if derived_type == "firewall_policy":
+            return_body["policy_type"] = "Firewall"
+    except:
+        pass
+    try:
+        return_body["policy_name"] = working_pol.items()[0][1]["name"]
+    except:
+        pass
+    try:
+        derived_platform = working_pol.items()[0][1]["platform"]
+        if derived_platform == 'linux':
+            return_body["target_platform"] = 'Linux'
+        elif derived_platform == 'windows':
+            return_body["target_platform"] = 'Windows'
+    except:
+        pass
+    return(return_body)
 
 
 def merge_dicts(first, second):
