@@ -59,6 +59,16 @@ class TestScan:
             rejected = True
         assert rejected
 
+    def test_scan_type_valid(self):
+        valid_types = ["svm", "sva", "csm", "sca", "fim", "sam", "sv"]
+        invalid_types = ["death_stare", "lids"]
+        session = halo.HaloSession(key_id, secret_key)
+        scanner = scan.Scan(session)
+        for v in valid_types:
+            assert scanner.scan_type_supported(v)
+        for i in invalid_types:
+            assert not scanner.scan_type_supported(i)
+
     """These are integration tests, and require the completion of the
     server.Server module, to get a serverID for a target to initiate a
     scan against.

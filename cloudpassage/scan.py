@@ -7,6 +7,13 @@ class Scan:
 
     def __init__(self, session):
         self.session = session
+        self.supported_scans = {"sca": "sca",
+                                "csm": "sca",
+                                "svm": "svm",
+                                "sva": "svm",
+                                "sam": "sam",
+                                "fim": "fim",
+                                "sv": "sv"}
         return None
 
     def initiate_scan(self, server_id, scan_type):
@@ -29,19 +36,12 @@ class Scan:
         Failure throws an exception.
         """
 
-        supported_scan_mapping = {"sca": "sca",
-                                  "csm": "sca",
-                                  "svm": "svm",
-                                  "sva": "svm",
-                                  "sam": "sam",
-                                  "fim": "fim",
-                                  "sv": "sv"}
-        if scan_type not in supported_scan_mapping:
+        if self.scan_type_supported(scan_type) is False:
             exception_message = "Unsupported scan type: %s" % scan_type
             raise CloudPassageValidation(exception_message)
         else:
-            scan_type_valid = supported_scan_mapping[scan_type]
-            request_body = {"scan": {"module": scan_type_valid}}
+            scan_type_normalized = self.supported_scans[scan_type]
+            request_body = {"scan": {"module": scan_type_normalized}}
             endpoint = "/v1/servers/%s/scans" % server_id
             try:
                 request = HttpHelper(self.session)
@@ -51,3 +51,9 @@ class Scan:
             except CloudPassageResourceExistence as e:
                 print e.msg
                 raise CloudPassageResourceExistence(e.msg)
+
+    def scan_type_supported(self, scan_type):
+        if scan_type in self.supported_scans:
+            return True
+        else:
+            return False
