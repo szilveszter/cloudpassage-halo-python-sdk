@@ -47,3 +47,20 @@ class TestServerGroup:
         target_group_id = groups[0]["id"]
         target_group_object = s_grp.describe(target_group_id)
         assert "id" in target_group_object
+
+    def test_list_members(self):
+        # Rolls through all server groups, confirms active server IDs
+        confirmed = False
+        session = halo.HaloSession(key_id, secret_key)
+        s_grp = server_group.ServerGroup(session)
+        groups = s_grp.list_all()
+        num_members = 0
+        for g in groups:
+            target_group_id = g["id"]
+            num_members = g["server_counts"]["active"]
+            if num_members > 0:
+                members = s_grp.list_members(target_group_id)
+                assert members[0]["id"]
+                confirmed = True
+        # Confirm that we actually have a populated server group
+        assert confirmed
