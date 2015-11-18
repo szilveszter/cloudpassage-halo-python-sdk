@@ -36,6 +36,16 @@ class ServerGroup:
         groups = request.get_paginated(endpoint, key, max_pages)
         return(groups)
 
+    def list_members(self, group_id):
+        """Returns a list of all servers which are members of group_id"""
+
+        session = self.session
+        endpoint = "/v1/groups/%s/servers" % group_id
+        request = HttpHelper(session)
+        response = request.get(endpoint)
+        servers = response["servers"]
+        return(servers)
+
     def create(self, group_name, **kwargs):
         """Creates a ServerGroup.  Requires a group name, other
         things via kwargs.
