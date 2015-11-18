@@ -19,6 +19,7 @@ proxy_port = '1080'
 file, filename, data = imp.find_module('cloudpassage', [module_path])
 halo = imp.load_module('halo', file, filename, data)
 server = imp.load_module('server', file, filename, data)
+server_group = imp.load_module('server_group', file, filename, data)
 cp = imp.load_module('cloudpassage', file, filename, data)
 
 
@@ -31,6 +32,31 @@ class TestServer:
     def test_instantiation(self):
         session = halo.HaloSession(key_id, secret_key)
         assert server.Server(session)
+
+    def test_get_server_details(self):
+        session = halo.HaloSession(key_id, secret_key)
+        s = server.Server(session)
+        s_group = server_group.ServerGroup(session)
+        server_group_list = s_group.list_all()
+        target_group = None
+        for group in server_group_list:
+            if group["server_counts"]["active"] != 0:
+                target_group = group["id"]
+                break
+        assert target_group is not None
+        target_server_id = s_group.list_members(target_group)[0]["id"]
+        assert "id" in s.describe(target_server_id)
+
+    def test_get_server_details_404(self):
+        rejected = False
+        session = halo.HaloSession(key_id, secret_key)
+        request = server.Server(session)
+        bad_server_id = "123456789"
+        try:
+            request.describe(bad_server_id)
+        except request.CloudPassageResourceExistence:
+            rejected = True
+        assert rejected
 
     def test_retire_server_404(self):
         rejected = False

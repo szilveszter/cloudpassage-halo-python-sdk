@@ -2,16 +2,16 @@ from http_helper import HttpHelper
 import urlparse
 import sanity
 import fn
-from exceptions import CloudPassageAuthentication
-from exceptions import CloudPassageAuthorization
-from exceptions import CloudPassageValidation
-from exceptions import CloudPassageCollision
-from exceptions import CloudPassageInternalError
-from exceptions import CloudPassageResourceExistence
-from exceptions import CloudPassageGeneral
 
 
 class ServerGroup:
+    from exceptions import CloudPassageAuthentication
+    from exceptions import CloudPassageAuthorization
+    from exceptions import CloudPassageValidation
+    from exceptions import CloudPassageCollision
+    from exceptions import CloudPassageInternalError
+    from exceptions import CloudPassageResourceExistence
+    from exceptions import CloudPassageGeneral
 
     def __init__(self, session):
         self.session = session
@@ -73,13 +73,13 @@ class ServerGroup:
         try:
             sanity.validate_servergroup_create_args(kwargs)
         except TypeError as e:
-            raise CloudPassageValidation(e)
+            raise self.CloudPassageValidation(e)
         body = {"group": fn.merge_dicts(group_data, kwargs)}
         request = HttpHelper(session)
         try:
             response = request.post(endpoint, body)
-        except post.CloudPassageAuthorization as e:
-            raise CloudPassageAuthorization(e.msg)
+        except request.CloudPassageAuthorization as e:
+            raise self.CloudPassageAuthorization(e.msg)
         return(response)
 
     def describe(self, group_id):
@@ -122,13 +122,13 @@ class ServerGroup:
         try:
             sanity.validate_servergroup_update_args(kwargs)
         except TypeError as e:
-            raise CloudPassageValidation(e)
+            raise self.CloudPassageValidation(e)
         body = {"group": fn.merge_dicts(groupData, kwargs)}
         request = HttpHelper(session)
         try:
             response = request.put(endpoint, body)
-        except put.CloudPassageAuthorization as e:
-            raise CloudPassageAuthorization(e.msg)
-        except put.CloudPassageValdiation as e:
-            raise CloudPassageValidation(e.msg)
+        except request.CloudPassageAuthorization as e:
+            raise self.CloudPassageAuthorization(e.msg)
+        except request.CloudPassageValdiation as e:
+            raise self.CloudPassageValidation(e.msg)
         return(response)

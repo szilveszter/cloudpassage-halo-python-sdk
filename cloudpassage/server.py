@@ -1,14 +1,31 @@
 from http_helper import HttpHelper
-from exceptions import CloudPassageAuthorization
-from exceptions import CloudPassageValidation
-from exceptions import CloudPassageResourceExistence
 
 
 class Server:
+    from exceptions import CloudPassageAuthorization
+    from exceptions import CloudPassageValidation
+    from exceptions import CloudPassageResourceExistence
 
     def __init__(self, session):
         self.session = session
         return None
+
+    def describe(self, server_id):
+        """Returns dictionary containing information relating
+        to server indicated by server_id.
+
+        Details on metadata fields:
+        https://support.cloudpassage.com/entries/23131848-Servers
+        """
+
+        endpoint = "/v1/servers/%s" % server_id
+        request = HttpHelper(self.session)
+        try:
+            response = request.get(endpoint)
+            server_details = response["server"]
+            return(server_details)
+        except request.CloudPassageResourceExistence as e:
+            raise self.CloudPassageResourceExistence(e.msg)
 
     def retire(self, server_id):
         """This method retires a server"""
@@ -20,11 +37,11 @@ class Server:
         try:
             response = request.put(endpoint, body)
         except request.CloudPassageAuthorization as e:
-            raise CloudPassageAuthorization(e.msg)
+            raise self.CloudPassageAuthorization(e.msg)
         except request.CloudPassageValidation as e:
-            raise CloudPassageValidation(e.msg)
+            raise self.CloudPassageValidation(e.msg)
         except request.CloudPassageResourceExistence:
-            raise CloudPassageResourceExistence(endpoint)
+            raise self.CloudPassageResourceExistence(endpoint)
         return True
 
     def command_details(self, server_id, command_id):
@@ -53,5 +70,5 @@ class Server:
             response = request.get(endpoint)
             command_status = response["command"]
             return(command_status)
-        except CloudPassageResourceExistence as e:
-            raise CloudPassageResourceExistence(endpoint)
+        except request.CloudPassageResourceExistence as e:
+            raise self.CloudPassageResourceExistence(endpoint)
