@@ -46,7 +46,7 @@ class TestGet:
         req = http_helper.HttpHelper(session)
         try:
             json_response = req.get(endpoint)
-        except http_helper.http_helper.CloudPassageResourceExistence:
+        except req.CloudPassageResourceExistence:
             pathfailed = True
         assert pathfailed
 
@@ -70,7 +70,7 @@ class TestGetPaginated:
         req = http_helper.HttpHelper(session)
         try:
             json_response = req.get_paginated(endpoint, key, pages)
-        except http_helper.http_helper.CloudPassageResourceExistence:
+        except req.CloudPassageResourceExistence:
             pathfailed = True
         assert pathfailed
 
@@ -104,7 +104,7 @@ class TestGetPaginated:
         req = http_helper.HttpHelper(session)
         try:
             json_response = req.get_paginated(endpoint, key, pages)
-        except http_helper.http_helper.CloudPassageValidation:
+        except req.CloudPassageValidation:
             rejected = True
         assert rejected
 
@@ -118,7 +118,7 @@ class TestGetPaginated:
         req = http_helper.HttpHelper(session)
         try:
             json_response = req.get_paginated(endpoint, key, pages)
-        except http_helper.http_helper.CloudPassageValidation:
+        except req.CloudPassageValidation:
             rejected = True
         assert rejected
 
@@ -133,7 +133,7 @@ class TestPost:
         req = http_helper.HttpHelper(session)
         try:
             json_response = req.post(endpoint, post_data)
-        except http_helper.http_helper.CloudPassageResourceExistence:
+        except req.CloudPassageResourceExistence:
             pathfailed = True
         assert pathfailed
 
@@ -146,7 +146,7 @@ class TestPost:
         req = http_helper.HttpHelper(session)
         try:
             json_response = req.post(endpoint, post_data)
-        except http_helper.http_helper.CloudPassageValidation:
+        except req.CloudPassageValidation:
             rejected = True
         assert rejected
 
@@ -161,7 +161,7 @@ class TestPut:
         req = http_helper.HttpHelper(session)
         try:
             json_response = req.put(endpoint, put_data)
-        except http_helper.http_helper.CloudPassageResourceExistence:
+        except req.CloudPassageResourceExistence:
             pathfailed = True
         assert pathfailed
 
@@ -174,7 +174,7 @@ class TestPut:
         req = http_helper.HttpHelper(session)
         try:
             json_response = req.put(endpoint, put_data)
-        except http_helper.http_helper.CloudPassageResourceExistence:
+        except req.CloudPassageResourceExistence:
             rejected = True
         assert rejected
 
@@ -188,7 +188,7 @@ class TestDelete:
         req = http_helper.HttpHelper(session)
         try:
             json_response = req.delete(endpoint)
-        except http_helper.http_helper.CloudPassageResourceExistence:
+        except req.CloudPassageResourceExistence:
             pathfailed = True
         assert pathfailed
 
@@ -200,6 +200,6 @@ class TestDelete:
         req = http_helper.HttpHelper(session)
         try:
             json_response = req.delete(endpoint)
-        except http_helper.http_helper.CloudPassageResourceExistence:
+        except req.CloudPassageResourceExistence:
             delfailed = True
         assert delfailed
