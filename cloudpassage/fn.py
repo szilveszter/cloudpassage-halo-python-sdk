@@ -71,6 +71,13 @@ def determine_policy_metadata(policy):
     return(return_body)
 
 
+def policy_to_dict(policy):
+    if type(policy) is dict:
+        return policy
+    else:
+        return(json.loads(policy))
+
+
 def merge_dicts(first, second):
     final = first.copy()
     final.update(second)
