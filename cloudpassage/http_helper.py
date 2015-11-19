@@ -171,7 +171,12 @@ class HttpHelper:
                     return(response.json())
             raise exc
         else:
-            return(response.json())
+            # Sometimes we don't get json back...
+            try:
+                return_value = response.json()
+            except:
+                return_value = response.text
+            return(return_value)
 
     def delete(self, path):
         """This method performs a Delete against Halo's API.
@@ -209,4 +214,9 @@ class HttpHelper:
                     return(response.json())
             raise exc
         else:
-            return(response.json())
+            # Sometimes we don't get json back...
+            try:
+                return_value = response.json()
+            except:
+                return_value = response.text
+            return(return_value)
