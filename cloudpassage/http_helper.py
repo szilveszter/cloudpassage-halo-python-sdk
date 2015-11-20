@@ -16,7 +16,7 @@ class HttpHelper:
     def __init__(self, connection):
         self.connection = connection
 
-    def get(self, path):
+    def get(self, path, **kwargs):
         """This method performs a GET against Halo's API.
 
         It will attempt to authenticate using the credentials (required
@@ -37,7 +37,11 @@ class HttpHelper:
         prefix = self.connection.build_endpoint_prefix()
         endpoint = prefix + path
         headers = self.connection.build_header()
-        response = requests.get(endpoint, headers=headers)
+        if "params" in kwargs:
+            response = requests.get(endpoint, headers=headers,
+                                    params=kwargs["params"])
+        else:
+            response = requests.get(endpoint, headers=headers)
         success, exc = fn.parse_status(endpoint, response.status_code,
                                        response.text)
         if success is True:
@@ -53,7 +57,7 @@ class HttpHelper:
                 return(response.json())
         raise exc
 
-    def get_paginated(self, endpoint, key, max_pages):
+    def get_paginated(self, endpoint, key, max_pages, **kwargs):
         """This method returns a concatenated list of objects
         from the Halo API.
 
@@ -75,31 +79,44 @@ class HttpHelper:
         exception = fn.verify_pages(max_pages)
         if exception:
             raise exception
-        more_pages = True
+        more_pages = False
         response_accumulator = []
-        pages_parsed = 0
+        if "params" in kwargs:
+            initial_page = self.get(endpoint, params=kwargs["params"])
+        else:
+            initial_page = self.get(endpoint)
+        response, next_page = self.process_page(initial_page, key)
+        response_accumulator.extend(response)
+        pages_parsed = 1
+        if next_page is not None:
+            more_pages = True
         while more_pages:
-            page = self.get(endpoint)
-            if key not in page:
-                fail_msg = ("Requested key %s not found in page %s"
-                            % (key, endpoint))
-                raise self.CloudPassageValidation(fail_msg)
-            for k in page[key]:
-                response_accumulator.append(k)
+            page = self.get(next_page)
+            response, next_page = self.process_page(page, key)
+            response_accumulator.extend(response)
             pages_parsed += 1
-            # If we hit our limit for parsed pages, return out!
-            if pages_parsed >= max_pages:
-                return response_accumulator
-            if "pagination" in page:
-                if "next" in page["pagination"]:
-                    nextpage = page["pagination"]["next"]
-                    endpoint = str(urlparse.urlsplit(nextpage)[2] + "?" +
-                                   urlparse.urlsplit(nextpage)[3])
-                else:
-                    more_pages = False
-            else:
+            if next_page is None:
                 more_pages = False
-        return response_accumulator
+            if pages_parsed >= max_pages:
+                more_pages = False
+        return(response_accumulator)
+
+    def process_page(self, page, key):
+        response_accumulator = []
+        next_page = None
+        if key not in page:
+            fail_msg = ("Requested key %s not found in page"
+                        % key)
+            raise self.CloudPassageValidation(fail_msg)
+        for k in page[key]:
+            response_accumulator.append(k)
+        if "pagination" in page:
+            if "next" in page["pagination"]:
+                nextpage = page["pagination"]["next"]
+                endpoint = str(urlparse.urlsplit(nextpage)[2] + "?" +
+                               urlparse.urlsplit(nextpage)[3])
+                next_page = endpoint
+        return(response_accumulator, next_page)
 
     def post(self, path, reqbody):
         """This method performs a POST against Halo's API.
