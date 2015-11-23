@@ -71,6 +71,28 @@ def determine_policy_metadata(policy):
     return(return_body)
 
 
+def sanitize_url_params(params):
+    '''Sanitize URL arguments for the Halo API
+
+    In most cases, the Halo API will only honor the last value
+    in URL arguments when multiple arguments have the same key.
+    For instance: Requests builds URL arguments from a list a little
+    strangely:
+    {key:[val1, val2]}
+    becomes key=val1&key=val2
+    and not key=val1,val2.  If we let a
+    list type object slide through, only val2 will be evaluated, and
+    val1 is ignored by the Halo API.
+
+    '''
+    params_working = params.copy()
+    for key, value in params_working.items():
+        if type(value) is list:
+            value_corrected = ",".join(value)
+            params[key] = value_corrected
+    return params
+
+
 def policy_to_dict(policy):
     if type(policy) is dict:
         return policy

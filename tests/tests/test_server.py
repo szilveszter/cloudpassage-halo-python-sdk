@@ -24,6 +24,16 @@ cp = imp.load_module('cloudpassage', file, filename, data)
 
 
 class TestServer:
+    def build_server_object(self):
+        session = halo.HaloSession(key_id, secret_key)
+        server_object = server.Server(session)
+        return(server_object)
+
+    def build_server_group_object(self):
+        session = halo.HaloSession(key_id, secret_key)
+        server_group_object = server_group.ServerGroup(session)
+        return(server_group_object)
+
     def test_pep8(self):
         pep8style = pep8.StyleGuide(quiet=True)
         result = pep8style.check_files([file_location, this_file])
@@ -34,9 +44,8 @@ class TestServer:
         assert server.Server(session)
 
     def test_get_server_details(self):
-        session = halo.HaloSession(key_id, secret_key)
-        s = server.Server(session)
-        s_group = server_group.ServerGroup(session)
+        s = self.build_server_object()
+        s_group = self.build_server_group_object()
         server_group_list = s_group.list_all()
         target_group = None
         for group in server_group_list:
@@ -49,8 +58,7 @@ class TestServer:
 
     def test_get_server_details_404(self):
         rejected = False
-        session = halo.HaloSession(key_id, secret_key)
-        request = server.Server(session)
+        request = self.build_server_object()
         bad_server_id = "123456789"
         try:
             request.describe(bad_server_id)
@@ -60,8 +68,7 @@ class TestServer:
 
     def test_retire_server_404(self):
         rejected = False
-        session = halo.HaloSession(key_id, secret_key)
-        request = server.Server(session)
+        request = self.build_server_object()
         server_id = "12345"
         try:
             result = request.retire(server_id)
@@ -71,8 +78,7 @@ class TestServer:
 
     def test_command_details_404(self):
         rejected = False
-        session = halo.HaloSession(key_id, secret_key)
-        request = server.Server(session)
+        request = self.build_server_object()
         server_id = "12345"
         command_id = "56789"
         try:
@@ -80,3 +86,50 @@ class TestServer:
         except server.CloudPassageResourceExistence:
             rejected = True
         assert rejected
+
+    def test_server_list(self):
+        s = self.build_server_object()
+        result = s.list_all()
+        assert "id" in result[0]
+
+    def test_server_list_inactive_test1(self):
+        states = ["deactivated", "active"]
+        s = self.build_server_object()
+        result = s.list_all(state=states)
+        assert "id" in result[0]
+
+    def test_server_list_inactive_test2(self):
+        states = ["deactivated"]
+        s = self.build_server_object()
+        result = s.list_all(state=states)
+        assert "id" in result[0]
+
+    def test_server_list_inactive_test3(self):
+        states = ["missing", "deactivated"]
+        s = self.build_server_object()
+        result = s.list_all(state=states)
+        assert "id" in result[0]
+
+    def test_server_list_inactive(self):
+        states = ["deactivated", "missing"]
+        s = self.build_server_object()
+        result = s.list_all(state=states)
+        assert "id" in result[0]
+
+    def test_validate_server_search_criteria(self):
+        search_criteria = {"state": ["deactivated", "missing"],
+                           "cve": ["CVE-2014-0001"],
+                           "kb": "kb22421121",
+                           "missing_kb": "kb990099"}
+        s = self.build_server_object()
+        success = s.validate_server_search_criteria(search_criteria)
+        assert success
+
+    def test_validate_server_search_criteria_fail(self):
+        search_criteria = {"state": ["deactivated", "missing"],
+                           "cve": ["KB-2014-0001"],
+                           "kb": "kb22421121",
+                           "missing_kb": "kb990099"}
+        s = self.build_server_object()
+        valid = s.validate_server_search_criteria(search_criteria)
+        assert valid is False

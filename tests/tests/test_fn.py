@@ -67,6 +67,12 @@ class TestFn:
         assert fn.verify_pages("cats") is not None
         assert fn.verify_pages(101) is not None
 
+    def test_sanitize_url_params(self):
+        params = {"states": ["deactivated", "missing"]}
+        desired_params = {"states": "deactivated,missing"}
+        actual_result = fn.sanitize_url_params(params)
+        assert desired_params == actual_result
+
     def test_determine_policy_metadata(self):
         test_csm_lin = {"file": str(policy_path +
                         "/cis-benchmark-for-centos-7-v1.policy.json"),
