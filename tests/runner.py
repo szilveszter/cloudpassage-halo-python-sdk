@@ -26,5 +26,5 @@ os.environ['RO_HALO_SECRET_KEY'] = env['ro_secret_key']
 #              '--junit-xml', 'public/reports/%s.xml' % env_name])
 
 pytest.main(['-x', 'tests/',
-			 '-s',
+			 '-s', '--cov=cloudpassage',
              '--junit-xml', 'public/reports/%s.xml' % env_name])
