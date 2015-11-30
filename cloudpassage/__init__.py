@@ -6,6 +6,7 @@ from scan import Scan
 from firewall_policy import FirewallPolicy
 from configuration_policy import ConfigurationPolicy
 from fim_policy import FimPolicy
+from fim_policy import FimBaseline
 from lids_policy import LidsPolicy
 from server_group import ServerGroup
 from system_announcement import SystemAnnouncement
