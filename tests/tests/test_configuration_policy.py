@@ -1,10 +1,9 @@
+import cloudpassage
 import pytest
-import imp
 import json
 import pep8
 import os
 
-module_path = os.path.abspath('../')
 policy_file = os.path.abspath('./policies/' +
                               'cis-benchmark-for-centos-7-v1.policy.json')
 
@@ -18,16 +17,11 @@ api_hostname = os.environ.get('HALO_API_HOSTNAME')
 proxy_host = '190.109.164.81'
 proxy_port = '1080'
 
-file, filename, data = imp.find_module('cloudpassage', [module_path])
-halo = imp.load_module('halo', file, filename, data)
-configuration_policy = imp.load_module('configuration_policy', file,
-                                       filename, data)
-
 
 class TestConfigurationPolicy:
     def build_config_policy_object(self):
-        session = halo.HaloSession(key_id, secret_key)
-        return_obj = configuration_policy.ConfigurationPolicy(session)
+        session = cloudpassage.HaloSession(key_id, secret_key)
+        return_obj = cloudpassage.ConfigurationPolicy(session)
         return(return_obj)
 
     def test_pep8(self):
@@ -36,8 +30,8 @@ class TestConfigurationPolicy:
         assert result.total_errors == 0
 
     def test_instantiation(self):
-        session = halo.HaloSession(key_id, secret_key)
-        assert configuration_policy.ConfigurationPolicy(session)
+        session = cloudpassage.HaloSession(key_id, secret_key)
+        assert cloudpassage.ConfigurationPolicy(session)
 
     def test_list_all(self):
         request = self.build_config_policy_object()
@@ -62,7 +56,7 @@ class TestConfigurationPolicy:
         request.delete(policy_id)
         try:
             request.describe(policy_id)
-        except request.CloudPassageResourceExistence:
+        except cloudpassage.CloudPassageResourceExistence:
             deleted = True
         assert deleted
 
@@ -81,6 +75,6 @@ class TestConfigurationPolicy:
         request.delete(policy_id)
         try:
             request.describe(policy_id)
-        except request.CloudPassageResourceExistence:
+        except cloudpassage.CloudPassageResourceExistence:
             deleted = True
         assert deleted

@@ -55,13 +55,10 @@ class Scan:
             scan_type_normalized = self.supported_scans[scan_type]
             request_body = {"scan": {"module": scan_type_normalized}}
             endpoint = "/v1/servers/%s/scans" % server_id
-            try:
-                request = HttpHelper(self.session)
-                response = request.post(endpoint, request_body)
-                command_info = response["command"]
-                return(command_info)
-            except CloudPassageResourceExistence as e:
-                raise CloudPassageResourceExistence(e.msg)
+            request = HttpHelper(self.session)
+            response = request.post(endpoint, request_body)
+            command_info = response["command"]
+            return(command_info)
 
     def last_scan_results(self, server_id, scan_type):
         """Get the results of scan_type performed on server_id.
@@ -81,12 +78,9 @@ class Scan:
         else:
             scan_type_normalized = self.supported_scans[scan_type]
             endpoint = "/v1/servers/%s/%s" % (server_id, scan_type_normalized)
-            try:
-                request = HttpHelper(self.session)
-                response = request.get(endpoint)
-                return(response)
-            except CloudPassageResourceExistence:
-                raise CloudPassageResourceExistence(endpoint)
+            request = HttpHelper(self.session)
+            response = request.get(endpoint)
+            return(response)
 
     def scan_history(self, **kwargs):
         """Get a list of historical scans, pertinent to the criteria

@@ -1,10 +1,10 @@
 import fn
 from http_helper import HttpHelper
+from exceptions import CloudPassageValidation
+from exceptions import CloudPassageResourceExistence
 
 
 class ConfigurationPolicy:
-    from exceptions import CloudPassageValidation
-    from exceptions import CloudPassageResourceExistence
 
     def __init__(self, session):
         self.session = session

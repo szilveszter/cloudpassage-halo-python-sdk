@@ -1,11 +1,9 @@
 import cloudpassage
 import pytest
 import pep8
-import imp
 import json
 import os
 
-# module_path = os.path.abspath('../')
 
 file_location = os.path.abspath('../cloudpassage/fim_policy.py')
 this_file = os.path.abspath(__file__)
@@ -18,10 +16,6 @@ bad_key = "abad53c"
 api_hostname = os.environ.get('HALO_API_HOSTNAME')
 proxy_host = '190.109.164.81'
 proxy_port = '1080'
-
-# file, filename, data = imp.find_module('cloudpassage', [module_path])
-# halo = imp.load_module('halo', file, filename, data)
-# fim_policy = imp.load_module('fim_policy', file, filename, data)
 
 
 class TestFimPolicy:

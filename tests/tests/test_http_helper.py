@@ -1,21 +1,16 @@
 import os
-import imp
 import pep8
 import pytest
 import json
 import datetime
 import hashlib
+import cloudpassage
 
 
-module_path = os.path.abspath('../')
 policy_path = os.path.abspath('./policies/')
 
 file_location = os.path.abspath('../cloudpassage/http_helper.py')
 this_file = os.path.abspath(__file__)
-
-file, filename, data = imp.find_module('cloudpassage', [module_path])
-halo = imp.load_module('halo', file, filename, data)
-http_helper = imp.load_module('http_helper', file, filename, data)
 
 key_id = os.environ.get('HALO_KEY_ID')
 secret_key = os.environ.get('HALO_SECRET_KEY')
@@ -41,20 +36,20 @@ class TestGet:
     def test_get_404(self):
         endpoint = "/v1/barf"
         pathfailed = False
-        session = halo.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key)
         session.authenticate_client()
-        req = http_helper.HttpHelper(session)
+        req = cloudpassage.HttpHelper(session)
         try:
             json_response = req.get(endpoint)
-        except req.CloudPassageResourceExistence:
+        except cloudpassage.CloudPassageResourceExistence:
             pathfailed = True
         assert pathfailed
 
     def test_get_rekey(self):
         endpoint = "/v1/servers"
-        session = halo.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key)
         session.auth_token = "abc123"
-        req = http_helper.HttpHelper(session)
+        req = cloudpassage.HttpHelper(session)
         json_response = req.get(endpoint)
         assert "servers" in json_response
 
@@ -65,12 +60,12 @@ class TestGetPaginated:
         key = "barfs"
         pages = 5
         pathfailed = False
-        session = halo.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key)
         session.authenticate_client()
-        req = http_helper.HttpHelper(session)
+        req = cloudpassage.HttpHelper(session)
         try:
             json_response = req.get_paginated(endpoint, key, pages)
-        except req.CloudPassageResourceExistence:
+        except cloudpassage.CloudPassageResourceExistence:
             pathfailed = True
         assert pathfailed
 
@@ -78,9 +73,9 @@ class TestGetPaginated:
         endpoint = "/v1/events"
         key = "events"
         pages = 5
-        session = halo.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key)
         session.auth_token = "abc123"
-        req = http_helper.HttpHelper(session)
+        req = cloudpassage.HttpHelper(session)
         json_response = req.get_paginated(endpoint, key, pages)
         assert "id" in json_response[0]
 
@@ -88,9 +83,9 @@ class TestGetPaginated:
         endpoint = "/v1/events"
         key = "events"
         pages = 5
-        session = halo.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key)
         session.auth_token = "abc123"
-        req = http_helper.HttpHelper(session)
+        req = cloudpassage.HttpHelper(session)
         json_response = req.get_paginated(endpoint, key, pages)
         assert "id" in json_response[0]
 
@@ -99,12 +94,12 @@ class TestGetPaginated:
         endpoint = "/v1/events"
         key = "events"
         pages = 101
-        session = halo.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key)
         session.auth_token = "abc123"
-        req = http_helper.HttpHelper(session)
+        req = cloudpassage.HttpHelper(session)
         try:
             json_response = req.get_paginated(endpoint, key, pages)
-        except req.CloudPassageValidation:
+        except cloudpassage.CloudPassageValidation:
             rejected = True
         assert rejected
 
@@ -113,12 +108,12 @@ class TestGetPaginated:
         endpoint = "/v1/events"
         key = "badkey"
         pages = 2
-        session = halo.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key)
         session.auth_token = "abc123"
-        req = http_helper.HttpHelper(session)
+        req = cloudpassage.HttpHelper(session)
         try:
             json_response = req.get_paginated(endpoint, key, pages)
-        except req.CloudPassageValidation:
+        except cloudpassage.CloudPassageValidation:
             rejected = True
         assert rejected
 
@@ -128,12 +123,12 @@ class TestPost:
         endpoint = "/v1/barf"
         post_data = {"whatevs": "becausenobodycares"}
         pathfailed = False
-        session = halo.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key)
         session.authenticate_client()
-        req = http_helper.HttpHelper(session)
+        req = cloudpassage.HttpHelper(session)
         try:
             json_response = req.post(endpoint, post_data)
-        except req.CloudPassageResourceExistence:
+        except cloudpassage.CloudPassageResourceExistence:
             pathfailed = True
         assert pathfailed
 
@@ -141,12 +136,12 @@ class TestPost:
         rejected = False
         endpoint = "/v1/groups"
         post_data = {"whatevs": "becausenobodycares"}
-        session = halo.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key)
         session.authenticate_client()
-        req = http_helper.HttpHelper(session)
+        req = cloudpassage.HttpHelper(session)
         try:
             json_response = req.post(endpoint, post_data)
-        except req.CloudPassageValidation:
+        except cloudpassage.CloudPassageValidation:
             rejected = True
         assert rejected
 
@@ -156,12 +151,12 @@ class TestPut:
         endpoint = "/v1/barf"
         put_data = {"whatevs": "becausenobodycares"}
         pathfailed = False
-        session = halo.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key)
         session.authenticate_client()
-        req = http_helper.HttpHelper(session)
+        req = cloudpassage.HttpHelper(session)
         try:
             json_response = req.put(endpoint, put_data)
-        except req.CloudPassageResourceExistence:
+        except cloudpassage.CloudPassageResourceExistence:
             pathfailed = True
         assert pathfailed
 
@@ -169,12 +164,12 @@ class TestPut:
         rejected = False
         endpoint = "/v1/groups"
         put_data = {"whatevs": "becausenobodycares"}
-        session = halo.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key)
         session.authenticate_client()
-        req = http_helper.HttpHelper(session)
+        req = cloudpassage.HttpHelper(session)
         try:
             json_response = req.put(endpoint, put_data)
-        except req.CloudPassageResourceExistence:
+        except cloudpassage.CloudPassageResourceExistence:
             rejected = True
         assert rejected
 
@@ -183,23 +178,23 @@ class TestDelete:
     def test_delete_404(self):
         endpoint = "/v1/barf"
         pathfailed = False
-        session = halo.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key)
         session.authenticate_client()
-        req = http_helper.HttpHelper(session)
+        req = cloudpassage.HttpHelper(session)
         try:
             json_response = req.delete(endpoint)
-        except req.CloudPassageResourceExistence:
+        except cloudpassage.CloudPassageResourceExistence:
             pathfailed = True
         assert pathfailed
 
     def test_delete_rekey(self):
         delfailed = False
         endpoint = "/v1/servers/123455432"
-        session = halo.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key)
         session.auth_token = "abc123"
-        req = http_helper.HttpHelper(session)
+        req = cloudpassage.HttpHelper(session)
         try:
             json_response = req.delete(endpoint)
-        except req.CloudPassageResourceExistence:
+        except cloudpassage.CloudPassageResourceExistence:
             delfailed = True
         assert delfailed

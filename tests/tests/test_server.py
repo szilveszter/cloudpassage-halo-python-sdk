@@ -1,10 +1,9 @@
+import cloudpassage
 import pytest
 import pep8
-import imp
 import json
 import os
 
-module_path = os.path.abspath('../')
 
 file_location = os.path.abspath('../cloudpassage/server.py')
 this_file = os.path.abspath(__file__)
@@ -16,22 +15,16 @@ api_hostname = os.environ.get('HALO_API_HOSTNAME')
 proxy_host = '190.109.164.81'
 proxy_port = '1080'
 
-file, filename, data = imp.find_module('cloudpassage', [module_path])
-halo = imp.load_module('halo', file, filename, data)
-server = imp.load_module('server', file, filename, data)
-server_group = imp.load_module('server_group', file, filename, data)
-cp = imp.load_module('cloudpassage', file, filename, data)
-
 
 class TestServer:
     def build_server_object(self):
-        session = halo.HaloSession(key_id, secret_key)
-        server_object = server.Server(session)
+        session = cloudpassage.HaloSession(key_id, secret_key)
+        server_object = cloudpassage.Server(session)
         return(server_object)
 
     def build_server_group_object(self):
-        session = halo.HaloSession(key_id, secret_key)
-        server_group_object = server_group.ServerGroup(session)
+        session = cloudpassage.HaloSession(key_id, secret_key)
+        server_group_object = cloudpassage.ServerGroup(session)
         return(server_group_object)
 
     def test_pep8(self):
@@ -40,8 +33,8 @@ class TestServer:
         assert result.total_errors == 0
 
     def test_instantiation(self):
-        session = halo.HaloSession(key_id, secret_key)
-        assert server.Server(session)
+        session = cloudpassage.HaloSession(key_id, secret_key)
+        assert cloudpassage.Server(session)
 
     def test_get_server_details(self):
         s = self.build_server_object()
@@ -62,7 +55,7 @@ class TestServer:
         bad_server_id = "123456789"
         try:
             request.describe(bad_server_id)
-        except request.CloudPassageResourceExistence:
+        except cloudpassage.CloudPassageResourceExistence:
             rejected = True
         assert rejected
 
@@ -72,7 +65,7 @@ class TestServer:
         server_id = "12345"
         try:
             result = request.retire(server_id)
-        except server.CloudPassageResourceExistence:
+        except cloudpassage.CloudPassageResourceExistence:
             rejected = True
         assert rejected
 
@@ -83,7 +76,7 @@ class TestServer:
         command_id = "56789"
         try:
             result = request.command_details(server_id, command_id)
-        except server.CloudPassageResourceExistence:
+        except cloudpassage.CloudPassageResourceExistence:
             rejected = True
         assert rejected
 

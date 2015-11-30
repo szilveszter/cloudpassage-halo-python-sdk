@@ -1,6 +1,6 @@
+import cloudpassage
 import pytest
 import pep8
-import imp
 import json
 import os
 
@@ -16,13 +16,6 @@ api_hostname = os.environ.get('HALO_API_HOSTNAME')
 proxy_host = '190.109.164.81'
 proxy_port = '1080'
 
-file, filename, data = imp.find_module('cloudpassage', [module_path])
-cp = imp.load_module('cloudpassage', file, filename, data)
-halo = imp.load_module('halo', file, filename, data)
-scan = imp.load_module('scan', file, filename, data)
-server_group = imp.load_module('server_group', file, filename, data)
-server = imp.load_module('server', file, filename, data)
-
 
 class TestScan:
     def get_fim_scan_with_findings(self):
@@ -37,18 +30,18 @@ class TestScan:
         return None
 
     def build_scan_object(self):
-        session = halo.HaloSession(key_id, secret_key)
-        return_obj = scan.Scan(session)
+        session = cloudpassage.HaloSession(key_id, secret_key)
+        return_obj = cloudpassage.Scan(session)
         return(return_obj)
 
     def build_server_group_object(self):
-        session = halo.HaloSession(key_id, secret_key)
-        return_obj = server_group.ServerGroup(session)
+        session = cloudpassage.HaloSession(key_id, secret_key)
+        return_obj = cloudpassage.ServerGroup(session)
         return(return_obj)
 
     def build_server_object(self):
-        session = halo.HaloSession(key_id, secret_key)
-        return_obj = server.Server(session)
+        session = cloudpassage.HaloSession(key_id, secret_key)
+        return_obj = cloudpassage.Server(session)
         return(return_obj)
 
     def test_pep8(self):
@@ -115,39 +108,39 @@ class TestScan:
         return(target_id)
 
     def test_instantiation(self):
-        session = halo.HaloSession(key_id, secret_key)
-        assert scan.Scan(session)
+        session = cloudpassage.HaloSession(key_id, secret_key)
+        assert cloudpassage.Scan(session)
 
     def test_bad_scan_type(self):
         rejected = False
-        session = halo.HaloSession(key_id, secret_key)
-        scanner = scan.Scan(session)
-        s_group = server_group.ServerGroup(session)
+        session = cloudpassage.HaloSession(key_id, secret_key)
+        scanner = cloudpassage.Scan(session)
+        s_group = cloudpassage.ServerGroup(session)
         scan_type = "barfola"
         server_id = s_group.list_all()[0]["id"]
         try:
             command = scanner.initiate_scan(server_id, scan_type)
-        except scan.CloudPassageValidation:
+        except cloudpassage.CloudPassageValidation:
             rejected = True
         assert rejected
 
     def test_bad_server_id(self):
         rejected = False
-        session = halo.HaloSession(key_id, secret_key)
-        scanner = scan.Scan(session)
+        session = cloudpassage.HaloSession(key_id, secret_key)
+        scanner = cloudpassage.Scan(session)
         scan_type = "svm"
         server_id = "ABC123"
         try:
             command = scanner.initiate_scan(server_id, scan_type)
-        except scan.CloudPassageResourceExistence:
+        except cloudpassage.CloudPassageResourceExistence:
             rejected = True
         assert rejected
 
     def test_scan_type_valid(self):
         valid_types = ["svm", "sva", "csm", "sca", "fim", "sam", "sv"]
         invalid_types = ["death_stare", "lids"]
-        session = halo.HaloSession(key_id, secret_key)
-        scanner = scan.Scan(session)
+        session = cloudpassage.HaloSession(key_id, secret_key)
+        scanner = cloudpassage.Scan(session)
         for v in valid_types:
             assert scanner.scan_type_supported(v)
         for i in invalid_types:

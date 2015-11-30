@@ -1,4 +1,5 @@
 from http_helper import HttpHelper
+from exceptions import CloudPassageValidation
 import fn
 
 

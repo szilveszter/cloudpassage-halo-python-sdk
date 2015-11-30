@@ -1,7 +1,6 @@
 import cloudpassage
 import pytest
 import pep8
-import imp
 import json
 import os
 

@@ -1,10 +1,9 @@
 import fn
 from http_helper import HttpHelper
+from exceptions import CloudPassageValidation
 
 
 class LidsPolicy:
-    from exceptions import CloudPassageValidation
-    from exceptions import CloudPassageResourceExistence
 
     def __init__(self, session):
         self.session = session
@@ -71,7 +70,7 @@ class LidsPolicy:
         policy_type = policy_metadata["policy_type"]
         if policy_type is not "LIDS":
             error_message = "Policy type is not LIDS"
-            raise self.CloudPassageValidation(error_message)
+            raise CloudPassageValidation(error_message)
         else:
             lids_policy_id = request_body["lids_policy"]["id"]
             endpoint = "/v1/lids_policies/%s" % lids_policy_id

@@ -1,4 +1,6 @@
 from http_helper import HttpHelper
+from exceptions import CloudPassageValidation
+from exceptions import CloudPassageResourceExistence
 import fn
 
 
@@ -69,7 +71,7 @@ class FimPolicy:
         policy_type = policy_metadata["policy_type"]
         if policy_type is not "FIM":
             error_message = "Policy type is not FIM"
-            raise self.CloudPassageValidation(error_message)
+            raise CloudPassageValidation(error_message)
         else:
             fim_policy_id = request_body["fim_policy"]["id"]
             endpoint = "/v1/fim_policies/%s" % fim_policy_id
