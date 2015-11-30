@@ -7,15 +7,15 @@ def read(fname):
 setup(
         name = "cloudpassage",
         version = "1.0a1",
-        author = "Ash Wilson",
-        author_email = "awilson@cloudpassage.com",
+        author = "CloudPassage",
+        author_email = "toolbox@cloudpassage.com",
         description = "Python SDK for CloudPassage Halo API",
         license = "BSD",
         keywords = "cloudpassage halo api sdk",
         url = "http://github.com/cloudpassage/cloudpassage-halo-python-sdk",
-        find_packages = (exclude=[ "tests" ]),
+        packages = ["cloudpassage"],
+        install_requires = ["requests"],
         long_description = read("README.md"),
-        test_suite = "cloudpassage.tests.test_all"
         classifiers = [
             "Development Status :: 4 - Beta",
             "Intended Audience :: Developers",
