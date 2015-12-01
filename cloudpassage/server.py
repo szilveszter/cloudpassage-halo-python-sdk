@@ -1,12 +1,12 @@
 from http_helper import HttpHelper
 import fn
 import re
+from exceptions import CloudPassageAuthorization
+from exceptions import CloudPassageValidation
+from exceptions import CloudPassageResourceExistence
 
 
 class Server:
-    from exceptions import CloudPassageAuthorization
-    from exceptions import CloudPassageValidation
-    from exceptions import CloudPassageResourceExistence
 
     def __init__(self, session):
         self.session = session
@@ -48,7 +48,7 @@ class Server:
         criteria_valid = self.validate_server_search_criteria(kwargs)
         if criteria_valid is False:
             error_text = "Unsupported arguments in " + str(kwargs)
-            raise self.CloudPassageValidation(error_text)
+            raise CloudPassageValidation(error_text)
         for param in self.supported_search_fields:
             if param in kwargs:
                 request_params_raw[param] = kwargs[param]
@@ -95,12 +95,9 @@ class Server:
 
         endpoint = "/v1/servers/%s" % server_id
         request = HttpHelper(self.session)
-        try:
-            response = request.get(endpoint)
-            server_details = response["server"]
-            return(server_details)
-        except request.CloudPassageResourceExistence as e:
-            raise self.CloudPassageResourceExistence(e.msg)
+        response = request.get(endpoint)
+        server_details = response["server"]
+        return(server_details)
 
     def retire(self, server_id):
         """This method retires a server"""
@@ -109,14 +106,8 @@ class Server:
         body = {"server":
                 {"retire": True}}
         request = HttpHelper(self.session)
-        try:
-            response = request.put(endpoint, body)
-        except request.CloudPassageAuthorization as e:
-            raise self.CloudPassageAuthorization(e.msg)
-        except request.CloudPassageValidation as e:
-            raise self.CloudPassageValidation(e.msg)
-        except request.CloudPassageResourceExistence:
-            raise self.CloudPassageResourceExistence(endpoint)
+        request.put(endpoint, body)
+        # Exceptions fire deeper if this fails.  Otherwise, return True.
         return True
 
     def command_details(self, server_id, command_id):
@@ -141,12 +132,9 @@ class Server:
 
         endpoint = "/v1/servers/%s/commands/%s" % (server_id, command_id)
         request = HttpHelper(self.session)
-        try:
-            response = request.get(endpoint)
-            command_status = response["command"]
-            return(command_status)
-        except request.CloudPassageResourceExistence as e:
-            raise self.CloudPassageResourceExistence(endpoint)
+        response = request.get(endpoint)
+        command_status = response["command"]
+        return(command_status)
 
     def validate_server_search_criteria(self, criteria):
         arguments_valid = True

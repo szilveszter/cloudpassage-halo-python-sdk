@@ -1,6 +1,6 @@
+import cloudpassage
 import pytest
 import pep8
-import imp
 import json
 import os
 
@@ -8,11 +8,7 @@ module_path = os.path.abspath('../cloudpassage')
 policy_path = os.path.abspath('./policies')
 file_location = os.path.abspath('../cloudpassage/fn.py')
 this_file = os.path.abspath(__file__)
-
-file, filename, data = imp.find_module('exceptions', [module_path])
-exceptions = imp.load_module('exceptions', file, filename, data)
-file, filename, data = imp.find_module('fn', [module_path])
-fn = imp.load_module('fn', file, filename, data)
+fn = cloudpassage.fn
 
 
 class TestFn:
@@ -40,12 +36,12 @@ class TestFn:
                     201: None,
                     202: None,
                     204: None,
-                    400: exceptions.CloudPassageValidation(resp_text),
-                    401: exceptions.CloudPassageAuthentication(resp_text),
-                    403: exceptions.CloudPassageAuthorization(resp_text),
-                    404: exceptions.CloudPassageResourceExistence(resp_text),
-                    422: exceptions.CloudPassageValidation(resp_text),
-                    999999: exceptions.CloudPassageGeneral(resp_text)}
+                    400: cloudpassage.CloudPassageValidation(resp_text),
+                    401: cloudpassage.CloudPassageAuthentication(resp_text),
+                    403: cloudpassage.CloudPassageAuthorization(resp_text),
+                    404: cloudpassage.CloudPassageResourceExistence(resp_text),
+                    422: cloudpassage.CloudPassageValidation(resp_text),
+                    999999: cloudpassage.CloudPassageGeneral(resp_text)}
         code_succ = {200: True,
                      201: True,
                      202: True,

@@ -1,20 +1,15 @@
 import os
 import pep8
-import imp
 import pytest
 import json
 import datetime
 import hashlib
+import cloudpassage
 
-
-module_path = os.path.abspath('../')
 policy_path = os.path.abspath('./policies/')
 
 file_location = os.path.abspath('../cloudpassage/halo.py')
 this_file = os.path.abspath(__file__)
-
-file, filename, data = imp.find_module('cloudpassage', [module_path])
-halo = imp.load_module('halo', file, filename, data)
 
 key_id = os.environ.get('HALO_KEY_ID')
 secret_key = os.environ.get('HALO_SECRET_KEY')
@@ -39,49 +34,50 @@ class TestHaloSession:
         assert result.total_errors == 0
 
     def test_halosession_instantiation(self):
-        session = halo.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key)
         assert session
 
     def test_halosession_useragent_override(self):
         ua_override = content_prefix
-        session = halo.HaloSession(key_id, secret_key, user_agent=ua_override)
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           user_agent=ua_override)
         session.authenticate_client()
         header = session.build_header()
         assert session.user_agent == ua_override
         assert header["User-Agent"] == ua_override
 
     def test_halosession_build_endpoint_prefix(self):
-        session = halo.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key)
         default_good = "https://api.cloudpassage.com:443"
         fn_out = session.build_endpoint_prefix()
         assert fn_out == default_good
 
     def test_halosession_build_header(self):
-        session = halo.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key)
         session.authenticate_client()
         header = session.build_header()
         assert "Authorization" in header
         assert header["Content-Type"] == "application/json"
 
     def test_halosession_with_proxy(self):
-        session = halo.HaloSession(key_id, secret_key,
-                                   proxy_host=proxy_host,
-                                   proxy_port=proxy_port)
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           proxy_host=proxy_host,
+                                           proxy_port=proxy_port)
         assert ((session.proxy_host == proxy_host) and
                 (session.proxy_port == proxy_port))
 
     def test_halosession_authentication(self):
-        session = halo.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key)
         session.authenticate_client()
         assert ((session.auth_token is not None) and
                 (session.auth_scope is not None))
 
     def test_halosession_throws_auth_exception(self):
-        session = halo.HaloSession(bad_key, secret_key)
+        session = cloudpassage.HaloSession(bad_key, secret_key)
         authfailed = False
         try:
             session.authenticate_client()
-        except halo.CloudPassageAuthentication:
+        except cloudpassage.CloudPassageAuthentication:
             authfailed = True
         assert authfailed
 """

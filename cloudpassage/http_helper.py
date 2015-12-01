@@ -2,16 +2,16 @@ import fn
 import json
 import requests
 import urlparse
+from exceptions import CloudPassageAuthentication
+from exceptions import CloudPassageAuthorization
+from exceptions import CloudPassageValidation
+from exceptions import CloudPassageCollision
+from exceptions import CloudPassageInternalError
+from exceptions import CloudPassageResourceExistence
+from exceptions import CloudPassageGeneral
 
 
 class HttpHelper:
-    from exceptions import CloudPassageAuthentication
-    from exceptions import CloudPassageAuthorization
-    from exceptions import CloudPassageValidation
-    from exceptions import CloudPassageCollision
-    from exceptions import CloudPassageInternalError
-    from exceptions import CloudPassageResourceExistence
-    from exceptions import CloudPassageGeneral
 
     def __init__(self, connection):
         self.connection = connection
@@ -107,7 +107,7 @@ class HttpHelper:
         if key not in page:
             fail_msg = ("Requested key %s not found in page"
                         % key)
-            raise self.CloudPassageValidation(fail_msg)
+            raise CloudPassageValidation(fail_msg)
         for k in page[key]:
             response_accumulator.append(k)
         if "pagination" in page:

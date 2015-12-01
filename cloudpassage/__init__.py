@@ -1,4 +1,3 @@
-from halo import HALO
 from halo import HaloSession
 from http_helper import HttpHelper
 from server import Server
