@@ -3,6 +3,10 @@ from http_helper import HttpHelper
 from server import Server
 from scan import Scan
 from firewall_policy import FirewallPolicy
+from firewall_policy import FirewallRule
+from firewall_policy import FirewallZone
+from firewall_policy import FirewallService
+from firewall_policy import FirewallInterface
 from configuration_policy import ConfigurationPolicy
 from fim_policy import FimPolicy
 from fim_policy import FimBaseline
