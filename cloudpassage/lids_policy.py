@@ -1,13 +1,10 @@
 import fn
+from policy import Policy
 from http_helper import HttpHelper
 from exceptions import CloudPassageValidation
 
 
-class LidsPolicy:
-
-    def __init__(self, session):
-        self.session = session
-        return None
+class LidsPolicy(Policy):
 
     def list_all(self):
         """Returns a list of all LIDS policies"""
