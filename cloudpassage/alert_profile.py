@@ -1,8 +1,8 @@
 from policy import Policy
 
 
-class SpecialEventsPolicy(Policy):
-    """Initializing the SpecialEventsPolicy class:
+class AlertProfile(Policy):
+    """Initializing the AlertProfile class:
 
     Args:
         session (:class:`cloudpassage.HaloSession`): \
@@ -12,14 +12,14 @@ class SpecialEventsPolicy(Policy):
 
     """
 
-    policy = "special_events_policy"
-    policies = "special_events_policies"
+    policy = "alert_profile"
+    policies = "alert_profiles"
 
     def endpoint(self):
-        return("/v1/%s" % SpecialEventsPolicy.policies)
+        return("/v1/%s" % AlertProfile.policies)
 
     def pagination_key(self):
-        return(SpecialEventsPolicy.policies)
+        return(AlertProfile.policies)
 
     def create(self, unimportant):
         raise NotImplementedError

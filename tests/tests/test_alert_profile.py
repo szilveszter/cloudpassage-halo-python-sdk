@@ -11,52 +11,51 @@ proxy_host = '190.109.164.81'
 proxy_port = '1080'
 
 
-class TestSpecialEventsPolicy:
-    def create_special_events_policy_obj(self):
+class TestAlertProfiles:
+    def create_alert_profile_obj(self):
         session = cloudpassage.HaloSession(key_id, secret_key)
-        return cloudpassage.SpecialEventsPolicy(session)
+        return cloudpassage.AlertProfile(session)
 
     def test_instantiation(self):
-        assert self.create_special_events_policy_obj()
+        assert self.create_alert_profile_obj()
 
     def test_list_all(self):
-        session = cloudpassage.HaloSession(key_id, secret_key)
-        se_policy = cloudpassage.SpecialEventsPolicy(session)
-        se_policy_list = se_policy.list_all()
-        assert "id" in se_policy_list[0]
+        profile = self.create_alert_profile_obj()
+        profile_list = profile.list_all()
+        assert "id" in profile_list[0]
 
     def test_create(self):
         rejected = False
-        policy = self.create_special_events_policy_obj()
+        profile = self.create_alert_profile_obj()
         try:
-            policy.create("DoesNotEvenMatter")
+            profile.create("DoesNotEvenMatter")
         except NotImplementedError:
             rejected = True
         assert rejected
 
     def test_update(self):
         rejected = False
-        policy = self.create_special_events_policy_obj()
+        profile = self.create_alert_profile_obj()
         try:
-            policy.update("DoesNotEvenMatter")
+            profile.update("DoesNotEvenMatter")
         except NotImplementedError:
             rejected = True
         assert rejected
 
     def test_describe(self):
         rejected = False
-        policy = self.create_special_events_policy_obj()
+        profile = self.create_alert_profile_obj()
         try:
-            policy.describe("DoesNotEvenMatter")
+            profile.describe("DoesNotEvenMatter")
         except NotImplementedError:
             rejected = True
         assert rejected
 
     def test_delete(self):
         rejected = False
-        policy = self.create_special_events_policy_obj()
+        profile = self.create_alert_profile_obj()
         try:
-            policy.delete("DoesNotEvenMatter")
+            profile.delete("DoesNotEvenMatter")
         except NotImplementedError:
             rejected = True
         assert rejected

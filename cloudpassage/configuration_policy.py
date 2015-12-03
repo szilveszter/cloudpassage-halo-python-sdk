@@ -1,11 +1,16 @@
-import fn
 from policy import Policy
-from http_helper import HttpHelper
-from exceptions import CloudPassageValidation
-from exceptions import CloudPassageResourceExistence
 
 
 class ConfigurationPolicy(Policy):
+    """Initializing the ConfigurationPolicy class:
+
+    Args:
+        session (:class:`cloudpassage.HaloSession`): \
+        This will define how you interact \
+        with the Halo API, including proxy settings and API keys \
+        used for authentication.
+
+    """
 
     policy = "policy"
     policies = "policies"

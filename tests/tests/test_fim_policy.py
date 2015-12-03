@@ -1,12 +1,9 @@
 import cloudpassage
-import pytest
-import pep8
 import json
 import os
+import pytest
 
 
-file_location = os.path.abspath('../cloudpassage/fim_policy.py')
-this_file = os.path.abspath(__file__)
 policy_file = os.path.abspath('./policies/' +
                               'core-system-files-centos-v1.fim.json')
 
@@ -23,11 +20,6 @@ class TestFimPolicy:
         session = cloudpassage.HaloSession(key_id, secret_key)
         return_obj = cloudpassage.FimPolicy(session)
         return(return_obj)
-
-    def test_pep8(self):
-        pep8style = pep8.StyleGuide(quiet=True)
-        result = pep8style.check_files([file_location, this_file])
-        assert result.total_errors == 0
 
     def test_instantiation(self):
         session = cloudpassage.HaloSession(key_id, secret_key)
@@ -101,11 +93,6 @@ class TestFimBaseline:
                 break
         assert target_id is not None
         return target_id
-
-    def test_pep8(self):
-        pep8style = pep8.StyleGuide(quiet=True)
-        result = pep8style.check_files([file_location, this_file])
-        assert result.total_errors == 0
 
     def test_instantiation(self):
         session = cloudpassage.HaloSession(key_id, secret_key)

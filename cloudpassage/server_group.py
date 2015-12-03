@@ -1,11 +1,20 @@
-from http_helper import HttpHelper
-import urlparse
-import sanity
 import fn
+import sanity
+import urlparse
 from exceptions import CloudPassageValidation
+from http_helper import HttpHelper
 
 
 class ServerGroup:
+    """Initializing the ServerGroup class:
+
+    Args:
+        session (:class:`cloudpassage.HaloSession`): \
+        This will define how you interact \
+        with the Halo API, including proxy settings and API keys \
+        used for authentication.
+
+    """
 
     def __init__(self, session):
         self.session = session
@@ -31,7 +40,15 @@ class ServerGroup:
         return(groups)
 
     def list_members(self, group_id):
-        """Returns a list of all servers which are members of group_id"""
+        """Returns a list of all member servers of a group_id
+
+        Args:
+            group_id (str): ID of group_id
+
+        Returns:
+            list: List of dictionary objects describing member servers
+
+        """
 
         session = self.session
         endpoint = "/v1/groups/%s/servers" % group_id
@@ -41,24 +58,32 @@ class ServerGroup:
         return(servers)
 
     def create(self, group_name, **kwargs):
-        """Creates a ServerGroup.  Requires a group name, other
-        things via kwargs.
+        """Creates a ServerGroup.
 
-        Optional kwargs and expected daya types:
-        name                         -- unicode
-        firewall_policy_id           -- unicode
-                                     (deprecated- use linux_firewall_policy_id)
-        linux_firewall_policy_id     -- unicode
-        windows_firewall_policy_id   -- unicode
-        policy_ids                   -- list
-        windows_policy_ids           -- list
-        fim_policy_ids               -- list
-        linux_fim_policy_ids         -- list
-        windows_fim_policy_ids       -- list
-        lids_policy_ids              -- list
-        tag                          -- unicode
-        events_policy                -- unicode
-        alert_profiles               -- list
+        Args:
+            group_name (str): Name for the new group
+
+        Keyword Args:
+            firewall_policy_id (str): ID of firewall policy to be assigned to \
+            the group (deprecated- use linux_firewall_policy_id)
+            linux_firewall_policy_id (str): ID of linux firewall policy to \
+            associate with the new group
+            windows_firewall_policy_id (str): ID of Windows firewall policy \
+            to associate with the new group
+            policy_ids (list): List of Linux configuration policy IDs
+            windows_policy_ids (list): List of Windows configuration policy IDs
+            fim_policy_ids (list): List of Linux FIM policies
+            linux_fim_policy_ids (list): List of Linux FIM policies
+            windows_fim_policy_ids (list): List of Windows FIM policies
+            linux_lids_policy_ids (list): List of Linux LIDS policy IDs
+            windows_lids_policy_ids (list): List of Windows LIDS policy IDs
+            tag (str): Server group tag-used for auto-assignment of group.
+            server_events_policy (str): Special events policy IDs
+            alert_profiles (list): List of alert profile IDs
+
+        Returns:
+            dict: Dictionary object describing newly-created group.
+
         """
 
         session = self.session
@@ -74,9 +99,14 @@ class ServerGroup:
         return(response)
 
     def describe(self, group_id):
-        """Describe a ServerGroup, referenced by ID
+        """Describe a ServerGroup.  In detail.
 
-        Returns a dictionary object
+        Args:
+            group_id (str): ID of group
+
+        Returns:
+            dict: Dictionary object describing group.  In detail.
+
         """
 
         session = self.session
@@ -86,28 +116,35 @@ class ServerGroup:
         group = response["group"]
         return(group)
 
-    def update(self, groupId, **kwargs):
-        """Updates a ServerGroup.  Requires a group ID, other
-        things via kwargs.
+    def update(self, group_id, **kwargs):
+        """Updates a ServerGroup.
 
-        Optional kwargs and expected daya types:
-        name                         -- unicode
-        firewall_policy_id           -- unicode
-                                     (deprecated- use linux_firewall_policy_id)
-        linux_firewall_policy_id     -- unicode
-        windows_firewall_policy_id   -- unicode
-        policy_ids                   -- list
-        windows_policy_ids           -- list
-        fim_policy_ids               -- list
-        linux_fim_policy_ids         -- list
-        windows_fim_policy_ids       -- list
-        lids_policy_ids              -- list
-        tag                          -- unicode
-        events_policy                -- unicode
-        alert_profiles               -- list
+        Args:
+            group_id (str): ID of group to be altered
+
+        Keyword Args:
+            name (str): Override name for group
+            linux_firewall_policy_id (str): Override Linux firewall policy ID.
+            windows_firewall_policy_id (str): Override Windows firewall \
+            policy ID.
+            policy_ids (list): Override Linux configuration policies
+            windows_policy_ids (list): Override Windows firewall policies
+            linux_fim_policy_ids (list): Override Linux firewall policies
+            windows_fim_policy_ids (list): Override Windows FIM policies
+            lids_policy_ids (list): Override LIDS policy IDs
+            tag (str): Override server group tag
+            special_events_policy (str): Override server events policy.  Note\
+            the difference in naming from the \
+            :meth:`cloudpassage.ServerGroup.create()` \
+            method
+            alert_profiles (list): List of alert profiles
+
+        Returns:
+            True if successful, throws exception otherwise.
+
         """
 
-        endpoint = "/v1/groups/%s" % groupId
+        endpoint = "/v1/groups/%s" % group_id
         response = None
         groupData = {}
         try:

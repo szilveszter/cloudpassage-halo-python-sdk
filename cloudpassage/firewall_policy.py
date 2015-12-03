@@ -1,7 +1,5 @@
-from policy import Policy
 from http_helper import HttpHelper
-from exceptions import CloudPassageValidation
-import fn
+from policy import Policy
 
 
 class FirewallPolicy(Policy):
@@ -28,17 +26,17 @@ class FirewallPolicy(Policy):
 
 
 class FirewallRule:
+    """Initializing the FirewallRule class:
+
+    Args:
+        session (:class:`cloudpassage.HaloSession`): \
+        This will define how you interact \
+        with the Halo API, including proxy settings and API keys \
+        used for authentication.
+
+    """
 
     def __init__(self, session):
-        """Initializing the FirewallRule class.
-
-        Args:
-            session (HaloSession): This will define how you interact \
-            with the Halo API, including proxy settings and API keys \
-            used for authentication.
-
-        """
-
         self.session = session
         return None
 
@@ -184,6 +182,16 @@ class FirewallRule:
 
 
 class FirewallZone(Policy):
+    """Initializing the FirewallZone class:
+
+    Args:
+        session (:class:`cloudpassage.HaloSession`): \
+        This will define how you interact \
+        with the Halo API, including proxy settings and API keys \
+        used for authentication.
+
+    """
+
     policy = "firewall_zone"
     policies = "firewall_zones"
 
@@ -198,6 +206,16 @@ class FirewallZone(Policy):
 
 
 class FirewallService(Policy):
+    """Initializing the FirewallService class:
+
+    Args:
+        session (:class:`cloudpassage.HaloSession`): \
+        This will define how you interact \
+        with the Halo API, including proxy settings and API keys \
+        used for authentication.
+
+    """
+
     policy = "firewall_service"
     policies = "firewall_services"
 
@@ -212,6 +230,16 @@ class FirewallService(Policy):
 
 
 class FirewallInterface(Policy):
+    """Initializing the FirewallInterface class:
+
+    Args:
+        session (:class:`cloudpassage.HaloSession`): \
+        This will define how you interact \
+        with the Halo API, including proxy settings and API keys \
+        used for authentication.
+
+    """
+
     policy = "firewall_interface"
     policies = "firewall_interfaces"
 

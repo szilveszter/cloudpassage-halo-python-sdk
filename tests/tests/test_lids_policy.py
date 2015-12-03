@@ -1,14 +1,10 @@
 import cloudpassage
-import pytest
-import pep8
 import json
 import os
+import pytest
 
 policy_file = os.path.abspath('./policies/' +
                               'core-system-centos-v1-1.lids.json')
-
-file_location = os.path.abspath('../cloudpassage/lids_policy.py')
-this_file = os.path.abspath(__file__)
 
 key_id = os.environ.get('HALO_KEY_ID')
 secret_key = os.environ.get('HALO_SECRET_KEY')
@@ -23,11 +19,6 @@ class TestLidsPolicy:
         session = cloudpassage.HaloSession(key_id, secret_key)
         return_obj = cloudpassage.LidsPolicy(session)
         return(return_obj)
-
-    def test_pep8(self):
-        pep8style = pep8.StyleGuide(quiet=True)
-        result = pep8style.check_files([file_location, this_file])
-        assert result.total_errors == 0
 
     def test_instantiation(self):
         session = cloudpassage.HaloSession(key_id, secret_key)

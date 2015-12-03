@@ -1,10 +1,9 @@
-import os
-import pep8
-import pytest
-import json
+import cloudpassage
 import datetime
 import hashlib
-import cloudpassage
+import json
+import os
+import pytest
 
 
 policy_path = os.path.abspath('./policies/')
@@ -28,11 +27,6 @@ content_name = str(content_prefix +
 
 
 class TestGet:
-    def test_pep8(self):
-        pep8style = pep8.StyleGuide(quiet=True)
-        result = pep8style.check_files([file_location, this_file])
-        assert result.total_errors == 0
-
     def test_get_404(self):
         endpoint = "/v1/barf"
         pathfailed = False

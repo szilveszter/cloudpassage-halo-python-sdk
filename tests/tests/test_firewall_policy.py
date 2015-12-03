@@ -1,14 +1,9 @@
 import cloudpassage
-import pytest
-import pep8
 import json
 import os
+import pytest
 
 policy_file = os.path.abspath('./policies/firewall.json')
-
-file_location = os.path.abspath('../cloudpassage/firewall_policy.py')
-this_file = os.path.abspath(__file__)
-
 key_id = os.environ.get('HALO_KEY_ID')
 secret_key = os.environ.get('HALO_SECRET_KEY')
 bad_key = "abad53c"
@@ -60,10 +55,6 @@ def get_target_linux_firewall_policy():
 
 
 class TestFirewallPolicy:
-    def test_pep8(self):
-        pep8style = pep8.StyleGuide(quiet=True)
-        result = pep8style.check_files([file_location, this_file])
-        assert result.total_errors == 0
 
     def test_instantiation(self):
         session = cloudpassage.HaloSession(key_id, secret_key)

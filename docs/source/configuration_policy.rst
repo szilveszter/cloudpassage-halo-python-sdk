@@ -4,4 +4,4 @@ ConfigurationPolicy
 .. toctree::
 
 .. autoclass:: cloudpassage.ConfigurationPolicy
-   :members:
+   :inherited-members:
