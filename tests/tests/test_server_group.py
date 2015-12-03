@@ -1,11 +1,7 @@
 import cloudpassage
-import pytest
-import pep8
 import json
 import os
-
-file_location = os.path.abspath('../cloudpassage/server_group.py')
-this_file = os.path.abspath(__file__)
+import pytest
 
 key_id = os.environ.get('HALO_KEY_ID')
 secret_key = os.environ.get('HALO_SECRET_KEY')
@@ -18,11 +14,6 @@ proxy_port = '1080'
 
 
 class TestServerGroup:
-    def test_pep8(self):
-        pep8style = pep8.StyleGuide(quiet=True)
-        result = pep8style.check_files([file_location, this_file])
-        assert result.total_errors == 0
-
     def test_instantiation(self):
         session = cloudpassage.HaloSession(key_id, secret_key)
         assert cloudpassage.ServerGroup(session)

@@ -1,8 +1,16 @@
 from http_helper import HttpHelper
-import urlparse
 
 
 class SystemAnnouncement:
+    """Initializing the SystemAnnouncement class:
+
+    Args:
+        session (:class:`cloudpassage.HaloSession`): \
+        This will define how you interact \
+        with the Halo API, including proxy settings and API keys \
+        used for authentication.
+
+    """
     def __init__(self, session):
         self.session = session
         return None

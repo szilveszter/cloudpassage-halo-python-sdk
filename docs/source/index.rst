@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to cloudpassage's Python SDK documentation!
+Welcome to CloudPassage's Python SDK documentation!
 ===================================================
 
 Contents:
@@ -23,6 +23,7 @@ Contents:
    scan
    system_announcement
    special_events_policy
+   alert_profiles
    exceptions
 
 

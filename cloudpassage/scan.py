@@ -1,9 +1,17 @@
-from http_helper import HttpHelper
 from exceptions import CloudPassageValidation
-from exceptions import CloudPassageResourceExistence
+from http_helper import HttpHelper
 
 
 class Scan:
+    """Initializing the Scan class:
+
+    Args:
+        session (:class:`cloudpassage.HaloSession`): \
+        This will define how you interact \
+        with the Halo API, including proxy settings and API keys \
+        used for authentication.
+
+    """
 
     def __init__(self, session):
         self.session = session
@@ -31,21 +39,23 @@ class Scan:
     def initiate_scan(self, server_id, scan_type):
         """Initiate a scan on a specific server.
 
-        server_id    -- Server ID (not name)
-        scan_type    -- Scan type to initiate.
+        Args:
+            server_id (str): ID of server to be scanned
+            scan_type (str): Type of scan to be run.
 
-        Valid scan types:
-          sca  - Configuration scan
-          csm  - Configuration scan (same as sca)
-          svm  - Software vulnerability scan
-          sva  - Software vulnerability scan (same as svm)
-          sam  - Server access management scan
-          fim  - File integrity monitoring scan
-          sv   - Agent self-verifiation scan
+          Valid scan types:
+            sca  - Configuration scan
+            csm  - Configuration scan (same as sca)
+            svm  - Software vulnerability scan
+            sva  - Software vulnerability scan (same as svm)
+            sam  - Server access management scan
+            fim  - File integrity monitoring scan
+            sv   - Agent self-verifiation scan
 
-        Returns the metadata from the command issued,
-        in a dict.
-        Failure throws an exception.
+        Returns:
+            dict: Dictionary describing command created as a result of this \
+            call
+            Failure throws an exception.
         """
 
         if self.scan_type_supported(scan_type) is False:
@@ -63,6 +73,10 @@ class Scan:
     def last_scan_results(self, server_id, scan_type):
         """Get the results of scan_type performed on server_id.
 
+        Args:
+            server_id (str): ID of server
+            scan_type (str): Type of scan to filter results for
+
         Valid scan types:
           sca  - Configuration scan
           csm  - Configuration scan (same as sca)
@@ -70,6 +84,10 @@ class Scan:
           sva  - Software vulnerability scan (same as svm)
           sam  - Server access management scan
           fim  - File integrity monitoring scan
+
+        Returns:
+            dict: Dictionary object describing last scan results
+
         """
 
         if self.scan_history_supported(scan_type) is False:
@@ -83,14 +101,16 @@ class Scan:
             return(response)
 
     def scan_history(self, **kwargs):
-        """Get a list of historical scans, pertinent to the criteria
-        defined in kwargs, detailed below.
+        """Get a list of historical scans.
 
-        server_id  -- ID of server
-        module     -- sca, fim, svm, sam (accepts single value or list)
-        status     -- queued, pending, running, completed_clean,
-                      completed_with_errors, failed (accepts single value
-                      or list)
+        Args:
+            server_id (str): Id of server
+            module (str or list): sca, fim, svm, sam
+            status (str or list): queued, pending, running, completed_clean,
+            completed_with_errors, failed
+
+        Returns:
+            list: List of scan objects
         """
 
         max_pages = 20
@@ -116,7 +136,16 @@ class Scan:
         return(response)
 
     def findings(self, scan_id, findings_id):
-        """Get FIM findings details by scan and findings ID"""
+        """Get FIM findings details by scan and findings ID
+
+        Args:
+            scan_id (str): ID of scan_id
+            findings_id (str): ID of findings to retrieve
+
+        Returns:
+            dict: Dictionary object descrbing findings
+
+        """
 
         endpoint = "/v1/scans/%s/findings/%s" % (scan_id, findings_id)
         request = HttpHelper(self.session)
@@ -124,7 +153,15 @@ class Scan:
         return(response)
 
     def scan_details(self, scan_id):
-        """Get detailed scan information"""
+        """Get detailed scan information
+
+        Args:
+            scan_id (str): ID of scan
+
+        Returns:
+            dict: Dictionary object describing scan details
+
+        """
 
         endpoint = "/v1/scans/%s" % scan_id
         request = HttpHelper(self.session)

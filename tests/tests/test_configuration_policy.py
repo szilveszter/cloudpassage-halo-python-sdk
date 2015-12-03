@@ -1,14 +1,11 @@
 import cloudpassage
-import pytest
 import json
-import pep8
 import os
+import pytest
 
 policy_file = os.path.abspath('./policies/' +
                               'cis-benchmark-for-centos-7-v1.policy.json')
 
-file_location = os.path.abspath('../cloudpassage/configuration_policy.py')
-this_file = os.path.abspath(__file__)
 
 key_id = os.environ.get('HALO_KEY_ID')
 secret_key = os.environ.get('HALO_SECRET_KEY')
@@ -23,11 +20,6 @@ class TestConfigurationPolicy:
         session = cloudpassage.HaloSession(key_id, secret_key)
         return_obj = cloudpassage.ConfigurationPolicy(session)
         return(return_obj)
-
-    def test_pep8(self):
-        pep8style = pep8.StyleGuide(quiet=True)
-        result = pep8style.check_files([file_location, this_file])
-        assert result.total_errors == 0
 
     def test_instantiation(self):
         session = cloudpassage.HaloSession(key_id, secret_key)

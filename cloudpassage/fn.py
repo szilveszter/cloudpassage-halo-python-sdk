@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# Some basic data handling functions
 import json
 from exceptions import CloudPassageValidation
 from exceptions import CloudPassageInternalError

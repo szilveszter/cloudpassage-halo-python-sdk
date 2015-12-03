@@ -1,13 +1,9 @@
 import cloudpassage
-import pytest
-import pep8
 import json
 import os
+import pytest
 
 module_path = os.path.abspath('../')
-
-file_location = os.path.abspath('../cloudpassage/scan.py')
-this_file = os.path.abspath(__file__)
 
 key_id = os.environ.get('HALO_KEY_ID')
 secret_key = os.environ.get('HALO_SECRET_KEY')
@@ -43,11 +39,6 @@ class TestScan:
         session = cloudpassage.HaloSession(key_id, secret_key)
         return_obj = cloudpassage.Server(session)
         return(return_obj)
-
-    def test_pep8(self):
-        pep8style = pep8.StyleGuide(quiet=True)
-        result = pep8style.check_files([file_location, this_file])
-        assert result.total_errors == 0
 
     def get_svm_target(self):
         target_id = None

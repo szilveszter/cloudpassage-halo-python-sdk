@@ -1,5 +1,6 @@
-from http_helper import HttpHelper
 import fn
+from http_helper import HttpHelper
+
 
 class Policy:
 
@@ -8,7 +9,10 @@ class Policy:
         self.max_pages = 30
 
     def list_all(self):
-        """Returns a list of all policies of a given type
+        """Lists all policies of this type.
+
+        Returns:
+            list: List of policies (represented as dictionary-type objects)
 
         Note:
             This query is limited to 30 pages.

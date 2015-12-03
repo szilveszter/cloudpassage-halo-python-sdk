@@ -4,4 +4,4 @@ FimPolicy
 .. toctree::
 
 .. autoclass:: cloudpassage.FimPolicy
-   :members:
+   :inherited-members:

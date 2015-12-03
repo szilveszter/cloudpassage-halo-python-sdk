@@ -1,22 +1,14 @@
 import cloudpassage
-import pytest
-import pep8
 import json
 import os
+import pytest
 
 module_path = os.path.abspath('../cloudpassage')
 policy_path = os.path.abspath('./policies')
-file_location = os.path.abspath('../cloudpassage/fn.py')
-this_file = os.path.abspath(__file__)
 fn = cloudpassage.fn
 
 
 class TestFn:
-    def test_pep8(self):
-        pep8style = pep8.StyleGuide(quiet=True)
-        result = pep8style.check_files([file_location, this_file])
-        assert result.total_errors == 0
-
     def test_merge_dicts(self):
         one = {"a": "Alpha",
                "b": "Bravo",

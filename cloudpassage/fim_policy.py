@@ -1,11 +1,18 @@
-from policy import Policy
-from http_helper import HttpHelper
-from exceptions import CloudPassageValidation
-from exceptions import CloudPassageResourceExistence
 import fn
+from http_helper import HttpHelper
+from policy import Policy
 
 
 class FimPolicy(Policy):
+    """Initializing the FimPolicy class:
+
+    Args:
+        session (:class:`cloudpassage.HaloSession`): \
+        This will define how you interact \
+        with the Halo API, including proxy settings and API keys \
+        used for authentication.
+
+    """
 
     policy = "fim_policy"
     policies = "fim_policies"
@@ -21,13 +28,30 @@ class FimPolicy(Policy):
 
 
 class FimBaseline:
+    """Initializing the FimBaseline class:
+
+    Args:
+        session (:class:`cloudpassage.HaloSession`): \
+        This will define how you interact \
+        with the Halo API, including proxy settings and API keys \
+        used for authentication.
+
+    """
 
     def __init__(self, session):
         self.session = session
         return None
 
     def list_all(self, fim_policy_id):
-        """Returns a list of all baselines for the indicated FIM policy"""
+        """Returns a list of all baselines for the indicated FIM policy
+
+        Args:
+            fim_policy_id (str): ID of fim policy
+
+        Returns:
+            list: List of all baselines for the given policy
+
+        """
 
         request = HttpHelper(self.session)
         endpoint = "/v1/fim_policies/%s/baselines" % fim_policy_id
@@ -38,6 +62,13 @@ class FimBaseline:
 
     def describe(self, fim_policy_id, fim_baseline_id):
         """Returns the body of the baseline indicated by fim_baseline_id.
+
+        Args
+            fim_policy_id (str): ID of FIM policy
+            fim_baseline_id (str): ID of baseline
+
+        Returns:
+            dict: Dictionary describing FIM baseline
 
         """
 
@@ -51,10 +82,17 @@ class FimBaseline:
     def create(self, fim_policy_id, server_id, **kwargs):
         """Creates a FIM baseline
 
-        kwargs:
-        expires   -- Number of days from today, when baseline expires
-        comment   -- Something meaningful in string form
-        Returns the ID of the new baseline
+        Args:
+            fim_policy_id (str): ID of FIM policy to baseline
+            server_id (str): ID of server to use for generating baseline
+
+        Keyword Args:
+            expires (int): Number of days from today for expiration of baseline
+            comment (str): Guess.
+
+        Returns:
+            str: ID of new baseline
+
         """
 
         request = HttpHelper(self.session)
@@ -71,7 +109,16 @@ class FimBaseline:
         return(policy_id)
 
     def delete(self, fim_policy_id, fim_baseline_id):
-        """Delete a FIM baseline by ID"""
+        """Delete a FIM baseline by ID
+
+        Args:
+            fim_policy_id (str): ID of FIM policy
+            fim_baseline_id (str): ID of baseline to be deleted
+
+        Returns:
+            None if successful, exceptions throw otherwise.
+
+        """
 
         request = HttpHelper(self.session)
         endpoint = "/v1/fim_policies/%s/baselines/%s" % (fim_policy_id,
@@ -80,7 +127,17 @@ class FimBaseline:
         return(None)
 
     def update(self, fim_policy_id, fim_baseline_id, server_id):
-        """Update a FIM policy.  Success returns None"""
+        """Update a FIM policy baseline.
+
+        Args:
+            fim_policy_id (str): ID of fim policy
+            fim_baseline_id (str): ID of baseline to be updated
+            server_id (str): ID of server to use when generating new baseline
+
+        Returns:
+            None if successful, exceptions throw otherwise.
+
+        """
 
         request = HttpHelper(self.session)
         endpoint = "/v1/fim_policies/%s/baselines/%s" % (fim_policy_id,

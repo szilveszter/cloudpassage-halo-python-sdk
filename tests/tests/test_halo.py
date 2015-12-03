@@ -1,15 +1,12 @@
-import os
-import pep8
-import pytest
-import json
+import cloudpassage
 import datetime
 import hashlib
-import cloudpassage
+import json
+import os
+import pytest
+
 
 policy_path = os.path.abspath('./policies/')
-
-file_location = os.path.abspath('../cloudpassage/halo.py')
-this_file = os.path.abspath(__file__)
 
 key_id = os.environ.get('HALO_KEY_ID')
 secret_key = os.environ.get('HALO_SECRET_KEY')
@@ -28,11 +25,6 @@ content_name = str(content_prefix +
 
 
 class TestHaloSession:
-    def test_pep8(self):
-        pep8style = pep8.StyleGuide(quiet=True)
-        result = pep8style.check_files([file_location, this_file])
-        assert result.total_errors == 0
-
     def test_halosession_instantiation(self):
         session = cloudpassage.HaloSession(key_id, secret_key)
         assert session

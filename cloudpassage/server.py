@@ -1,12 +1,19 @@
-from http_helper import HttpHelper
 import fn
 import re
-from exceptions import CloudPassageAuthorization
 from exceptions import CloudPassageValidation
-from exceptions import CloudPassageResourceExistence
+from http_helper import HttpHelper
 
 
 class Server:
+    """Initializing the Server class:
+
+    Args:
+        session (:class:`cloudpassage.HaloSession`): \
+        This will define how you interact \
+        with the Halo API, including proxy settings and API keys \
+        used for authentication.
+
+    """
 
     def __init__(self, session):
         self.session = session
@@ -31,12 +38,19 @@ class Server:
 
         Default filter returns only servers in the 'active' state.
 
-        Accepted kwargs:
-        state      -- active, missing, deactivated
-        platform   -- windows, debian, ubuntu, centos, oracle, rhel, etc...
-        cve        -- CVE ID.  Example: CVE-2015-1234
-        kb         -- Search for presence of KB.  Example: kb="KB2485376"
-        missing_kb -- Search for absence of KB.  Example: mising_kb="KB2485376"
+        Keyword Args:
+            state (list or str): A list or comma-separated string containing \
+            any of these: active, missing, deactivated
+            platform (list or str): A list or comma-separated string \
+            containing any of these: \
+            windows, debian, ubuntu, centos, oracle, rhel, etc...
+            cve (str): CVE ID.  Example: CVE-2015-1234
+            kb (str): Search for presence of KB.  Example: kb="KB2485376"
+            missing_kb (str): Search for absence of KB.  \
+            Example: mising_kb="KB2485376"
+
+        Returns:
+            list: List of dictionary objects describing servers
 
         """
 
@@ -61,8 +75,16 @@ class Server:
         return(response)
 
     def assign_group(self, server_id, group_id):
-        """Moves server designated by server_id into
-        group indicated by group_id."""
+        """Moves server to another group.
+
+        Args:
+            server_id (str): Target server's ID
+            group_id (str): ID of group to move server to.
+
+        Returns:
+            True if successful, throws exceptions if it fails.
+
+        """
 
         endpoint = "/v1/servers/%s" % server_id
         request_body = {"server": {"group_id": group_id}}
@@ -77,6 +99,12 @@ class Server:
         Remember, deletion causes the removal of accociated security
         events and scan information.
 
+        Args:
+            server_id (str): ID of server to be deleted
+
+        Returns:
+            True if successful, throws exceptions otherwise.
+
         """
 
         endpoint = "/v1/servers/%s" % server_id
@@ -86,11 +114,14 @@ class Server:
         return(True)
 
     def describe(self, server_id):
-        """Returns dictionary containing information relating
-        to server indicated by server_id.
+        """Get server details by server ID
 
-        Details on metadata fields:
-        https://support.cloudpassage.com/entries/23131848-Servers
+        Args:
+            server_id (str): Server ID
+
+        Returns:
+            dict: Dictionary object describing server
+
         """
 
         endpoint = "/v1/servers/%s" % server_id
@@ -100,7 +131,15 @@ class Server:
         return(server_details)
 
     def retire(self, server_id):
-        """This method retires a server"""
+        """This method retires a server
+
+        Args:
+            server_id (str): ID of server to be retired
+
+        Returns:
+            True if successful, throws exception on failure
+
+        """
 
         endpoint = "/v1/servers/%s" % server_id
         body = {"server":
@@ -113,21 +152,43 @@ class Server:
     def command_details(self, server_id, command_id):
         """This method retrieves the details and status of a server command.
 
-        Command status is returned as a dictionary object:
-        {"name": "",
-         "status: "",
-         "created_at": "",
-         "updated_at": "",
-         "result": ""}
+        Args:
+            server_id (str): ID of server runnung command
+            command_id (str): ID of command running on server
 
-         For server account creation and server account password resets,
-         the password will be contained in the result field, as a dictionary:
-         {"name": "",
-          "status: "",
-          "created_at": "",
-          "updated_at": "",
-          "result": {"password": ""}
-          }
+        Returns:
+            dict: Command status as a dictionary object.
+
+        Example:
+
+        ::
+
+            {
+              "name": "",
+              "status: "",
+              "created_at": "",
+              "updated_at": "",
+              "result": ""
+             }
+
+
+        For server account creation and server account password resets, \
+        the password will be contained in the result field, as a dictionary:
+
+
+        ::
+
+            {
+              "name": "",
+              "status: "",
+              "created_at": "",
+              "updated_at": "",
+              "result": {
+                         "password": ""
+                         }
+            }
+
+
         """
 
         endpoint = "/v1/servers/%s/commands/%s" % (server_id, command_id)

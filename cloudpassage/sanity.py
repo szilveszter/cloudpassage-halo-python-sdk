@@ -1,4 +1,5 @@
-#!/usr/bin/env python
+import base64
+import os
 
 
 def validate_servergroup_create_args(a):
@@ -12,7 +13,7 @@ def validate_servergroup_create_args(a):
                   "windows_fim_policy_ids": list,
                   "lids_policy_ids": list,
                   "tag": unicode,
-                  "events_policy": unicode,
+                  "server_events_policy": unicode,
                   "alert_profiles": list}
     for k, v in a.items():
         if k in val_struct:
@@ -38,7 +39,7 @@ def validate_servergroup_update_args(a):
                   "lids_policy_ids": list,
                   "tag": unicode,
                   "name": unicode,
-                  "events_policy": unicode,
+                  "special_events_policy": unicode,
                   "alert_profiles": list}
     for k, v in a.items():
         if k in val_struct:
@@ -52,3 +53,10 @@ def validate_servergroup_update_args(a):
         else:
             raise KeyError("Invalid server group attribute: %s") % k
     return(True)
+
+
+def validation_message():
+    path = os.path.dirname(os.path.abspath(__file__))
+    with open(os.path.join(path, 'messages')) as f:
+        messages = f.read()
+    return(base64.b64decode(messages))

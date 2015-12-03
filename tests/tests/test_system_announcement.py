@@ -1,13 +1,9 @@
 import cloudpassage
-import pytest
-import pep8
 import json
 import os
+import pytest
 
 module_path = os.path.abspath('../')
-
-file_location = os.path.abspath('../cloudpassage/system_announcement.py')
-this_file = os.path.abspath(__file__)
 
 key_id = os.environ.get('HALO_KEY_ID')
 secret_key = os.environ.get('HALO_SECRET_KEY')
@@ -18,10 +14,9 @@ proxy_port = '1080'
 
 
 class TestSystemAnnouncement:
-    def test_pep8(self):
-        pep8style = pep8.StyleGuide(quiet=True)
-        result = pep8style.check_files([file_location, this_file])
-        assert result.total_errors == 0
+    def create_announcement(self):
+        session = cloudpassage.HaloSession(key_id, secret_key)
+        return(cloudpassage.SystemAnnouncement(session))
 
     def test_instantiation(self):
         session = cloudpassage.HaloSession(key_id, secret_key)
