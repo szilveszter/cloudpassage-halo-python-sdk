@@ -59,8 +59,8 @@ class HttpHelper:
                                     params=kwargs["params"])
         else:
             response = requests.get(url, headers=headers)
-        success, exc = fn.parse_status(url, response.status_code,
-                                       response.text)
+        success, exception = fn.parse_status(url, response.status_code,
+                                             response.text)
         if success is True:
             return(response.json())
         # If we get a 401, it could be an expired key.  We retry once.
@@ -72,11 +72,11 @@ class HttpHelper:
                                         params=kwargs["params"])
             else:
                 response = requests.get(url, headers=headers)
-            success, exc = fn.parse_status(url, response.status_code,
-                                           response.text)
+            success, exception = fn.parse_status(url, response.status_code,
+                                                 response.text)
             if success is True:
                 return(response.json())
-        raise exc
+        raise exception
 
     def get_paginated(self, endpoint, key, max_pages, **kwargs):
         """This method returns a concatenated list of objects
@@ -174,8 +174,8 @@ class HttpHelper:
         headers = self.connection.build_header()
         response = requests.post(url, headers=headers,
                                  data=json.dumps(reqbody))
-        success, exc = fn.parse_status(url, response.status_code,
-                                       response.text)
+        success, exception = fn.parse_status(url, response.status_code,
+                                             response.text)
         if success is False:
             # If we get a 401, it could be an expired key.  We retry once.
             if response.status_code == 401:
@@ -183,11 +183,11 @@ class HttpHelper:
                 headers = self.connection.build_header()
                 response = requests.post(url, headers=headers,
                                          data=json.dumps(reqbody))
-                success, exc = fn.parse_status(url, response.status_code,
-                                               response.text)
+                success, exception = fn.parse_status(url, response.status_code,
+                                                     response.text)
                 if success is True:
                     return(response.json())
-            raise exc
+            raise exception
         else:
             return(response.json())
 
@@ -214,8 +214,8 @@ class HttpHelper:
         headers = self.connection.build_header()
         response = requests.put(url, headers=headers,
                                 data=json.dumps(reqbody))
-        success, exc = fn.parse_status(url, response.status_code,
-                                       response.text)
+        success, exception = fn.parse_status(url, response.status_code,
+                                             response.text)
         if success is False:
             # If we get a 401, it could be an expired key.  We retry once.
             if response.status_code == 401:
@@ -223,11 +223,11 @@ class HttpHelper:
                 headers = self.connection.build_header()
                 response = requests.put(url, headers=headers,
                                         data=json.dumps(reqbody))
-                success, exc = fn.parse_status(url, response.status_code,
-                                               response.text)
+                success, exception = fn.parse_status(url, response.status_code,
+                                                     response.text)
                 if success is True:
                     return(response.json())
-            raise exc
+            raise exception
         else:
             # Sometimes we don't get json back...
             try:
@@ -262,19 +262,19 @@ class HttpHelper:
         url = prefix + endpoint
         headers = self.connection.build_header()
         response = requests.delete(url, headers=headers)
-        success, exc = fn.parse_status(url, response.status_code,
-                                       response.text)
+        success, exception = fn.parse_status(url, response.status_code,
+                                             response.text)
         if success is False:
             # If we get a 401, it could be an expired key.  We retry once.
             if response.status_code == 401:
                 self.connection.authenticate_client()
                 headers = self.connection.build_header()
                 response = requests.delete(url, headers=headers)
-                success, exc = fn.parse_status(url, response.status_code,
-                                               response.text)
+                success, exception = fn.parse_status(url, response.status_code,
+                                                     response.text)
                 if success is True:
                     return(response.json())
-            raise exc
+            raise exception
         else:
             # Sometimes we don't get json back...
             try:

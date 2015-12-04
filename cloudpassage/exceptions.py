@@ -1,4 +1,3 @@
-import sanity
 
 
 class CloudPassageAuthentication(Exception):

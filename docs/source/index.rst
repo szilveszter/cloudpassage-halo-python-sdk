@@ -21,6 +21,7 @@ Contents:
    fim_baseline
    lids_policy
    scan
+   event
    system_announcement
    special_events_policy
    alert_profiles

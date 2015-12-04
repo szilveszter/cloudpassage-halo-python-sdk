@@ -2,6 +2,7 @@ from alert_profile import AlertProfile
 from configuration_policy import ConfigurationPolicy
 from fim_policy import FimPolicy
 from fim_policy import FimBaseline
+from event import Event
 from exceptions import CloudPassageAuthentication
 from exceptions import CloudPassageAuthorization
 from exceptions import CloudPassageCollision
