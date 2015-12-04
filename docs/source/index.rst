@@ -11,6 +11,8 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   installation
+   getting_started
    halo_session
    http_helper
    server
