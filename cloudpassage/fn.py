@@ -1,4 +1,5 @@
 import json
+import datetime
 from exceptions import CloudPassageValidation
 from exceptions import CloudPassageInternalError
 from exceptions import CloudPassageAuthentication
@@ -88,6 +89,9 @@ def sanitize_url_params(params):
         if type(value) is list:
             value_corrected = ",".join(value)
             params[key] = value_corrected
+        if type(value) is datetime.datetime:
+            value_corrected = datetime_to_8601(value)
+            params[key] = value_corrected
     return params
 
 
@@ -135,3 +139,31 @@ def parse_status(url, resp_code, resp_text):
         else:
             exc = CloudPassageGeneral(resp_text)
     return(success, exc)
+
+
+def time_string_now():
+    """Returns an ISO 8601 formatted string for now, in UTC
+
+    Returns:
+        str: ISO 8601 formatted string
+
+    """
+
+    now = datetime.datetime.utcnow()
+    return(datetime_to_8601(now))
+
+
+def datetime_to_8601(dt):
+    """Converts a datetime object to ISO 8601 formatted string.
+
+    Args:
+        dt (datetime.datetime): Datetime-type object
+
+    Returns:
+        str: ISO 8610 formatted string
+
+    """
+
+    time_split = (dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second,
+                  dt.microsecond)
+    return "%04d-%02d-%02dT%02d:%02d:%02d.%06dZ" % time_split

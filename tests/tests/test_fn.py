@@ -5,6 +5,8 @@ import pytest
 
 module_path = os.path.abspath('../cloudpassage')
 policy_path = os.path.abspath('./policies')
+fw_policy_file = os.path.abspath('./policies/firewall.json')
+
 fn = cloudpassage.fn
 
 
@@ -20,6 +22,14 @@ class TestFn:
         merge_two = fn.merge_dicts(two, one)
         assert merge_one["c"] == "CharlieHorse"
         assert merge_two["c"] == "Charlie"
+
+    def test_policy_to_dict(self):
+        with open(fw_policy_file, 'r') as f:
+            policy_string = f.read().replace('\n', '')
+        pol_dict = fn.policy_to_dict(policy_string)
+        assert type(pol_dict) is dict
+        pol_double_dict = fn.policy_to_dict(pol_dict)
+        assert pol_double_dict == pol_dict
 
     def test_parse_status200(self):
         resp_text = "Test text, yo."
@@ -90,3 +100,6 @@ class TestFn:
             assert meta_from_str == meta_from_json
             assert meta_from_str["policy_type"] == policy["type"]
             assert meta_from_str["target_platform"] == policy["platform"]
+
+    def test_time_string_now(self):
+        assert type(fn.time_string_now()) is str
