@@ -236,7 +236,7 @@ class HttpHelper:
                 return_value = response.text
             return(return_value)
 
-    def delete(self, endpoint):
+    def delete(self, endpoint, **kwargs):
         """This method performs a Delete against Halo's API.
 
         It will attempt to authenticate using the credentials (required
@@ -261,7 +261,10 @@ class HttpHelper:
         prefix = self.connection.build_endpoint_prefix()
         url = prefix + endpoint
         headers = self.connection.build_header()
-        response = requests.delete(url, headers=headers)
+        if "params" in kwargs:
+            response = requests.delete(url, headers=headers, params=params)
+        else:
+            response = requests.delete(url, headers=headers)
         success, exception = fn.parse_status(url, response.status_code,
                                              response.text)
         if success is False:

@@ -14,19 +14,21 @@ proxy_port = '1080'
 
 
 class TestServerGroup:
+    def create_server_group_object(self):
+        session = cloudpassage.HaloSession(key_id, secret_key)
+        return(cloudpassage.ServerGroup(session))
+
     def test_instantiation(self):
         session = cloudpassage.HaloSession(key_id, secret_key)
         assert cloudpassage.ServerGroup(session)
 
     def test_list_all(self):
-        session = cloudpassage.HaloSession(key_id, secret_key)
-        s_grp = cloudpassage.ServerGroup(session)
+        s_grp = self.create_server_group_object()
         groups = s_grp.list_all()
         assert "id" in groups[0]
 
     def test_describe(self):
-        session = cloudpassage.HaloSession(key_id, secret_key)
-        s_grp = cloudpassage.ServerGroup(session)
+        s_grp = self.create_server_group_object()
         groups = s_grp.list_all()
         target_group_id = groups[0]["id"]
         target_group_object = s_grp.describe(target_group_id)
@@ -35,8 +37,7 @@ class TestServerGroup:
     def test_list_members(self):
         # Rolls through all server groups, confirms active server IDs
         confirmed = False
-        session = cloudpassage.HaloSession(key_id, secret_key)
-        s_grp = cloudpassage.ServerGroup(session)
+        s_grp = self.create_server_group_object()
         groups = s_grp.list_all()
         num_members = 0
         for g in groups:
@@ -48,3 +49,9 @@ class TestServerGroup:
                 confirmed = True
         # Confirm that we actually have a populated server group
         assert confirmed
+
+    def test_create_delete_server_group(self):
+        s_grp = self.create_server_group_object()
+        new_grp_id = s_grp.create("TEN_FOUR_GOOD_BUDDY")
+        delete_return = s_grp.delete(new_grp_id)
+        assert delete_return is None
