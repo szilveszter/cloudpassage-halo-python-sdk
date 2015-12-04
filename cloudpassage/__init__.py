@@ -18,6 +18,7 @@ from firewall_policy import FirewallZone
 from halo import HaloSession
 from http_helper import HttpHelper
 from lids_policy import LidsPolicy
+from scan import CveException
 from scan import Scan
 from server import Server
 from server_group import ServerGroup
