@@ -1,5 +1,6 @@
 from exceptions import CloudPassageValidation
 from http_helper import HttpHelper
+from policy import Policy
 
 
 class Scan:
@@ -210,3 +211,36 @@ class Scan:
                 error_message = "Unsupported module: %s" % module_raw
                 raise CloudPassageValidation(error_message)
         return(module_raw)
+
+
+class CveException(Policy):
+    """Initializing the CveException class:
+
+    Args:
+        session (:class:`cloudpassage.HaloSession`): \
+        This will define how you interact \
+        with the Halo API, including proxy settings and API keys \
+        used for authentication.
+
+    """
+
+    policy = "cve_exception"
+    policies = "cve_exceptions"
+
+    def endpoint(self):
+        return("/v1/%s" % CveException.policies)
+
+    def pagination_key(self):
+        return(CveException.policies)
+
+    def policy_key(self):
+        return(CveException.policy)
+
+    def create(self, unimportant):
+        raise NotImplementedError
+
+    def delete(self, unimportant):
+        raise NotImplementedError
+
+    def update(self, unimportant):
+        raise NotImplementedError

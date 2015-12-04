@@ -258,3 +258,24 @@ class TestScan:
         target_findings_body = scanner.findings(target_fim_scan_id,
                                                 target_finding)
         assert "id" in target_findings_body
+
+
+class TestCveException:
+    def create_cve_exception_object(self):
+        session = cloudpassage.HaloSession(key_id, secret_key)
+        return_obj = cloudpassage.CveException(session)
+        return(return_obj)
+
+    def test_instantiation(self):
+        assert self.create_cve_exception_object()
+
+    def test_get_list(self):
+        cve_exc = self.create_cve_exception_object()
+        list_of_exceptions = cve_exc.list_all()
+        assert "id" in list_of_exceptions[0]
+
+    def test_get_details(self):
+        cve_exc = self.create_cve_exception_object()
+        list_of_exceptions = cve_exc.list_all()
+        details = cve_exc.describe(list_of_exceptions[0]["id"])
+        assert "id" in details
