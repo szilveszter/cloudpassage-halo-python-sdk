@@ -50,9 +50,8 @@ class ServerGroup:
 
         """
 
-        session = self.session
         endpoint = "/v1/groups/%s/servers" % group_id
-        request = HttpHelper(session)
+        request = HttpHelper(self.session)
         response = request.get(endpoint)
         servers = response["servers"]
         return(servers)
@@ -82,11 +81,10 @@ class ServerGroup:
             alert_profiles (list): List of alert profile IDs
 
         Returns:
-            dict: Dictionary object describing newly-created group.
+            str: ID of newly-created group.
 
         """
 
-        session = self.session
         endpoint = "/v1/groups"
         group_data = {"name": group_name, "policy_ids": [], "tag": None}
         try:
@@ -94,9 +92,9 @@ class ServerGroup:
         except TypeError as e:
             raise CloudPassageValidation(e)
         body = {"group": fn.merge_dicts(group_data, kwargs)}
-        request = HttpHelper(session)
+        request = HttpHelper(self.session)
         response = request.post(endpoint, body)
-        return(response)
+        return(response["group"]["id"])
 
     def describe(self, group_id):
         """Describe a ServerGroup.  In detail.
@@ -109,9 +107,8 @@ class ServerGroup:
 
         """
 
-        session = self.session
         endpoint = "/v1/groups/%s" % group_id
-        request = HttpHelper(session)
+        request = HttpHelper(self.session)
         response = request.get(endpoint)
         group = response["group"]
         return(group)
@@ -152,6 +149,30 @@ class ServerGroup:
         except TypeError as e:
             raise CloudPassageValidation(e)
         body = {"group": fn.merge_dicts(groupData, kwargs)}
-        request = HttpHelper(session)
+        request = HttpHelper(self.session)
         response = request.put(endpoint, body)
         return(response)
+
+    def delete(self, group_id, **kwargs):
+        """ Delete a server group.
+
+        Args:
+            group_id (str): ID of group to delete
+
+        Keyword Args:
+            force (bool): If set to True, the member servers from this group \
+            will be moved to the parent group.
+
+        Returns:
+            None if successful, exceptions otherwise.
+
+        """
+
+        endpoint = "/v1/groups/%s" % group_id
+        request = HttpHelper(self.session)
+        if (("force" in kwargs) and (kwargs["force"] == True)):
+            params = {"move_to_parent": "true"}
+            request.delete(endpoint, params=params)
+        else:
+            request.delete(endpoint)
+        return(None)

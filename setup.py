@@ -6,7 +6,7 @@ def read(fname):
 
 setup(
         name = "cloudpassage",
-        version = "1.0a1",
+        version = "0.9.0",
         author = "CloudPassage",
         author_email = "toolbox@cloudpassage.com",
         description = "Python SDK for CloudPassage Halo API",
