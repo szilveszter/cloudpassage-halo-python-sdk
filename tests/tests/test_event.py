@@ -12,7 +12,7 @@ proxy_host = '190.109.164.81'
 proxy_port = '1080'
 
 
-class TestAlertProfiles:
+class TestEvent:
     def create_event_obj(self):
         session = cloudpassage.HaloSession(key_id, secret_key)
         return cloudpassage.Event(session)
@@ -42,7 +42,7 @@ class TestAlertProfiles:
 
     def test_one_day_ago_until_now(self):
         event = self.create_event_obj()
-        until = cloudpassage.fn.time_string_now()
+        until = cloudpassage.utility.time_string_now()
         since = datetime.datetime.utcnow() - datetime.timedelta(days=1)
         event_list = event.list_all(10, since=since, until=until)
         assert "id" in event_list[0]

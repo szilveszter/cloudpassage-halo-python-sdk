@@ -1,4 +1,4 @@
-import fn
+import utility
 import json
 import requests
 import urlparse
@@ -59,8 +59,8 @@ class HttpHelper:
                                     params=kwargs["params"])
         else:
             response = requests.get(url, headers=headers)
-        success, exception = fn.parse_status(url, response.status_code,
-                                             response.text)
+        success, exception = utility.parse_status(url, response.status_code,
+                                                  response.text)
         if success is True:
             return(response.json())
         # If we get a 401, it could be an expired key.  We retry once.
@@ -72,8 +72,9 @@ class HttpHelper:
                                         params=kwargs["params"])
             else:
                 response = requests.get(url, headers=headers)
-            success, exception = fn.parse_status(url, response.status_code,
-                                                 response.text)
+            success, exception = utility.parse_status(url,
+                                                      response.status_code,
+                                                      response.text)
             if success is True:
                 return(response.json())
         raise exception
@@ -107,7 +108,7 @@ class HttpHelper:
 
         """
 
-        exception = fn.verify_pages(max_pages)
+        exception = utility.verify_pages(max_pages)
         if exception:
             raise exception
         more_pages = False
@@ -174,8 +175,8 @@ class HttpHelper:
         headers = self.connection.build_header()
         response = requests.post(url, headers=headers,
                                  data=json.dumps(reqbody))
-        success, exception = fn.parse_status(url, response.status_code,
-                                             response.text)
+        success, exception = utility.parse_status(url, response.status_code,
+                                                  response.text)
         if success is False:
             # If we get a 401, it could be an expired key.  We retry once.
             if response.status_code == 401:
@@ -183,8 +184,9 @@ class HttpHelper:
                 headers = self.connection.build_header()
                 response = requests.post(url, headers=headers,
                                          data=json.dumps(reqbody))
-                success, exception = fn.parse_status(url, response.status_code,
-                                                     response.text)
+                success, exception = utility.parse_status(url,
+                                                          response.status_code,
+                                                          response.text)
                 if success is True:
                     return(response.json())
             raise exception
@@ -214,8 +216,8 @@ class HttpHelper:
         headers = self.connection.build_header()
         response = requests.put(url, headers=headers,
                                 data=json.dumps(reqbody))
-        success, exception = fn.parse_status(url, response.status_code,
-                                             response.text)
+        success, exception = utility.parse_status(url, response.status_code,
+                                                  response.text)
         if success is False:
             # If we get a 401, it could be an expired key.  We retry once.
             if response.status_code == 401:
@@ -223,8 +225,9 @@ class HttpHelper:
                 headers = self.connection.build_header()
                 response = requests.put(url, headers=headers,
                                         data=json.dumps(reqbody))
-                success, exception = fn.parse_status(url, response.status_code,
-                                                     response.text)
+                success, exception = utility.parse_status(url,
+                                                          response.status_code,
+                                                          response.text)
                 if success is True:
                     return(response.json())
             raise exception
@@ -265,16 +268,17 @@ class HttpHelper:
             response = requests.delete(url, headers=headers, params=params)
         else:
             response = requests.delete(url, headers=headers)
-        success, exception = fn.parse_status(url, response.status_code,
-                                             response.text)
+        success, exception = utility.parse_status(url, response.status_code,
+                                                  response.text)
         if success is False:
             # If we get a 401, it could be an expired key.  We retry once.
             if response.status_code == 401:
                 self.connection.authenticate_client()
                 headers = self.connection.build_header()
                 response = requests.delete(url, headers=headers)
-                success, exception = fn.parse_status(url, response.status_code,
-                                                     response.text)
+                success, exception = utility.parse_status(url,
+                                                          response.status_code,
+                                                          response.text)
                 if success is True:
                     return(response.json())
             raise exception

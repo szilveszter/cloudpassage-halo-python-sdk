@@ -56,10 +56,3 @@ def validate_servergroup_update_args(a):
         else:
             raise KeyError("Invalid server group attribute: %s") % k
     return(True)
-
-
-def validation_message():
-    path = os.path.dirname(os.path.abspath(__file__))
-    with open(os.path.join(path, 'messages')) as f:
-        messages = f.read()
-    return(base64.b64decode(messages))

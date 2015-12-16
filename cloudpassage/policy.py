@@ -1,4 +1,4 @@
-import fn
+import utility
 from http_helper import HttpHelper
 
 
@@ -46,7 +46,7 @@ class Policy:
         """
 
         request = HttpHelper(self.session)
-        request_body = fn.policy_to_dict(policy_body)
+        request_body = utility.policy_to_dict(policy_body)
         return(request.post(self.endpoint(),
                             request_body)[self.policy_key()]["id"])
 
@@ -62,7 +62,7 @@ class Policy:
         """Update a policy.  Success returns None"""
 
         request = HttpHelper(self.session)
-        request_body = fn.policy_to_dict(policy_body)
+        request_body = utility.policy_to_dict(policy_body)
         policy_id = request_body[self.policy_key()]["id"]
         update_endpoint = "%s/%s" % (self.endpoint(), policy_id)
         request.put(update_endpoint, request_body)

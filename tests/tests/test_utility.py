@@ -7,7 +7,7 @@ module_path = os.path.abspath('../cloudpassage')
 policy_path = os.path.abspath('./policies')
 fw_policy_file = os.path.abspath('./policies/firewall.json')
 
-fn = cloudpassage.fn
+utility = cloudpassage.utility
 
 
 class TestFn:
@@ -18,17 +18,17 @@ class TestFn:
         two = {"c": "CharlieHorse",
                "d": "Delta",
                "e": "Echo"}
-        merge_one = fn.merge_dicts(one, two)
-        merge_two = fn.merge_dicts(two, one)
+        merge_one = utility.merge_dicts(one, two)
+        merge_two = utility.merge_dicts(two, one)
         assert merge_one["c"] == "CharlieHorse"
         assert merge_two["c"] == "Charlie"
 
     def test_policy_to_dict(self):
         with open(fw_policy_file, 'r') as f:
             policy_string = f.read().replace('\n', '')
-        pol_dict = fn.policy_to_dict(policy_string)
+        pol_dict = utility.policy_to_dict(policy_string)
         assert type(pol_dict) is dict
-        pol_double_dict = fn.policy_to_dict(pol_dict)
+        pol_double_dict = utility.policy_to_dict(pol_dict)
         assert pol_double_dict == pol_dict
 
     def test_parse_status200(self):
@@ -55,20 +55,20 @@ class TestFn:
                      422: False,
                      "ARBLEGARBLE": False}
         for r, o in code_exc.items():
-            success, exc = fn.parse_status(url, r, resp_text)
+            success, exc = utility.parse_status(url, r, resp_text)
             assert type(o) == type(exc)
         for r, o in code_succ.items():
-            success, exc = fn.parse_status(url, r, resp_text)
+            success, exc = utility.parse_status(url, r, resp_text)
             assert success == o
 
     def test_verify_pages(self):
-        assert fn.verify_pages("cats") is not None
-        assert fn.verify_pages(101) is not None
+        assert utility.verify_pages("cats") is not None
+        assert utility.verify_pages(101) is not None
 
     def test_sanitize_url_params(self):
         params = {"states": ["deactivated", "missing"]}
         desired_params = {"states": "deactivated,missing"}
-        actual_result = fn.sanitize_url_params(params)
+        actual_result = utility.sanitize_url_params(params)
         assert desired_params == actual_result
 
     def test_determine_policy_metadata(self):
@@ -95,11 +95,11 @@ class TestFn:
             with open(policy["file"], 'r') as f:
                 policy_string = f.read()
                 policy_json = json.loads(policy_string)
-            meta_from_str = fn.determine_policy_metadata(policy_string)
-            meta_from_json = fn.determine_policy_metadata(policy_json)
+            meta_from_str = utility.determine_policy_metadata(policy_string)
+            meta_from_json = utility.determine_policy_metadata(policy_json)
             assert meta_from_str == meta_from_json
             assert meta_from_str["policy_type"] == policy["type"]
             assert meta_from_str["target_platform"] == policy["platform"]
 
     def test_time_string_now(self):
-        assert type(fn.time_string_now()) is str
+        assert type(utility.time_string_now()) is str

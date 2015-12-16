@@ -1,5 +1,5 @@
-import fn
 import re
+import utility
 from exceptions import CloudPassageValidation
 from http_helper import HttpHelper
 
@@ -66,7 +66,7 @@ class Event:
             if param in kwargs:
                 request_params_raw[param] = kwargs[param]
         if request_params_raw != {}:
-            request_params = fn.sanitize_url_params(request_params_raw)
+            request_params = utility.sanitize_url_params(request_params_raw)
             response = request.get_paginated(endpoint, key, max_pages,
                                              params=request_params)
         else:
