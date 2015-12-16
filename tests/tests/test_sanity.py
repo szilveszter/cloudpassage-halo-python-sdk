@@ -23,7 +23,7 @@ class TestSanity:
                      "special_events_policy": None,
                      "alert_profiles": "FAILURE"}
         try:
-            sanity.validate_servergroup_create_args(arguments)
+            sanity.validate_servergroup_create(arguments)
         except TypeError:
             rejected = True
         assert rejected
@@ -44,7 +44,7 @@ class TestSanity:
                      "special_events_policy": None,
                      "alert_profiles": ['12345']}
         try:
-            sanity.validate_servergroup_update_args(arguments)
+            sanity.validate_servergroup_update(arguments)
         except:
             accepted = False
         assert accepted

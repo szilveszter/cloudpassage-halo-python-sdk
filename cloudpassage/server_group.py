@@ -1,11 +1,12 @@
+'''docstring'''
+
 import cloudpassage.utility as utility
 import cloudpassage.sanity as sanity
-import urlparse
-from exceptions import CloudPassageValidation
-from http_helper import HttpHelper
+from cloudpassage.exceptions import CloudPassageValidation
+from cloudpassage.http_helper import HttpHelper
 
 
-class ServerGroup:
+class ServerGroup(object):
     """Initializing the ServerGroup class:
 
     Args:
@@ -37,7 +38,7 @@ class ServerGroup:
         endpoint = "/v1/groups"
         request = HttpHelper(session)
         groups = request.get_paginated(endpoint, key, max_pages)
-        return(groups)
+        return groups
 
     def list_members(self, group_id):
         """Returns a list of all member servers of a group_id
@@ -54,7 +55,7 @@ class ServerGroup:
         request = HttpHelper(self.session)
         response = request.get(endpoint)
         servers = response["servers"]
-        return(servers)
+        return servers
 
     def create(self, group_name, **kwargs):
         """Creates a ServerGroup.
@@ -88,13 +89,13 @@ class ServerGroup:
         endpoint = "/v1/groups"
         group_data = {"name": group_name, "policy_ids": [], "tag": None}
         try:
-            sanity.validate_servergroup_create_args(kwargs)
+            sanity.validate_servergroup_create(kwargs)
         except TypeError as e:
             raise CloudPassageValidation(e)
         body = {"group": utility.merge_dicts(group_data, kwargs)}
         request = HttpHelper(self.session)
         response = request.post(endpoint, body)
-        return(response["group"]["id"])
+        return response["group"]["id"]
 
     def describe(self, group_id):
         """Describe a ServerGroup.  In detail.
@@ -111,7 +112,7 @@ class ServerGroup:
         request = HttpHelper(self.session)
         response = request.get(endpoint)
         group = response["group"]
-        return(group)
+        return group
 
     def update(self, group_id, **kwargs):
         """Updates a ServerGroup.
@@ -144,15 +145,15 @@ class ServerGroup:
         sanity.validate_object_id(group_id)
         endpoint = "/v1/groups/%s" % group_id
         response = None
-        groupData = {}
+        group_data = {}
         try:
-            sanity.validate_servergroup_update_args(kwargs)
+            sanity.validate_servergroup_update(kwargs)
         except TypeError as e:
             raise CloudPassageValidation(e)
-        body = {"group": utility.merge_dicts(groupData, kwargs)}
+        body = {"group": utility.merge_dicts(group_data, kwargs)}
         request = HttpHelper(self.session)
         response = request.put(endpoint, body)
-        return(response)
+        return response
 
     def delete(self, group_id, **kwargs):
         """ Delete a server group.
@@ -172,9 +173,9 @@ class ServerGroup:
         sanity.validate_object_id(group_id)
         endpoint = "/v1/groups/%s" % group_id
         request = HttpHelper(self.session)
-        if (("force" in kwargs) and (kwargs["force"] == True)):
+        if ("force" in kwargs) and (kwargs["force"] is True):
             params = {"move_to_parent": "true"}
             request.delete(endpoint, params=params)
         else:
             request.delete(endpoint)
-        return(None)
+        return None

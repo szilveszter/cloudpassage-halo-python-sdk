@@ -1,4 +1,7 @@
-from policy import Policy
+'''docstring'''
+
+
+from cloudpassage.policy import Policy
 
 
 class SpecialEventsPolicy(Policy):
@@ -15,11 +18,11 @@ class SpecialEventsPolicy(Policy):
     policy = "special_events_policy"
     policies = "special_events_policies"
 
-    def endpoint(self):
-        return("/v1/%s" % SpecialEventsPolicy.policies)
+    def endpoint(self):  # pylint: disable=no-self-use,missing-docstring
+        return "/v1/%s" % SpecialEventsPolicy.policies
 
-    def pagination_key(self):
-        return(SpecialEventsPolicy.policies)
+    def pagination_key(self):  # pylint: disable=no-self-use,missing-docstring
+        return SpecialEventsPolicy.policies
 
     def create(self, unimportant):
         raise NotImplementedError

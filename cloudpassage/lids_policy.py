@@ -1,4 +1,9 @@
-from policy import Policy
+'''
+docstring
+'''
+
+
+from cloudpassage.policy import Policy
 
 
 class LidsPolicy(Policy):
@@ -15,11 +20,11 @@ class LidsPolicy(Policy):
     policy = "lids_policy"
     policies = "lids_policies"
 
-    def endpoint(self):
-        return("/v1/%s" % LidsPolicy.policies)
+    def endpoint(self):  # pylint: disable=no-self-use,missing-docstring
+        return "/v1/%s" % LidsPolicy.policies
 
-    def pagination_key(self):
-        return(LidsPolicy.policies)
+    def pagination_key(self):  # pylint: disable=no-self-use,missing-docstring
+        return LidsPolicy.policies
 
-    def policy_key(self):
-        return(LidsPolicy.policy)
+    def policy_key(self):  # pylint: disable=no-self-use,missing-docstring
+        return LidsPolicy.policy

@@ -1,9 +1,11 @@
+'''CloudPassage Api Key Manager'''
+
 import os
 import yaml
 import cloudpassage.sanity as sanity
 
 
-class ApiKeyManager:
+class ApiKeyManager(object):
     """Retrieves API keys from file or environment.
 
     If instantiated with no arguments, it will return credentials from
@@ -42,10 +44,12 @@ class ApiKeyManager:
         self.key_id = None
         self.secret_key = None
         self.config_file = None
+
         if "config_file" in kwargs:
             self.config_file = kwargs["config_file"]
         else:
             self.config_file = "/etc/cloudpassage.yaml"
+
         env_variables = {"key_id": os.getenv("HALO_API_KEY"),
                          "secret_key": os.getenv("HALO_API_SECRET_KEY"),
                          "api_hostname": os.getenv("HALO_API_HOSTNAME")}
@@ -64,6 +68,7 @@ class ApiKeyManager:
                 self.api_hostname = session_yaml["api_hostname"]
             return
 
+    # pylint: disable=missing-docstring, no-self-use
     def env_vars_are_set(self, env_vars):
         vars_are_set = True
         if env_vars["key_id"] is None or env_vars["secret_key"] is None:

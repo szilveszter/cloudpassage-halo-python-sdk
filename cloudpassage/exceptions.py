@@ -1,3 +1,4 @@
+'''docstring'''
 
 
 class CloudPassageAuthentication(Exception):
@@ -15,6 +16,7 @@ class CloudPassageAuthentication(Exception):
     """
 
     def __init__(self, error_msg):
+        super(CloudPassageAuthentication, self).__init__()
         self.msg = error_msg
 
 
@@ -32,6 +34,7 @@ class CloudPassageAuthorization(Exception):
     """
 
     def __init__(self, error_msg):
+        super(CloudPassageAuthorization, self).__init__()
         self.msg = error_msg
 
 
@@ -51,6 +54,7 @@ class CloudPassageValidation(Exception):
     """
 
     def __init__(self, error_msg):
+        super(CloudPassageValidation, self).__init__()
         self.msg = error_msg
 
 
@@ -69,6 +73,7 @@ class CloudPassageCollision(Exception):
     """
 
     def __init__(self, error_msg):
+        super(CloudPassageCollision, self).__init__()
         self.msg = error_msg
 
 
@@ -86,6 +91,7 @@ class CloudPassageInternalError(Exception):
     """
 
     def __init__(self, error_msg):
+        super(CloudPassageInternalError, self).__init__()
         self.msg = error_msg
 
 
@@ -104,6 +110,7 @@ class CloudPassageResourceExistence(Exception):
     """
 
     def __init__(self, error_msg):
+        super(CloudPassageResourceExistence, self).__init__()
         self.msg = error_msg
 
 
@@ -121,4 +128,5 @@ class CloudPassageGeneral(Exception):
     """
 
     def __init__(self, error_msg):
+        super(CloudPassageGeneral, self).__init__()
         self.msg = error_msg

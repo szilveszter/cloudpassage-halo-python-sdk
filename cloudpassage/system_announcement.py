@@ -1,7 +1,10 @@
-from http_helper import HttpHelper
+'''docstring'''
 
 
-class SystemAnnouncement:
+from cloudpassage.http_helper import HttpHelper
+
+
+class SystemAnnouncement(object):
     """Initializing the SystemAnnouncement class:
 
     Args:
@@ -11,6 +14,7 @@ class SystemAnnouncement:
         used for authentication.
 
     """
+
     def __init__(self, session):
         self.session = session
         return None
@@ -24,4 +28,4 @@ class SystemAnnouncement:
         request = HttpHelper(session)
         response = request.get(endpoint)
         announcement_list = response["announcements"]
-        return(announcement_list)
+        return announcement_list

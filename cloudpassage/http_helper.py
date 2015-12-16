@@ -1,11 +1,13 @@
-import utility
+'''docstring'''
+
 import json
-import requests
 import urlparse
-from exceptions import CloudPassageValidation
+import cloudpassage.utility as utility
+import requests
+from cloudpassage.exceptions import CloudPassageValidation
 
 
-class HttpHelper:
+class HttpHelper(object):
     """This class handles communication with the CloudPassage API.
 
     When instantiating this class, pass in a \
@@ -62,7 +64,8 @@ class HttpHelper:
         success, exception = utility.parse_status(url, response.status_code,
                                                   response.text)
         if success is True:
-            return(response.json())
+            return response.json()
+
         # If we get a 401, it could be an expired key.  We retry once.
         if response.status_code == 401:
             self.connection.authenticate_client()
@@ -76,7 +79,7 @@ class HttpHelper:
                                                       response.status_code,
                                                       response.text)
             if success is True:
-                return(response.json())
+                return response.json()
         raise exception
 
     def get_paginated(self, endpoint, key, max_pages, **kwargs):
@@ -131,7 +134,7 @@ class HttpHelper:
                 more_pages = False
             if pages_parsed >= max_pages:
                 more_pages = False
-        return(response_accumulator)
+        return response_accumulator
 
     def process_page(self, page, key):
         response_accumulator = []
@@ -148,7 +151,7 @@ class HttpHelper:
                 endpoint = str(urlparse.urlsplit(nextpage)[2] + "?" +
                                urlparse.urlsplit(nextpage)[3])
                 next_page = endpoint
-        return(response_accumulator, next_page)
+        return response_accumulator, next_page
 
     def post(self, endpoint, reqbody):
         """This method performs a POST against Halo's API.
@@ -188,10 +191,10 @@ class HttpHelper:
                                                           response.status_code,
                                                           response.text)
                 if success is True:
-                    return(response.json())
+                    return response.json()
             raise exception
         else:
-            return(response.json())
+            return response.json()
 
     def put(self, endpoint, reqbody):
         """This method performs a PUT against Halo's API.
@@ -229,7 +232,7 @@ class HttpHelper:
                                                           response.status_code,
                                                           response.text)
                 if success is True:
-                    return(response.json())
+                    return response.json()
             raise exception
         else:
             # Sometimes we don't get json back...
@@ -237,7 +240,7 @@ class HttpHelper:
                 return_value = response.json()
             except:
                 return_value = response.text
-            return(return_value)
+            return return_value
 
     def delete(self, endpoint, **kwargs):
         """This method performs a Delete against Halo's API.
@@ -280,7 +283,7 @@ class HttpHelper:
                                                           response.status_code,
                                                           response.text)
                 if success is True:
-                    return(response.json())
+                    return response.json()
             raise exception
         else:
             # Sometimes we don't get json back...
@@ -288,4 +291,4 @@ class HttpHelper:
                 return_value = response.json()
             except:
                 return_value = response.text
-            return(return_value)
+            return return_value
