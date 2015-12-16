@@ -1,4 +1,4 @@
-import fn
+import utility
 import sanity
 import urlparse
 from exceptions import CloudPassageValidation
@@ -91,7 +91,7 @@ class ServerGroup:
             sanity.validate_servergroup_create_args(kwargs)
         except TypeError as e:
             raise CloudPassageValidation(e)
-        body = {"group": fn.merge_dicts(group_data, kwargs)}
+        body = {"group": utility.merge_dicts(group_data, kwargs)}
         request = HttpHelper(self.session)
         response = request.post(endpoint, body)
         return(response["group"]["id"])
@@ -148,7 +148,7 @@ class ServerGroup:
             sanity.validate_servergroup_update_args(kwargs)
         except TypeError as e:
             raise CloudPassageValidation(e)
-        body = {"group": fn.merge_dicts(groupData, kwargs)}
+        body = {"group": utility.merge_dicts(groupData, kwargs)}
         request = HttpHelper(self.session)
         response = request.put(endpoint, body)
         return(response)

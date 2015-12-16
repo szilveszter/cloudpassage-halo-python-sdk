@@ -1,4 +1,3 @@
-import fn
 from http_helper import HttpHelper
 from policy import Policy
 

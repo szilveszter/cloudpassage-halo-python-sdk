@@ -48,7 +48,3 @@ class TestFn:
         except:
             accepted = False
         assert accepted
-
-    def test_validation_message(self):
-        message = sanity.validation_message()
-        assert type(message) is str
