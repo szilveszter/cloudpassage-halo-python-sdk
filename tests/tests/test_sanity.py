@@ -6,7 +6,7 @@ import pytest
 sanity = cloudpassage.sanity
 
 
-class TestFn:
+class TestSanity:
     def test_servergroup_create_validate(self):
         rejected = False
         arguments = {"firewall_policy_id": unicode("12345"),
@@ -48,3 +48,40 @@ class TestFn:
         except:
             accepted = False
         assert accepted
+
+    def test_valid_object_id(self):
+        sample_object_id = "951ffd865e4f11e59ba055477bd3e868"
+        assert sanity.validate_object_id(sample_object_id)
+
+    def test_valid_object_id_list(self):
+        sample_object_id = ["951ffd865e4f11e59ba055477bd3e868",
+                            "951ffd865e4f11e59ba055477bd3e999"]
+        assert sanity.validate_object_id(sample_object_id)
+
+    def test_invalid_object_id_list(self):
+        rejected = False
+        sample_object_id = ["951ffd865e4f11e59ba055477bd3e868",
+                            "../../servers/951ffd865e4f11e59ba055477bd3e999"]
+        try:
+            sanity.validate_object_id(sample_object_id)
+        except:
+            rejected = True
+        assert rejected
+
+    def test_invalid_object_id(self):
+        rejected = False
+        sample_object_id = "../../servers/951ffd865e4f11e59ba055477bd3e868"
+        try:
+            sanity.validate_object_id(sample_object_id)
+        except:
+            rejected = True
+        assert rejected
+
+    def test_invalid_object_type(self):
+        rejected = False
+        sample_object_id = ("Tuple", "of", ["Things", "AndStuff"])
+        try:
+            sanity.validate_object_id(sample_object_id)
+        except:
+            rejected = True
+        assert rejected

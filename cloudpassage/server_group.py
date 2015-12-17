@@ -1,5 +1,5 @@
-import utility
-import sanity
+import cloudpassage.utility as utility
+import cloudpassage.sanity as sanity
 import urlparse
 from exceptions import CloudPassageValidation
 from http_helper import HttpHelper
@@ -141,6 +141,7 @@ class ServerGroup:
 
         """
 
+        sanity.validate_object_id(group_id)
         endpoint = "/v1/groups/%s" % group_id
         response = None
         groupData = {}
@@ -168,6 +169,7 @@ class ServerGroup:
 
         """
 
+        sanity.validate_object_id(group_id)
         endpoint = "/v1/groups/%s" % group_id
         request = HttpHelper(self.session)
         if (("force" in kwargs) and (kwargs["force"] == True)):
