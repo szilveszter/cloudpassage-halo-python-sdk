@@ -1,4 +1,5 @@
-import utility
+import cloudpassage.sanity as sanity
+import cloudpassage.utility as utility
 from http_helper import HttpHelper
 
 
@@ -53,6 +54,7 @@ class Policy:
     def delete(self, policy_id):
         """Delete a policy by ID.  Success returns None"""
 
+        sanity.validate_object_id(policy_id)
         request = HttpHelper(self.session)
         delete_endpoint = "%s/%s" % (self.endpoint(), policy_id)
         request.delete(delete_endpoint)
@@ -64,6 +66,7 @@ class Policy:
         request = HttpHelper(self.session)
         request_body = utility.policy_to_dict(policy_body)
         policy_id = request_body[self.policy_key()]["id"]
+        sanity.validate_object_id(policy_id)
         update_endpoint = "%s/%s" % (self.endpoint(), policy_id)
         request.put(update_endpoint, request_body)
         return(None)

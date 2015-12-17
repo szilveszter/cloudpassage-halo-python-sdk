@@ -1,3 +1,4 @@
+import cloudpassage.sanity as sanity
 from http_helper import HttpHelper
 from policy import Policy
 
@@ -114,6 +115,7 @@ class FirewallRule:
 
         """
 
+        sanity.validate_object_id(firewall_policy_id)
         request = HttpHelper(self.session)
         endpoint = "/v1/firewall_policies/%s/firewall_rules"
         response = request.post(endpoint, request_body)
@@ -133,6 +135,7 @@ class FirewallRule:
 
         """
 
+        sanity.validate_object_id([firewall_policy_id, firewall_rule_id])
         request = HttpHelper(self.session)
         endpoint = ("/v1/firewall_policies/%s/firewall_rules/%s" %
                     (firewall_policy_id, firewall_rule_id))
@@ -174,6 +177,7 @@ class FirewallRule:
 
         """
 
+        sanity.validate_object_id([firewall_policy_id, firewall_rule_id])
         request = HttpHelper(self.session)
         endpoint = ("/v1/firewall_policies/%s/firewall_rules/%s" %
                     (firewall_policy_id, firewall_rule_id))

@@ -1,3 +1,4 @@
+import cloudpassage.sanity as sanity
 from exceptions import CloudPassageValidation
 from http_helper import HttpHelper
 from policy import Policy
@@ -59,6 +60,7 @@ class Scan:
             Failure throws an exception.
         """
 
+        sanity.validate_object_id(server_id)
         if self.scan_type_supported(scan_type) is False:
             exception_message = "Unsupported scan type: %s" % scan_type
             raise CloudPassageValidation(exception_message)

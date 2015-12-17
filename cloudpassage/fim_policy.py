@@ -1,5 +1,7 @@
+import cloudpassage.utility as utility
+import cloudpassage.sanity as sanity
 from http_helper import HttpHelper
-from policy import Policy
+from cloudpassage.policy import Policy
 
 
 class FimPolicy(Policy):
@@ -94,6 +96,7 @@ class FimBaseline:
 
         """
 
+        sanity.validate_object_id([fim_policy_id, server_id])
         request = HttpHelper(self.session)
         endpoint = "/v1/fim_policies/%s/baselines" % fim_policy_id
         request_body = {"baseline": {"server_id": server_id,
@@ -119,6 +122,7 @@ class FimBaseline:
 
         """
 
+        sanity.validate_object_id([fim_policy_id, fim_baseline_id])
         request = HttpHelper(self.session)
         endpoint = "/v1/fim_policies/%s/baselines/%s" % (fim_policy_id,
                                                          fim_baseline_id)
@@ -138,6 +142,7 @@ class FimBaseline:
 
         """
 
+        sanity.validate_object_id([fim_policy_id, fim_baseline_id, server_id])
         request = HttpHelper(self.session)
         endpoint = "/v1/fim_policies/%s/baselines/%s" % (fim_policy_id,
                                                          fim_baseline_id)

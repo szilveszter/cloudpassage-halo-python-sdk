@@ -1,4 +1,5 @@
-import utility
+import cloudpassage.utility as utility
+import cloudpassage.sanity as sanity
 import re
 from exceptions import CloudPassageValidation
 from http_helper import HttpHelper
@@ -86,6 +87,7 @@ class Server:
 
         """
 
+        sanity.validate_object_id(server_id)
         endpoint = "/v1/servers/%s" % server_id
         request_body = {"server": {"group_id": group_id}}
         request = HttpHelper(self.session)
@@ -107,6 +109,7 @@ class Server:
 
         """
 
+        sanity.validate_object_id(server_id)
         endpoint = "/v1/servers/%s" % server_id
         request = HttpHelper(self.session)
         request.delete(endpoint)
@@ -141,6 +144,7 @@ class Server:
 
         """
 
+        sanity.validate_object_id(server_id)
         endpoint = "/v1/servers/%s" % server_id
         body = {"server":
                 {"retire": True}}
