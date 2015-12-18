@@ -2,8 +2,8 @@ defaults:
   portal: portal.cloudpassage.com
   grid: grid.cloudpassage.com
   repo: packages.cloudpassage.com
-  key_id: 
-  secret_key: 
+  key_id: KEY_ID
+  secret_key: SECRET_KEY
   ro_key_id:
   ro_secret_key:
   api_hostname: api.cloudpassage.com

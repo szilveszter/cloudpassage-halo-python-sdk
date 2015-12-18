@@ -85,3 +85,19 @@ class TestSanity:
         except:
             rejected = True
         assert rejected
+
+    def test_validate_hostname_mtg(self):
+        sane = sanity.validate_api_hostname("api.cloudpassage.com")
+        assert sane
+
+    def test_validate_hostname_nonexist_vpg(self):
+        sane = sanity.validate_api_hostname("api.vpg-noexist.cloudpassage.com")
+        assert sane
+
+    def test_validate_hostname_not_cp(self):
+        sane = sanity.validate_api_hostname("api.example.com")
+        assert sane is False
+
+    def test_validate_borky(self):
+        sane = sanity.validate_api_hostname("api.cloudpassage.com/v1/s")
+        assert sane is False

@@ -6,19 +6,15 @@ import os
 import pytest
 
 
-policy_path = os.path.abspath('./policies/')
+config_file_name = "portal.yaml.local"
+tests_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../"))
+config_file = os.path.join(tests_dir, "configs/", config_file_name)
 
-file_location = os.path.abspath('../cloudpassage/http_helper.py')
-this_file = os.path.abspath(__file__)
+session_info = cloudpassage.ApiKeyManager(config_file=config_file)
+key_id = session_info.key_id
+secret_key = session_info.secret_key
+api_hostname = session_info.api_hostname
 
-key_id = os.environ.get('HALO_KEY_ID')
-secret_key = os.environ.get('HALO_SECRET_KEY')
-ro_key_id = os.environ.get('RO_HALO_KEY_ID')
-ro_secret_key = os.environ.get('RO_HALO_SECRET_KEY')
-bad_key = "abad53c"
-api_hostname = os.environ.get('HALO_API_HOSTNAME')
-proxy_host = '190.109.164.81'
-proxy_port = '1080'
 
 # This will make cleaning up easier...
 content_prefix = '_SDK_test-'

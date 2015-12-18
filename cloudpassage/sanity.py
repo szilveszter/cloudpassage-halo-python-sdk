@@ -89,3 +89,11 @@ def validate_object_id(object_id):
     else:
         error_message = "Wrong type for object ID: %s" % str(type(object_id))
         raise TypeError(error_message)
+
+
+def validate_api_hostname(api_hostname):
+    valid_api_host = re.compile('^([A-Za-z0-9-]+\.){1,2}cloudpassage\.com$')
+    if valid_api_host.match(api_hostname):
+        return True
+    else:
+        return False
