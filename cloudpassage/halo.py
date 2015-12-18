@@ -3,7 +3,9 @@ import json
 import requests
 import threading
 import time
+import cloudpassage.sanity as sanity
 from exceptions import CloudPassageAuthentication
+from exceptions import CloudPassageValidation
 
 
 class HaloSession:
@@ -135,7 +137,9 @@ class HaloSession:
         """This constructs everything to the left of the file path in the URL.
 
         """
-
+        if not sanity.validate_api_hostname(self.api_host):
+            error_message = "Bad API hostname: %s" % self.api_host
+            raise CloudPassageValidation(error_message)
         prefix = "https://" + self.api_host + ":" + str(self.api_port)
         return(prefix)
 

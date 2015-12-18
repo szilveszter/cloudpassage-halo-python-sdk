@@ -13,6 +13,8 @@ Contents:
 
    installation
    getting_started
+   testing
+   api_key_manager
    halo_session
    http_helper
    server

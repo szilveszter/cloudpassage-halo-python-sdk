@@ -1,7 +1,3 @@
-import cloudpassage
-import json
-import os
-import pytest
 from cloudpassage.exceptions import CloudPassageAuthentication
 from cloudpassage.exceptions import CloudPassageAuthorization
 from cloudpassage.exceptions import CloudPassageCollision
@@ -9,15 +5,6 @@ from cloudpassage.exceptions import CloudPassageGeneral
 from cloudpassage.exceptions import CloudPassageInternalError
 from cloudpassage.exceptions import CloudPassageResourceExistence
 from cloudpassage.exceptions import CloudPassageValidation
-
-
-module_path = os.path.abspath('../')
-key_id = os.environ.get('HALO_KEY_ID')
-secret_key = os.environ.get('HALO_SECRET_KEY')
-bad_key = "abad53c"
-api_hostname = os.environ.get('HALO_API_HOSTNAME')
-proxy_host = '190.109.164.81'
-proxy_port = '1080'
 
 
 class TestExceptions:

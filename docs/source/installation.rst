@@ -7,8 +7,8 @@ Requirements
 ------------
 The CloudPassage Python SDK is currently verified against Python v2.7
 
-The only dependency is the requests module, which is available through pip \
-and in source form `here <http://docs.python-requests.org/en/latest/>`_.
+The only dependencies are the requests and pyaml modules, which are available \
+through pip.
 
 
 The Act Of
