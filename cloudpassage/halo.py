@@ -63,7 +63,7 @@ class HaloSession:
             self.user_agent = kwargs["user_agent"]
         return None
 
-    def build_proxy_struct(host, port):
+    def build_proxy_struct(self, host, port):
         """This builds a structure describing the environment's HTTP
         proxy requirements.
 

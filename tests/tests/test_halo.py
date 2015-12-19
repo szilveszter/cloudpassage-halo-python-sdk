@@ -26,8 +26,41 @@ content_name = str(content_prefix +
 
 
 class TestHaloSession:
-    def test_halosession_instantiation(self):
+    def create_halo_session_object(self):
         session = cloudpassage.HaloSession(key_id, secret_key)
+        return session
+
+    def test_halosession_christmas_tree(self):
+        fake_api = "api.doodles.cloudpassage.com"
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           proxy_ip="10.0.0.1",
+                                           proxy_port="8081",
+                                           user_agent="SDK TEST",
+                                           api_host=fake_api,
+                                           api_port=443)
+        assert session
+
+    def test_override_useragent_string(self):
+        override_string = "Halo API SDK TEST SUITE"
+        session = self.create_halo_session_object()
+        session.user_agent = override_string
+        assert session.user_agent == override_string
+
+    def test_build_proxy_struct_ip_only(self):
+        proxy_ip = "10.0.0.1"
+        session = self.create_halo_session_object()
+        result = session.build_proxy_struct(proxy_ip, None)
+        assert result["https"] == "http://10.0.0.1:8080"
+
+    def test_build_proxy_struct_ip_and_port(self):
+        proxy_ip = "10.0.0.1"
+        proxy_port = 8081
+        session = self.create_halo_session_object()
+        result = session.build_proxy_struct(proxy_ip, proxy_port)
+        assert result["https"] == "http://10.0.0.1:8081"
+
+    def test_halosession_instantiation(self):
+        session = self.create_halo_session_object()
         assert session
 
     def test_halosession_useragent_override(self):
@@ -60,7 +93,7 @@ class TestHaloSession:
                 (session.proxy_port == proxy_port))
 
     def test_halosession_authentication(self):
-        session = cloudpassage.HaloSession(key_id, secret_key)
+        session = self.create_halo_session_object()
         session.authenticate_client()
         assert ((session.auth_token is not None) and
                 (session.auth_scope is not None))
@@ -73,169 +106,3 @@ class TestHaloSession:
         except cloudpassage.CloudPassageAuthentication:
             authfailed = True
         assert authfailed
-"""
-    def test_halosession_get(self):
-        url = "/v1/events"
-        session = halo.HaloSession(key_id, secret_key)
-        session.authenticate_client()
-        get_json = session.get(url)
-        assert "events" in get_json
-
-    def test_halosession_get_404(self):
-        url = "/v1/barf"
-        pathfailed = False
-        session = halo.HaloSession(key_id, secret_key)
-        session.authenticate_client()
-        try:
-            get_json = session.get(url)
-        except halo.CloudPassageResourceExistence:
-            pathfailed = True
-        assert pathfailed
-"""
-
-"""
-    def test_halosession_get_renew_key(self):
-        url = "/v1/events"
-        session = halo.HaloSession(key_id, secret_key)
-        session.authenticate_client()
-        session.auth_token = "fishandchips"
-        get_json = session.get(url)
-        assert "events" in get_json
-
-    def test_halosession_get_set_key(self):
-        url = "/v1/events"
-        session = halo.HaloSession(key_id, secret_key)
-        get_json = session.get(url)
-        assert "events" in get_json
-
-    def test_halosession_post_validation_exception(self):
-        rejected = False
-        groupname = content_name
-        url = "/v1/groups"
-        reqbody = {"group": {
-            "name": str(groupname + groupname),
-                      "linux_firewall_policy_id": None,
-                      "windows_firewall_policy_id": None,
-                      "policy_ids": [],
-                      "tag": str(groupname + groupname)}
-                      }
-        session = halo.HaloSession(key_id, secret_key)
-        session.authenticate_client()
-        try:
-            resp = session.post(url, reqbody)
-        except halo.CloudPassageValidation:
-            rejected = True
-        assert rejected
-
-    def test_halosession_post_insufficient_scope(self):
-        rejected = False
-        groupname = content_name
-        url = "/v1/groups"
-        reqbody = {"group": {
-            "name": groupname[:20],
-                      "linux_firewall_policy_id": None,
-                      "windows_firewall_policy_id": None,
-                      "policy_ids": [],
-                      "tag": groupname[:20]}
-                      }
-        session = halo.HaloSession(ro_key_id, ro_secret_key)
-        session.authenticate_client()
-        try:
-            resp = session.post(url, reqbody)
-        except halo.CloudPassageAuthorization:
-            rejected = True
-        assert rejected
-"""
-# Will re-enable as part of a test that cleans up after itself
-#    def test_halosession_post_success(self):
-#        groupname = content_name
-#        url = "/v1/groups"
-#        reqbody = {"group": {
-#            "name": groupname[:20],
-#                        "linux_firewall_policy_id": None,
-#                        "windows_firewall_policy_id": None,
-#                        "policy_ids": [],
-#                        "tag": groupname[:20]}
-#                    }
-#        session = halo.HaloSession(key_id, secret_key)
-#        session.authenticate_client()
-#        resp = session.post(url, reqbody)
-#        assert "group" in resp
-
-"""
-    def test_halosession_put_validation_exception(self):
-        groupname = content_name[:21]
-        rejected = False
-        grouptag = content_name + content_name + content_name
-        posturl = "/v1/groups"
-        postbody = {"group": {
-            "name": groupname,
-            "linux_firewall_policy_id": None,
-            "windows_firewall_policy_id": None,
-            "policy_ids": [],
-            "tag": groupname}
-            }
-        putbody = {"group": {"tag": grouptag}}
-        session = halo.HaloSession(key_id, secret_key)
-        session.authenticate_client()
-        post_ret = session.post(posturl, postbody)
-        grp_id = post_ret["group"]["id"]
-        put_url = posturl + "/" + grp_id
-        try:
-            session.put(put_url, putbody)
-        except halo.CloudPassageValidation:
-            rejected = True
-        assert rejected
-
-    def test_halosession_put_insufficient_scope(self):
-        groupname = content_name[:22]
-        rejected = False
-        posturl = "/v1/groups"
-        postbody = {"group": {
-            "name": groupname,
-            "linux_firewall_policy_id": None,
-            "windows_firewall_policy_id": None,
-            "policy_ids": [],
-            "tag": groupname}
-            }
-        putbody = {"group": {"tag": "NEWTAG"}}
-        session = halo.HaloSession(key_id, secret_key)
-        session.authenticate_client()
-        post_ret = session.post(posturl, postbody)
-        grp_id = post_ret["group"]["id"]
-        put_url = posturl + "/" + grp_id
-        try:
-            session = halo.HaloSession(ro_key_id, ro_secret_key)
-            session.authenticate_client()
-            session.put(put_url, putbody)
-        except halo.CloudPassageAuthorization:
-            rejected = True
-        assert rejected
-
-
-    def test_halosession_delete_insufficient_scope(self):
-        groupname = content_name[:23]
-        rejected = False
-        posturl = "/v1/groups"
-        postbody = {"group": {
-            "name": groupname,
-            "linux_firewall_policy_id": None,
-            "windows_firewall_policy_id": None,
-            "policy_ids": [],
-            "tag": groupname}
-            }
-        session = halo.HaloSession(key_id, secret_key)
-        session.authenticate_client()
-        post_ret = session.post(posturl, postbody)
-        grp_id = post_ret["group"]["id"]
-        del_url = posturl + "/" + grp_id
-        try:
-            session_ro = halo.HaloSession(ro_key_id, ro_secret_key)
-            session_ro.authenticate_client()
-            response = session_ro.delete(del_url)
-            print session_ro.auth_scope
-            print response
-        except halo.CloudPassageAuthorization:
-            rejected = True
-        assert rejected
-"""
