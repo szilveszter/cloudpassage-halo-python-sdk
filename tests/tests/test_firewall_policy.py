@@ -111,7 +111,12 @@ class TestFirewallRule:
         firewall_policy = create_firewall_policy_object()
         firewall_rule = create_firewall_rule_object()
         target_policy_id = firewall_policy.create(firewall_policy_body)
-        target_rule_id = firewall_rule.list_all(target_policy_id)[0]["id"]
+        rule_imported = firewall_rule.list_all(target_policy_id)[0]
+        del rule_imported["url"]
+        rule_imported["position"] = 1
+        rule_body = {"firewall_rule": rule_imported}
+        print rule_body
+        target_rule_id = firewall_rule.create(target_policy_id, rule_body)
         modification_error = firewall_rule.update(target_policy_id,
                                                   target_rule_id,
                                                   modification_body)

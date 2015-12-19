@@ -78,6 +78,16 @@ class TestHaloSession:
         fn_out = session.build_endpoint_prefix()
         assert fn_out == default_good
 
+    def test_halosession_build_endpoint_prefix_fail(self):
+        rejected = False
+        session = cloudpassage.HaloSession(key_id, secret_key)
+        session.api_host = "apples.nonexist.nope.nada"
+        try:
+            fn_out = session.build_endpoint_prefix()
+        except:
+            rejected = True
+        assert rejected
+
     def test_halosession_build_header(self):
         session = cloudpassage.HaloSession(key_id, secret_key)
         session.authenticate_client()

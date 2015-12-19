@@ -6,3 +6,4 @@ tests/public
 cloudpassage.egg-info
 .coverage
 docs/build
+htmlcov

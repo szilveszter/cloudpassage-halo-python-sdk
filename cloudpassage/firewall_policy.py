@@ -117,8 +117,9 @@ class FirewallRule:
 
         sanity.validate_object_id(firewall_policy_id)
         request = HttpHelper(self.session)
-        endpoint = "/v1/firewall_policies/%s/firewall_rules"
-        response = request.post(endpoint, request_body)
+        endpoint = ("/v1/firewall_policies/%s/firewall_rules" %
+                    firewall_policy_id)
+        response = request.post(endpoint, rule_body)
         policy_id = response["firewall_rule"]["id"]
         return(policy_id)
 
