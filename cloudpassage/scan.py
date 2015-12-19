@@ -1,4 +1,5 @@
 import cloudpassage.sanity as sanity
+import cloudpassage.utility as utility
 from exceptions import CloudPassageValidation
 from http_helper import HttpHelper
 from policy import Policy
@@ -36,6 +37,11 @@ class Scan:
                                       "completed_clean",
                                       "completed_with_errors",
                                       "failed"]
+        self.supported_search_fields = ["server_id",
+                                        "module",
+                                        "status",
+                                        "since",
+                                        "until"]
         return None
 
     def initiate_scan(self, server_id, scan_type):
@@ -106,34 +112,36 @@ class Scan:
     def scan_history(self, **kwargs):
         """Get a list of historical scans.
 
-        Args:
+        Keyword args:
             server_id (str): Id of server
             module (str or list): sca, fim, svm, sam
             status (str or list): queued, pending, running, completed_clean,
             completed_with_errors, failed
+            since (str): ISO 8601 formatted string representing the starting \
+            date and time for query
+            until (str): ISO 8601 formatted string representing the ending \
+            date and time for query
+            max_pages (int): maximum number of pages to fetch.  Default: 20.
 
         Returns:
             list: List of scan objects
         """
 
         max_pages = 20
-        url_params = {}
-        if "server_id" in kwargs:
-            url_params["server_id"] = kwargs["server_id"]
-        if "module" in kwargs:
-            url_params["module"] = self.verify_and_build_module_params(
-                                   kwargs["module"])
-        if "status" in kwargs:
-            url_params["status"] = self.verify_and_build_status_params(
-                                   kwargs["status"])
+        request_params_raw = {}
         if "max_pages" in kwargs:
             max_pages = kwargs["max_pages"]
         endpoint = "/v1/scans"
         key = "scans"
         request = HttpHelper(self.session)
-        if url_params != {}:
+        for param in self.supported_search_fields:
+            if param in kwargs:
+                request_params_raw[param] = kwargs[param]
+        if request_params_raw != {}:
+            request_params = utility.sanitize_url_params(request_params_raw)
             response = request.get_paginated(endpoint, key, max_pages,
-                                             params=url_params)
+                                             params=request_params)
+            print request_params
         else:
             response = request.get_paginated(endpoint, key, max_pages)
         return(response)
