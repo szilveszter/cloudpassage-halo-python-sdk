@@ -265,7 +265,6 @@ class TestScan:
         until = cloudpassage.utility.time_string_now()
         since = datetime.datetime.utcnow() - datetime.timedelta(weeks=1)
         scan_list = scan.scan_history(max_pages=2, since=since, until=until)
-        for item in scan_list:
         assert "id" in scan_list[0]
 
 

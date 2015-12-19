@@ -1,4 +1,5 @@
 import cloudpassage
+import datetime
 import json
 import os
 
@@ -93,6 +94,27 @@ class TestFimBaseline:
                 break
         assert target_id is not None
         return target_id
+
+    def get_active_linux_host(self):
+        session = cloudpassage.HaloSession(key_id, secret_key)
+        server = cloudpassage.Server(session)
+        list_of_active_linux_servers = server.list_all(state="active",
+                                                       platform="linux")
+        return list_of_active_linux_servers[0]["id"]
+
+    def test_create_update_delete_baseline(self):
+        fim_policy_id = self.get_active_linux_policy()
+        target_host_id = self.get_active_linux_host()
+        fim_baseline = self.build_fim_baseline_object()
+        expiration = 1
+        comment_text = "Testing Comment"
+        baseline_id = fim_baseline.create(fim_policy_id,
+                                          target_host_id,
+                                          expires=expiration,
+                                          comment=comment_text)
+        fim_baseline.update(fim_policy_id, baseline_id, target_host_id)
+        none_is_success = fim_baseline.delete(fim_policy_id, baseline_id)
+        assert none_is_success is None
 
     def test_instantiation(self):
         session = cloudpassage.HaloSession(key_id, secret_key)
