@@ -38,14 +38,14 @@ class ApiKeyManager:
     """
 
     def __init__(self, **kwargs):
-        api_hostname = "api.cloudpassage.com"
-        key_id = None
-        secret_key = None
-        config_file = None
+        self.api_hostname = "api.cloudpassage.com"
+        self.key_id = None
+        self.secret_key = None
+        self.config_file = None
         if "config_file" in kwargs:
-            config_file = kwargs["config_file"]
+            self.config_file = kwargs["config_file"]
         else:
-            config_file = "/etc/cloudpassage.yaml"
+            self.config_file = "/etc/cloudpassage.yaml"
         env_variables = {"key_id": os.getenv("HALO_API_KEY"),
                          "secret_key": os.getenv("HALO_API_SECRET_KEY"),
                          "api_hostname": os.getenv("HALO_API_HOSTNAME")}
@@ -56,7 +56,7 @@ class ApiKeyManager:
                 self.api_hostname = env_variables["api_hostname"]
             return
         else:
-            with open(config_file) as y_config_file:
+            with open(self.config_file) as y_config_file:
                 session_yaml = yaml.load(y_config_file)["defaults"]
             self.key_id = session_yaml["key_id"]
             self.secret_key = session_yaml["secret_key"]

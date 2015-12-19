@@ -1,4 +1,5 @@
 import cloudpassage
+import datetime
 import json
 import os
 import pytest
@@ -216,31 +217,31 @@ class TestScan:
         scan_type = "sam"
         scanner = self.build_scan_object()
         target_id = self.get_sam_target()
-        report = scanner.scan_history(module=scan_type)
+        report = scanner.scan_history(module=scan_type, max_pages=2)
         assert report[0]["module"] == scan_type
 
     def test_scan_history_by_multi_scan_type(self):
         scan_types = ["sam", "svm"]
         scanner = self.build_scan_object()
         target_id = self.get_sam_target()
-        report = scanner.scan_history(module=scan_types)
+        report = scanner.scan_history(module=scan_types, max_pages=2)
         assert report[0]["module"] in scan_types
 
     def test_scan_history_by_single_status(self):
         scan_status = "completed_clean"
         scanner = self.build_scan_object()
         target_id = self.get_sam_target()
-        report = scanner.scan_history(status=scan_status)
+        report = scanner.scan_history(status=scan_status, max_pages=2)
         assert report[0]["status"] == scan_status
 
+    """
     def test_scan_history_by_multi_status(self):
         scan_status = ["completed_clean", "completed_with_errors"]
         scanner = self.build_scan_object()
         target_id = self.get_sam_target()
-        report = scanner.scan_history(status=scan_status)
+        report = scanner.scan_history(status=scan_status, max_pages=2)
         assert report[0]["status"] in scan_status
 
-    """
     def test_scan_details(self):
         scanner = self.build_scan_object()
         target_id = self.get_fim_target()
@@ -258,6 +259,14 @@ class TestScan:
         target_findings_body = scanner.findings(target_fim_scan_id,
                                                 target_finding)
         assert "id" in target_findings_body
+
+    def test_scan_history_by_date(self):
+        scan = self.build_scan_object()
+        until = cloudpassage.utility.time_string_now()
+        since = datetime.datetime.utcnow() - datetime.timedelta(weeks=1)
+        scan_list = scan.scan_history(max_pages=2, since=since, until=until)
+        for item in scan_list:
+        assert "id" in scan_list[0]
 
 
 class TestCveException:
