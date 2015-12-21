@@ -1,4 +1,4 @@
-'''CloudPassage Api Key Manager'''
+"""CloudPassage Api Key Manager"""
 
 import os
 import yaml
@@ -68,8 +68,8 @@ class ApiKeyManager(object):
                 self.api_hostname = session_yaml["api_hostname"]
             return
 
-    # pylint: disable=missing-docstring, no-self-use
-    def env_vars_are_set(self, env_vars):
+    def env_vars_are_set(self, env_vars):  # pylint: disable=no-self-use
+        """Determine if environment vars are correctly set"""
         vars_are_set = True
         if env_vars["key_id"] is None or env_vars["secret_key"] is None:
             vars_are_set = False

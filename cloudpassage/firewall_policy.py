@@ -1,4 +1,6 @@
-'''docstring'''
+"""FirewallPolicy, FirewallRule, FirewallService, FirewallZone,
+and FirewallInterface classes
+"""
 
 import cloudpassage.sanity as sanity
 from cloudpassage.http_helper import HttpHelper
@@ -18,13 +20,16 @@ class FirewallPolicy(Policy):
     policy = "firewall_policy"
     policies = "firewall_policies"
 
-    def endpoint(self):  # pylint: disable=no-self-use,missing-docstring
+    def endpoint(self):  # pylint: disable=no-self-use
+        """Defines endpoint for API requests"""
         return "/v1/%s" % FirewallPolicy.policies
 
-    def pagination_key(self):  # pylint: disable=no-self-use,missing-docstring
+    def pagination_key(self):  # pylint: disable=no-self-use
+        """Defines the pagination key for parsing paged results"""
         return FirewallPolicy.policies
 
-    def policy_key(self):  # pylint: disable=no-self-use,missing-docstring
+    def policy_key(self):  # pylint: disable=no-self-use
+        """Defines the key used to pull the policy from the json document"""
         return FirewallPolicy.policy
 
 
@@ -202,13 +207,16 @@ class FirewallZone(Policy):
     policy = "firewall_zone"
     policies = "firewall_zones"
 
-    def endpoint(self):  # pylint: disable=no-self-use,missing-docstring
+    def endpoint(self):  # pylint: disable=no-self-use
+        """Defines endpoint for API requests"""
         return "/v1/%s" % FirewallZone.policies
 
-    def pagination_key(self):  # pylint: disable=no-self-use,missing-docstring
+    def pagination_key(self):  # pylint: disable=no-self-use
+        """Defines the pagination key for parsing paged results"""
         return FirewallZone.policies
 
-    def policy_key(self):  # pylint: disable=no-self-use,missing-docstring
+    def policy_key(self):  # pylint: disable=no-self-use
+        """Defines the key used to pull the policy from the json document"""
         return FirewallZone.policy
 
 
@@ -226,13 +234,16 @@ class FirewallService(Policy):
     policy = "firewall_service"
     policies = "firewall_services"
 
-    def endpoint(self):  # pylint: disable=no-self-use,missing-docstring
+    def endpoint(self):  # pylint: disable=no-self-use
+        """Defines endpoint for API requests"""
         return "/v1/%s" % FirewallService.policies
 
-    def pagination_key(self):  # pylint: disable=no-self-use,missing-docstring
+    def pagination_key(self):  # pylint: disable=no-self-use
+        """Defines the pagination key for parsing paged results"""
         return FirewallService.policies
 
-    def policy_key(self):  # pylint: disable=no-self-use,missing-docstring
+    def policy_key(self):  # pylint: disable=no-self-use
+        """Defines the key used to pull the policy from the json document"""
         return FirewallService.policy
 
 
@@ -250,11 +261,14 @@ class FirewallInterface(Policy):
     policy = "firewall_interface"
     policies = "firewall_interfaces"
 
-    def endpoint(self):  # pylint: disable=no-self-use,missing-docstring
+    def endpoint(self):  # pylint: disable=no-self-use
+        """Defines endpoint for API requests"""
         return "/v1/%s" % FirewallInterface.policies
 
-    def pagination_key(self):  # pylint: disable=no-self-use,missing-docstring
+    def pagination_key(self):  # pylint: disable=no-self-use
+        """Defines the pagination key for parsing paged results"""
         return FirewallInterface.policies
 
-    def policy_key(self):  # pylint: disable=no-self-use,missing-docstring
+    def policy_key(self):  # pylint: disable=no-self-use
+        """Defines the key used to pull the policy from the json document"""
         return FirewallInterface.policy

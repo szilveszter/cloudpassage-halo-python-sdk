@@ -1,4 +1,4 @@
-'''docstring'''
+"""Server class"""
 
 import re
 import cloudpassage.sanity as sanity
@@ -203,8 +203,8 @@ class Server(object):
         command_status = response["command"]
         return command_status
 
-    # pylint: disable=missing-docstring
     def validate_server_search_criteria(self, criteria):
+        """Validate arguments for Server query"""
         arguments_valid = True
         if "state" in criteria:
             if not self.validate_server_state(criteria["state"]):
@@ -223,8 +223,8 @@ class Server(object):
                 arguments_valid = False
         return arguments_valid
 
-    # pylint: disable=missing-docstring
     def validate_server_state(self, state):
+        """Ensure that server state in query is valid"""
         if isinstance(state, list):
             for s in state:
                 if s not in self.valid_server_states:
@@ -234,7 +234,8 @@ class Server(object):
                 return False
         return True
 
-    def validate_platform(self, platform):  # pylint: disable=missing-docstring
+    def validate_platform(self, platform):
+        """Validate platform in query is valid"""
         if isinstance(platform, list):
             for p in platform:
                 if not self.platform_validator.match(p):
@@ -244,7 +245,8 @@ class Server(object):
                 return False
         return True
 
-    def validate_cve_id(self, cve_id):  # pylint: disable=missing-docstring
+    def validate_cve_id(self, cve_id):
+        """Validate CVE ID designation"""
         if isinstance(cve_id, list):
             for c in cve_id:
                 if not self.cve_validator.match(c):
@@ -254,7 +256,8 @@ class Server(object):
                 return False
         return True
 
-    def validate_kb_id(self, kb_id):  # pylint: disable=missing-docstring
+    def validate_kb_id(self, kb_id):
+        """Validate KB ID is valid"""
         if isinstance(kb_id, list):
             for k in kb_id:
                 if not self.kb_validator.match(k):

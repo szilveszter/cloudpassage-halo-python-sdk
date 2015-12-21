@@ -1,10 +1,12 @@
-'''docstring'''
+"""HttpHelper class.  Primary-level object, facilitates
+GET / POST / PUT / DELETE requests against API.
+"""
 
 import json
 import urlparse
+from cloudpassage.exceptions import CloudPassageValidation
 import cloudpassage.utility as utility
 import requests
-from cloudpassage.exceptions import CloudPassageValidation
 
 
 class HttpHelper(object):
@@ -137,6 +139,7 @@ class HttpHelper(object):
         return response_accumulator
 
     def process_page(self, page, key):
+        """Page goes in, list data comes out."""
         response_accumulator = []
         next_page = None
         if key not in page:

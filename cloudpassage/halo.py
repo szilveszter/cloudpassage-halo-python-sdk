@@ -1,4 +1,8 @@
-'''docstring'''
+"""HaloSession class.
+
+Manages session configuration information for interacting with the
+CloudPassage Halo API.
+"""
 
 import base64
 import threading

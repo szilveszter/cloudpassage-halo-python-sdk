@@ -1,4 +1,4 @@
-'''docstring'''
+"""ServerGroup class"""
 
 import cloudpassage.utility as utility
 import cloudpassage.sanity as sanity

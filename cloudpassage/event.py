@@ -1,6 +1,4 @@
-'''
-docstring
-'''
+"""Event class"""
 
 
 import cloudpassage.utility as utility
