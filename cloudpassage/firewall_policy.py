@@ -1,6 +1,8 @@
+'''docstring'''
+
 import cloudpassage.sanity as sanity
-from http_helper import HttpHelper
-from policy import Policy
+from cloudpassage.http_helper import HttpHelper
+from cloudpassage.policy import Policy
 
 
 class FirewallPolicy(Policy):
@@ -16,17 +18,17 @@ class FirewallPolicy(Policy):
     policy = "firewall_policy"
     policies = "firewall_policies"
 
-    def endpoint(self):
-        return("/v1/%s" % FirewallPolicy.policies)
+    def endpoint(self):  # pylint: disable=no-self-use,missing-docstring
+        return "/v1/%s" % FirewallPolicy.policies
 
-    def pagination_key(self):
-        return(FirewallPolicy.policies)
+    def pagination_key(self):  # pylint: disable=no-self-use,missing-docstring
+        return FirewallPolicy.policies
 
-    def policy_key(self):
-        return(FirewallPolicy.policy)
+    def policy_key(self):  # pylint: disable=no-self-use,missing-docstring
+        return FirewallPolicy.policy
 
 
-class FirewallRule:
+class FirewallRule(object):
     """Initializing the FirewallRule class:
 
     Args:
@@ -59,7 +61,7 @@ class FirewallRule:
         key = "firewall_rules"
         max_pages = 30
         response = request.get_paginated(endpoint, key, max_pages)
-        return(response)
+        return response
 
     def describe(self, firewall_policy_id, firewall_rule_id):
         """Get the detailed configuration of a firewall rule
@@ -81,7 +83,7 @@ class FirewallRule:
                     (firewall_policy_id, firewall_rule_id))
         response = request.get(endpoint)
         result = response["firewall_rule"]
-        return(result)
+        return result
 
     def create(self, firewall_policy_id, rule_body):
         """Creates a rule within a firewall policy.
@@ -121,7 +123,7 @@ class FirewallRule:
                     firewall_policy_id)
         response = request.post(endpoint, rule_body)
         policy_id = response["firewall_rule"]["id"]
-        return(policy_id)
+        return policy_id
 
     def delete(self, firewall_policy_id, firewall_rule_id):
         """Delete a firewall policy rule
@@ -141,7 +143,7 @@ class FirewallRule:
         endpoint = ("/v1/firewall_policies/%s/firewall_rules/%s" %
                     (firewall_policy_id, firewall_rule_id))
         response = request.delete(endpoint)
-        return(None)
+        return None
 
     def update(self, firewall_policy_id, firewall_rule_id, firewall_rule_body):
         """Update a firewall policy rule.
@@ -183,7 +185,7 @@ class FirewallRule:
         endpoint = ("/v1/firewall_policies/%s/firewall_rules/%s" %
                     (firewall_policy_id, firewall_rule_id))
         response = request.put(endpoint, firewall_rule_body)
-        return(None)
+        return None
 
 
 class FirewallZone(Policy):
@@ -200,14 +202,14 @@ class FirewallZone(Policy):
     policy = "firewall_zone"
     policies = "firewall_zones"
 
-    def endpoint(self):
-        return("/v1/%s" % FirewallZone.policies)
+    def endpoint(self):  # pylint: disable=no-self-use,missing-docstring
+        return "/v1/%s" % FirewallZone.policies
 
-    def pagination_key(self):
-        return(FirewallZone.policies)
+    def pagination_key(self):  # pylint: disable=no-self-use,missing-docstring
+        return FirewallZone.policies
 
-    def policy_key(self):
-        return(FirewallZone.policy)
+    def policy_key(self):  # pylint: disable=no-self-use,missing-docstring
+        return FirewallZone.policy
 
 
 class FirewallService(Policy):
@@ -224,14 +226,14 @@ class FirewallService(Policy):
     policy = "firewall_service"
     policies = "firewall_services"
 
-    def endpoint(self):
-        return("/v1/%s" % FirewallService.policies)
+    def endpoint(self):  # pylint: disable=no-self-use,missing-docstring
+        return "/v1/%s" % FirewallService.policies
 
-    def pagination_key(self):
-        return(FirewallService.policies)
+    def pagination_key(self):  # pylint: disable=no-self-use,missing-docstring
+        return FirewallService.policies
 
-    def policy_key(self):
-        return(FirewallService.policy)
+    def policy_key(self):  # pylint: disable=no-self-use,missing-docstring
+        return FirewallService.policy
 
 
 class FirewallInterface(Policy):
@@ -248,11 +250,11 @@ class FirewallInterface(Policy):
     policy = "firewall_interface"
     policies = "firewall_interfaces"
 
-    def endpoint(self):
-        return("/v1/%s" % FirewallInterface.policies)
+    def endpoint(self):  # pylint: disable=no-self-use,missing-docstring
+        return "/v1/%s" % FirewallInterface.policies
 
-    def pagination_key(self):
-        return(FirewallInterface.policies)
+    def pagination_key(self):  # pylint: disable=no-self-use,missing-docstring
+        return FirewallInterface.policies
 
-    def policy_key(self):
-        return(FirewallInterface.policy)
+    def policy_key(self):  # pylint: disable=no-self-use,missing-docstring
+        return FirewallInterface.policy

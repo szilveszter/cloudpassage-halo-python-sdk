@@ -1,12 +1,15 @@
+'''fixme'''
+
+
 import json
 import datetime
-from exceptions import CloudPassageValidation
-from exceptions import CloudPassageInternalError
-from exceptions import CloudPassageAuthentication
-from exceptions import CloudPassageAuthorization
-from exceptions import CloudPassageResourceExistence
-from exceptions import CloudPassageCollision
-from exceptions import CloudPassageGeneral
+from cloudpassage.exceptions import CloudPassageValidation
+from cloudpassage.exceptions import CloudPassageInternalError
+from cloudpassage.exceptions import CloudPassageAuthentication
+from cloudpassage.exceptions import CloudPassageAuthorization
+from cloudpassage.exceptions import CloudPassageResourceExistence
+# from cloudpassage.exceptions import CloudPassageCollision
+from cloudpassage.exceptions import CloudPassageGeneral
 
 
 def determine_policy_metadata(policy):
@@ -37,12 +40,13 @@ def determine_policy_metadata(policy):
     return_body = {"policy_type": None,
                    "policy_name": None,
                    "target_platform": None}
-    if type(policy) is str:
+    # if type(policy) is str:
+    if isinstance(policy, str):
         working_pol = json.loads(policy)
-    elif type(policy) is dict:
+    elif isinstance(policy, dict):
         working_pol = policy.copy()
     else:
-        print("Policy type must be str or dict!")
+        print "Policy type must be str or dict!"
     try:
         derived_type = working_pol.items()[0][0]
         if derived_type == "fim_policy":
@@ -67,7 +71,7 @@ def determine_policy_metadata(policy):
             return_body["target_platform"] = 'Windows'
     except:
         pass
-    return(return_body)
+    return return_body
 
 
 def sanitize_url_params(params):
@@ -86,29 +90,32 @@ def sanitize_url_params(params):
     '''
     params_working = params.copy()
     for key, value in params_working.items():
-        if type(value) is list:
+        if isinstance(value, list):
             value_corrected = ",".join(value)
             params[key] = value_corrected
-        if type(value) is datetime.datetime:
+        if isinstance(value, datetime.datetime):
             value_corrected = datetime_to_8601(value)
             params[key] = value_corrected
     return params
 
 
 def policy_to_dict(policy):
-    if type(policy) is dict:
+    '''fixme'''
+    if isinstance(policy, dict):
         return policy
     else:
-        return(json.loads(policy))
+        return json.loads(policy)
 
 
 def merge_dicts(first, second):
+    '''fixme'''
     final = first.copy()
     final.update(second)
-    return(final)
+    return final
 
 
 def verify_pages(max_pages):
+    '''fixme'''
     exc = None
     if type(max_pages) is not int:
         fail_msg = "Type wrong for max_pages.  Should be int."
@@ -120,6 +127,7 @@ def verify_pages(max_pages):
 
 
 def parse_status(url, resp_code, resp_text):
+    ''' parse http status from response'''
     success = True
     exc = None
     if resp_code not in [200, 201, 202, 204]:
@@ -138,7 +146,7 @@ def parse_status(url, resp_code, resp_text):
             exc = CloudPassageValidation(resp_text)
         else:
             exc = CloudPassageGeneral(resp_text)
-    return(success, exc)
+    return success, exc
 
 
 def time_string_now():
@@ -150,10 +158,11 @@ def time_string_now():
     """
 
     now = datetime.datetime.utcnow()
-    return(datetime_to_8601(now))
+    return datetime_to_8601(now)
 
 
-def datetime_to_8601(dt):
+# There should be a built-in function for coverting to 8601.
+def datetime_to_8601(original_time):
     """Converts a datetime object to ISO 8601 formatted string.
 
     Args:
@@ -164,6 +173,7 @@ def datetime_to_8601(dt):
 
     """
 
-    time_split = (dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second,
-                  dt.microsecond)
+    time_split = (original_time.year, original_time.month, original_time.day,
+                  original_time.hour, original_time.minute,
+                  original_time.second, original_time.microsecond)
     return "%04d-%02d-%02dT%02d:%02d:%02d.%06dZ" % time_split

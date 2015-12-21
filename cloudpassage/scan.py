@@ -1,11 +1,15 @@
+'''
+docstring
+'''
+
 import cloudpassage.sanity as sanity
 import cloudpassage.utility as utility
-from exceptions import CloudPassageValidation
-from http_helper import HttpHelper
-from policy import Policy
+from cloudpassage.exceptions import CloudPassageValidation
+from cloudpassage.http_helper import HttpHelper
+from cloudpassage.policy import Policy
 
 
-class Scan:
+class Scan(object):
     """Initializing the Scan class:
 
     Args:
@@ -18,30 +22,38 @@ class Scan:
 
     def __init__(self, session):
         self.session = session
-        self.supported_scans = {"sca": "sca",
-                                "csm": "sca",
-                                "svm": "svm",
-                                "sva": "svm",
-                                "sam": "sam",
-                                "fim": "fim",
-                                "sv": "sv"}
-        self.supported_historical_scans = {"sca": "sca",
-                                           "csm": "sca",
-                                           "svm": "svm",
-                                           "sva": "svm",
-                                           "sam": "sam",
-                                           "fim": "fim"}
-        self.supported_scan_status = ["queued",
-                                      "pending",
-                                      "running",
-                                      "completed_clean",
-                                      "completed_with_errors",
-                                      "failed"]
-        self.supported_search_fields = ["server_id",
-                                        "module",
-                                        "status",
-                                        "since",
-                                        "until"]
+        self.supported_scans = {
+            "sca": "sca",
+            "csm": "sca",
+            "svm": "svm",
+            "sva": "svm",
+            "sam": "sam",
+            "fim": "fim",
+            "sv": "sv"
+        }
+        self.supported_historical_scans = {
+            "sca": "sca",
+            "csm": "sca",
+            "svm": "svm",
+            "sva": "svm",
+            "sam": "sam",
+            "fim": "fim"
+        }
+        self.supported_scan_status = [
+            "queued",
+            "pending",
+            "running",
+            "completed_clean",
+            "completed_with_errors",
+            "failed"
+        ]
+        self.supported_search_fields = [
+            "server_id",
+            "module",
+            "status",
+            "since",
+            "until"
+        ]
         return None
 
     def initiate_scan(self, server_id, scan_type):
@@ -77,7 +89,7 @@ class Scan:
             request = HttpHelper(self.session)
             response = request.post(endpoint, request_body)
             command_info = response["command"]
-            return(command_info)
+            return command_info
 
     def last_scan_results(self, server_id, scan_type):
         """Get the results of scan_type performed on server_id.
@@ -107,7 +119,7 @@ class Scan:
             endpoint = "/v1/servers/%s/%s" % (server_id, scan_type_normalized)
             request = HttpHelper(self.session)
             response = request.get(endpoint)
-            return(response)
+            return response
 
     def scan_history(self, **kwargs):
         """Get a list of historical scans.
@@ -129,6 +141,15 @@ class Scan:
 
         max_pages = 20
         request_params_raw = {}
+        url_params = {}
+        if "server_id" in kwargs:
+            url_params["server_id"] = kwargs["server_id"]
+        if "module" in kwargs:
+            url_params["module"] = self.verify_and_build_module_params(
+                kwargs["module"])
+        if "status" in kwargs:
+            url_params["status"] = self.verify_and_build_status_params(
+                kwargs["status"])
         if "max_pages" in kwargs:
             max_pages = kwargs["max_pages"]
         endpoint = "/v1/scans"
@@ -144,7 +165,7 @@ class Scan:
             print request_params
         else:
             response = request.get_paginated(endpoint, key, max_pages)
-        return(response)
+        return response
 
     def findings(self, scan_id, findings_id):
         """Get FIM findings details by scan and findings ID
@@ -161,7 +182,7 @@ class Scan:
         endpoint = "/v1/scans/%s/findings/%s" % (scan_id, findings_id)
         request = HttpHelper(self.session)
         response = request.get(endpoint)
-        return(response)
+        return response
 
     def scan_details(self, scan_id):
         """Get detailed scan information
@@ -178,20 +199,23 @@ class Scan:
         request = HttpHelper(self.session)
         response = request.get(endpoint)
         report = response["scan"]
-        return(report)
+        return report
 
+    # pylint: disable=missing-docstring
     def scan_status_supported(self, scan_status):
         if scan_status in self.supported_scan_status:
             return True
         else:
             return False
 
+    # pylint: disable=missing-docstring
     def scan_type_supported(self, scan_type):
         if scan_type in self.supported_scans:
             return True
         else:
             return False
 
+    # pylint: disable=missing-docstring
     def scan_history_supported(self, scan_type):
         if scan_type in self.supported_historical_scans:
             return True
@@ -199,6 +223,7 @@ class Scan:
             return False
 
     def verify_and_build_status_params(self, status_raw):
+        '''docstring'''
         if type(status_raw) is list:
             for status in status_raw:
                 if self.scan_status_supported(status) is not True:
@@ -208,9 +233,10 @@ class Scan:
             if self.scan_status_supported(status_raw) is False:
                 error_message = "Unsupported status: %s" % status_raw
                 raise CloudPassageValidation(error_message)
-        return(status_raw)
+        return status_raw
 
     def verify_and_build_module_params(self, module_raw):
+        '''docstring'''
         if type(module_raw) is list:
             for module in module_raw:
                 if self.scan_type_supported(module) is not True:
@@ -220,7 +246,7 @@ class Scan:
             if self.scan_type_supported(module_raw) is False:
                 error_message = "Unsupported module: %s" % module_raw
                 raise CloudPassageValidation(error_message)
-        return(module_raw)
+        return module_raw
 
 
 class CveException(Policy):
@@ -237,20 +263,20 @@ class CveException(Policy):
     policy = "cve_exception"
     policies = "cve_exceptions"
 
-    def endpoint(self):
-        return("/v1/%s" % CveException.policies)
+    def endpoint(self):  # pylint: disable=no-self-use,missing-docstring
+        return "/v1/%s" % CveException.policies
 
-    def pagination_key(self):
-        return(CveException.policies)
+    def pagination_key(self):  # pylint: disable=no-self-use,missing-docstring
+        return CveException.policies
 
-    def policy_key(self):
-        return(CveException.policy)
+    def policy_key(self):  # pylint: disable=no-self-use,missing-docstring
+        return CveException.policy
 
-    def create(self, unimportant):
+    def create(self, unimportant):  # pylint: disable=missing-docstring
         raise NotImplementedError
 
-    def delete(self, unimportant):
+    def delete(self, unimportant):  # pylint: disable=missing-docstring
         raise NotImplementedError
 
-    def update(self, unimportant):
+    def update(self, unimportant):  # pylint: disable=missing-docstring
         raise NotImplementedError

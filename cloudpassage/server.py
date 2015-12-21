@@ -1,11 +1,13 @@
-import cloudpassage.utility as utility
-import cloudpassage.sanity as sanity
+'''docstring'''
+
 import re
-from exceptions import CloudPassageValidation
-from http_helper import HttpHelper
+import cloudpassage.sanity as sanity
+import cloudpassage.utility as utility
+from cloudpassage.exceptions import CloudPassageValidation
+from cloudpassage.http_helper import HttpHelper
 
 
-class Server:
+class Server(object):
     """Initializing the Server class:
 
     Args:
@@ -73,7 +75,7 @@ class Server:
                                              params=request_params)
         else:
             response = request.get_paginated(endpoint, key, max_pages)
-        return(response)
+        return response
 
     def assign_group(self, server_id, group_id):
         """Moves server to another group.
@@ -93,7 +95,7 @@ class Server:
         request = HttpHelper(self.session)
         request.put(endpoint, request_body)
         # Exception will throw if the prior line fails.
-        return(True)
+        return True
 
     def delete(self, server_id):
         """Deletes server indicated by server_id.
@@ -114,7 +116,7 @@ class Server:
         request = HttpHelper(self.session)
         request.delete(endpoint)
         # If no exception from request, we're successful
-        return(True)
+        return True
 
     def describe(self, server_id):
         """Get server details by server ID
@@ -131,7 +133,7 @@ class Server:
         request = HttpHelper(self.session)
         response = request.get(endpoint)
         server_details = response["server"]
-        return(server_details)
+        return server_details
 
     def retire(self, server_id):
         """This method retires a server
@@ -199,8 +201,9 @@ class Server:
         request = HttpHelper(self.session)
         response = request.get(endpoint)
         command_status = response["command"]
-        return(command_status)
+        return command_status
 
+    # pylint: disable=missing-docstring
     def validate_server_search_criteria(self, criteria):
         arguments_valid = True
         if "state" in criteria:
@@ -218,10 +221,11 @@ class Server:
         if "missing_kb" in criteria:
             if not self.validate_kb_id(criteria["missing_kb"]):
                 arguments_valid = False
-        return(arguments_valid)
+        return arguments_valid
 
+    # pylint: disable=missing-docstring
     def validate_server_state(self, state):
-        if type(state) == list:
+        if isinstance(state, list):
             for s in state:
                 if s not in self.valid_server_states:
                     return False
@@ -230,8 +234,8 @@ class Server:
                 return False
         return True
 
-    def validate_platform(self, platform):
-        if type(platform) == list:
+    def validate_platform(self, platform):  # pylint: disable=missing-docstring
+        if isinstance(platform, list):
             for p in platform:
                 if not self.platform_validator.match(p):
                     return False
@@ -240,8 +244,8 @@ class Server:
                 return False
         return True
 
-    def validate_cve_id(self, cve_id):
-        if type(cve_id) == list:
+    def validate_cve_id(self, cve_id):  # pylint: disable=missing-docstring
+        if isinstance(cve_id, list):
             for c in cve_id:
                 if not self.cve_validator.match(c):
                     return False
@@ -250,8 +254,8 @@ class Server:
                 return False
         return True
 
-    def validate_kb_id(self, kb_id):
-        if type(kb_id) == list:
+    def validate_kb_id(self, kb_id):  # pylint: disable=missing-docstring
+        if isinstance(kb_id, list):
             for k in kb_id:
                 if not self.kb_validator.match(k):
                     return False

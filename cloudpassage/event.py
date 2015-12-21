@@ -1,10 +1,13 @@
-import re
-import utility
-from exceptions import CloudPassageValidation
-from http_helper import HttpHelper
+'''
+docstring
+'''
 
 
-class Event:
+import cloudpassage.utility as utility
+from cloudpassage.http_helper import HttpHelper
+
+
+class Event(object):
     """Initializing the Event class:
 
     Args:
@@ -17,13 +20,15 @@ class Event:
 
     def __init__(self, session):
         self.session = session
-        self.supported_search_fields = ["group_id",
-                                        "server_id",
-                                        "server_platform",
-                                        "type",
-                                        "since",
-                                        "until",
-                                        "pages"]
+        self.supported_search_fields = [
+            "group_id",
+            "server_id",
+            "server_platform",
+            "type",
+            "since",
+            "until",
+            "pages"
+        ]
         return None
 
     def list_all(self, pages, **kwargs):
@@ -71,4 +76,4 @@ class Event:
                                              params=request_params)
         else:
             response = request.get_paginated(endpoint, key, max_pages)
-        return(response)
+        return response

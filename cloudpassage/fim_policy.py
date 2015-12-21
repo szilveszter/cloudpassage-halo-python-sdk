@@ -1,7 +1,9 @@
+'''docstring'''
+
 import cloudpassage.utility as utility
 import cloudpassage.sanity as sanity
-from http_helper import HttpHelper
 from cloudpassage.policy import Policy
+from cloudpassage.http_helper import HttpHelper
 
 
 class FimPolicy(Policy):
@@ -18,17 +20,17 @@ class FimPolicy(Policy):
     policy = "fim_policy"
     policies = "fim_policies"
 
-    def endpoint(self):
-        return("/v1/%s" % FimPolicy.policies)
+    def endpoint(self):  # pylint: disable=no-self-use,missing-docstring
+        return "/v1/%s" % FimPolicy.policies
 
-    def pagination_key(self):
-        return(FimPolicy.policies)
+    def pagination_key(self):  # pylint: disable=no-self-use,missing-docstring
+        return FimPolicy.policies
 
-    def policy_key(self):
-        return(FimPolicy.policy)
+    def policy_key(self):  # pylint: disable=no-self-use,missing-docstring
+        return FimPolicy.policy
 
 
-class FimBaseline:
+class FimBaseline(object):
     """Initializing the FimBaseline class:
 
     Args:
@@ -59,7 +61,7 @@ class FimBaseline:
         key = "baselines"
         max_pages = 30
         response = request.get_paginated(endpoint, key, max_pages)
-        return(response)
+        return response
 
     def describe(self, fim_policy_id, fim_baseline_id):
         """Returns the body of the baseline indicated by fim_baseline_id.
@@ -78,7 +80,7 @@ class FimBaseline:
                                                          fim_baseline_id)
         response = request.get(endpoint)
         result = response["baseline"]
-        return(result)
+        return result
 
     def create(self, fim_policy_id, server_id, **kwargs):
         """Creates a FIM baseline
@@ -108,7 +110,7 @@ class FimBaseline:
             request_body["comment"] = kwargs["comment"]
         response = request.post(endpoint, request_body)
         policy_id = response["baseline"]["id"]
-        return(policy_id)
+        return policy_id
 
     def delete(self, fim_policy_id, fim_baseline_id):
         """Delete a FIM baseline by ID
@@ -127,7 +129,7 @@ class FimBaseline:
         endpoint = "/v1/fim_policies/%s/baselines/%s" % (fim_policy_id,
                                                          fim_baseline_id)
         response = request.delete(endpoint)
-        return(None)
+        return None
 
     def update(self, fim_policy_id, fim_baseline_id, server_id):
         """Update a FIM policy baseline.
@@ -148,4 +150,4 @@ class FimBaseline:
                                                          fim_baseline_id)
         request_body = {"baseline": {"server_id": server_id}}
         response = request.put(endpoint, request_body)
-        return(None)
+        return None

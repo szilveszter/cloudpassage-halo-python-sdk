@@ -1,4 +1,8 @@
-from policy import Policy
+'''
+docstring
+'''
+
+from cloudpassage.policy import Policy
 
 
 class ConfigurationPolicy(Policy):
@@ -15,11 +19,11 @@ class ConfigurationPolicy(Policy):
     policy = "policy"
     policies = "policies"
 
-    def endpoint(self):
-        return("/v1/%s" % ConfigurationPolicy.policies)
+    def endpoint(self):  # pylint: disable=no-self-use,missing-docstring
+        return "/v1/%s" % ConfigurationPolicy.policies
 
-    def pagination_key(self):
-        return(ConfigurationPolicy.policies)
+    def pagination_key(self):  # pylint: disable=no-self-use,missing-docstring
+        return ConfigurationPolicy.policies
 
-    def policy_key(self):
-        return(ConfigurationPolicy.policy)
+    def policy_key(self):  # pylint: disable=no-self-use,missing-docstring
+        return ConfigurationPolicy.policy

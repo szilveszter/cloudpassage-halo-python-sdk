@@ -1,9 +1,16 @@
+'''
+docstring
+'''
+
 import cloudpassage.sanity as sanity
 import cloudpassage.utility as utility
-from http_helper import HttpHelper
+from cloudpassage.http_helper import HttpHelper
 
 
-class Policy:
+class Policy(object):
+    '''
+    docstring
+    '''
 
     def __init__(self, session):
         self.session = session
@@ -21,8 +28,8 @@ class Policy:
         """
 
         request = HttpHelper(self.session)
-        return(request.get_paginated(self.endpoint(), self.pagination_key(),
-                                     self.max_pages))
+        return request.get_paginated(self.endpoint(), self.pagination_key(),
+                                     self.max_pages)
 
     def describe(self, policy_id):
         """Get the detailed configuration of a policy
@@ -38,7 +45,7 @@ class Policy:
 
         request = HttpHelper(self.session)
         describe_endpoint = "%s/%s" % (self.endpoint(), policy_id)
-        return(request.get(describe_endpoint)[self.policy_key()])
+        return request.get(describe_endpoint)[self.policy_key()]
 
     def create(self, policy_body):
         """Creates a policy from JSON document.
@@ -48,8 +55,8 @@ class Policy:
 
         request = HttpHelper(self.session)
         request_body = utility.policy_to_dict(policy_body)
-        return(request.post(self.endpoint(),
-                            request_body)[self.policy_key()]["id"])
+        return request.post(self.endpoint(),
+                            request_body)[self.policy_key()]["id"]
 
     def delete(self, policy_id):
         """Delete a policy by ID.  Success returns None"""
@@ -58,7 +65,7 @@ class Policy:
         request = HttpHelper(self.session)
         delete_endpoint = "%s/%s" % (self.endpoint(), policy_id)
         request.delete(delete_endpoint)
-        return(None)
+        return None
 
     def update(self, policy_body):
         """Update a policy.  Success returns None"""
@@ -69,4 +76,4 @@ class Policy:
         sanity.validate_object_id(policy_id)
         update_endpoint = "%s/%s" % (self.endpoint(), policy_id)
         request.put(update_endpoint, request_body)
-        return(None)
+        return None

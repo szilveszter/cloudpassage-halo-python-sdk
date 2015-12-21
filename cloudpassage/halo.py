@@ -1,14 +1,16 @@
+'''docstring'''
+
 import base64
-import json
-import requests
 import threading
 import time
 import cloudpassage.sanity as sanity
-from exceptions import CloudPassageAuthentication
-from exceptions import CloudPassageValidation
+from cloudpassage.exceptions import CloudPassageAuthentication
+from cloudpassage.exceptions import CloudPassageValidation
+
+import requests
 
 
-class HaloSession:
+class HaloSession(object):
     """ Create a Halo API connection object.
 
     On instantiation, it will attempt to authenticate \
@@ -63,7 +65,7 @@ class HaloSession:
             self.user_agent = kwargs["user_agent"]
         return None
 
-    def build_proxy_struct(self, host, port):
+    def build_proxy_struct(self, host, port):  # pylint: disable=no-self-use
         """This builds a structure describing the environment's HTTP
         proxy requirements.
 
@@ -76,9 +78,9 @@ class HaloSession:
             ret_struct["https"] = "http://" + str(host) + ":" + str(port)
         else:
             ret_struct["https"] = "http://" + str(host) + ":8080"
-        return(ret_struct)
+        return ret_struct
 
-    def get_auth_token(self, endpoint, headers):
+    def get_auth_token(self, endpoint, headers):  # pylint: disable=no-self-use
         """This method takes endpoint and header info, and returns the
         oauth token and scope.
 
@@ -100,7 +102,7 @@ class HaloSession:
             scope = auth_resp_json["scope"]
         if resp.status_code == 401:
             token = "BAD"
-        return(token, scope)
+        return token, scope
 
     def authenticate_client(self):
         """This method attempts to set an OAuth token
@@ -131,7 +133,7 @@ class HaloSession:
                 break
             else:
                 time.sleep(1)
-        return(success)
+        return success
 
     def build_endpoint_prefix(self):
         """This constructs everything to the left of the file path in the URL.
@@ -141,7 +143,7 @@ class HaloSession:
             error_message = "Bad API hostname: %s" % self.api_host
             raise CloudPassageValidation(error_message)
         prefix = "https://" + self.api_host + ":" + str(self.api_port)
-        return(prefix)
+        return prefix
 
     def build_header(self):
         """This constructs the auth header, required for all API interaction.
@@ -152,4 +154,4 @@ class HaloSession:
         header = {"Authorization": authstring,
                   "Content-Type": "application/json",
                   "User-Agent": self.user_agent}
-        return(header)
+        return header

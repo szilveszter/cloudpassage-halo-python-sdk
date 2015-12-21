@@ -1,62 +1,76 @@
-import base64
-import os
+'''
+docstring
+'''
+
 import re
 
 
-def validate_servergroup_create_args(a):
-    val_struct = {"firewall_policy_id": unicode,
-                  "linux_firewall_policy_id": unicode,
-                  "windows_firewall_policy_id": unicode,
-                  "policy_ids": list,
-                  "windows_policy_ids": list,
-                  "fim_policy_ids": list,
-                  "linux_fim_policy_ids": list,
-                  "windows_fim_policy_ids": list,
-                  "lids_policy_ids": list,
-                  "tag": unicode,
-                  "server_events_policy": unicode,
-                  "alert_profiles": list}
-    for k, v in a.items():
+def validate_servergroup_create(server_group_attributes):
+    '''
+    docstring
+    '''
+    val_struct = {
+        "firewall_policy_id": unicode,
+        "linux_firewall_policy_id": unicode,
+        "windows_firewall_policy_id": unicode,
+        "policy_ids": list,
+        "windows_policy_ids": list,
+        "fim_policy_ids": list,
+        "linux_fim_policy_ids": list,
+        "windows_fim_policy_ids": list,
+        "lids_policy_ids": list,
+        "tag": unicode,
+        "server_events_policy": unicode,
+        "alert_profiles": list
+    }
+
+    for k, value in server_group_attributes.items():
         if k in val_struct:
-            if isinstance(v, val_struct[k]):
+            if isinstance(value, val_struct[k]):
                 continue
             else:
                 raise TypeError("Type incorrect for %s.  Is %s.  Should be %s."
-                                % (k, type(v), val_struct[k]))
+                                % (k, type(value), val_struct[k]))
         else:
             raise KeyError("Invalid server group attribute: %s") % k
-    return(True)
+    return True
 
 
-def validate_servergroup_update_args(a):
-    val_struct = {"firewall_policy_id": str,
-                  "linux_firewall_policy_id": str,
-                  "windows_firewall_policy_id": str,
-                  "policy_ids": list,
-                  "windows_policy_ids": list,
-                  "fim_policy_ids": list,
-                  "linux_fim_policy_ids": list,
-                  "windows_fim_policy_ids": list,
-                  "lids_policy_ids": list,
-                  "tag": str,
-                  "name": str,
-                  "special_events_policy": str,
-                  "alert_profiles": list}
-    for k, v in a.items():
+def validate_servergroup_update(server_group_attributes):
+    '''
+    docstring
+    '''
+    val_struct = {
+        "firewall_policy_id": str,
+        "linux_firewall_policy_id": str,
+        "windows_firewall_policy_id": str,
+        "policy_ids": list,
+        "windows_policy_ids": list,
+        "fim_policy_ids": list,
+        "linux_fim_policy_ids": list,
+        "windows_fim_policy_ids": list,
+        "lids_policy_ids": list,
+        "tag": str,
+        "name": str,
+        "special_events_policy": str,
+        "alert_profiles": list
+    }
+
+    for k, value in server_group_attributes.items():
         if k in val_struct:
-            if isinstance(v, val_struct[k]):
+            if isinstance(value, val_struct[k]):
                 continue
-            elif ((val_struct[k] == str) and (v is None)):
+            elif (val_struct[k] == str) and (value is None):
                 continue
-            elif ((val_struct[k] == str) and (type(v) is unicode)):
+            elif (val_struct[k] == str) and (isinstance(value, unicode)):
                 continue
             else:
                 print "Failed to match"
                 raise TypeError("Type incorrect for %s.  Is %s.  Should be %s."
-                                % (k, type(v), val_struct[k]))
+                                % (k, type(value), val_struct[k]))
         else:
             raise KeyError("Invalid server group attribute: %s") % k
-    return(True)
+    return True
 
 
 def validate_object_id(object_id):
@@ -91,7 +105,7 @@ def validate_object_id(object_id):
         raise TypeError(error_message)
 
 
-def validate_api_hostname(api_hostname):
+def validate_api_hostname(api_hostname):  # pylint: disable=missing-docstring
     valid_api_host = re.compile('^([A-Za-z0-9-]+\.){1,2}cloudpassage\.com$')
     if valid_api_host.match(api_hostname):
         return True
