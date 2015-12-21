@@ -1,6 +1,4 @@
-'''
-docstring
-'''
+"""ConfigurationPolicy class"""
 
 from cloudpassage.policy import Policy
 
@@ -19,11 +17,14 @@ class ConfigurationPolicy(Policy):
     policy = "policy"
     policies = "policies"
 
-    def endpoint(self):  # pylint: disable=no-self-use,missing-docstring
+    def endpoint(self):  # pylint: disable=no-self-use
+        """Defines endpoint for API requests"""
         return "/v1/%s" % ConfigurationPolicy.policies
 
-    def pagination_key(self):  # pylint: disable=no-self-use,missing-docstring
+    def pagination_key(self):  # pylint: disable=no-self-use
+        """Defines the pagination key for parsing paged results"""
         return ConfigurationPolicy.policies
 
-    def policy_key(self):  # pylint: disable=no-self-use,missing-docstring
+    def policy_key(self):  # pylint: disable=no-self-use
+        """Defines the key used to pull the policy from the json document"""
         return ConfigurationPolicy.policy

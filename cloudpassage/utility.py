@@ -1,4 +1,4 @@
-'''fixme'''
+"""General utilities"""
 
 
 import json
@@ -8,7 +8,6 @@ from cloudpassage.exceptions import CloudPassageInternalError
 from cloudpassage.exceptions import CloudPassageAuthentication
 from cloudpassage.exceptions import CloudPassageAuthorization
 from cloudpassage.exceptions import CloudPassageResourceExistence
-# from cloudpassage.exceptions import CloudPassageCollision
 from cloudpassage.exceptions import CloudPassageGeneral
 
 
@@ -75,7 +74,7 @@ def determine_policy_metadata(policy):
 
 
 def sanitize_url_params(params):
-    '''Sanitize URL arguments for the Halo API
+    """Sanitize URL arguments for the Halo API
 
     In most cases, the Halo API will only honor the last value
     in URL arguments when multiple arguments have the same key.
@@ -87,7 +86,7 @@ def sanitize_url_params(params):
     list type object slide through, only val2 will be evaluated, and
     val1 is ignored by the Halo API.
 
-    '''
+    """
     params_working = params.copy()
     for key, value in params_working.items():
         if isinstance(value, list):
@@ -100,7 +99,7 @@ def sanitize_url_params(params):
 
 
 def policy_to_dict(policy):
-    '''fixme'''
+    """Ensures that policy is a dictionary object"""
     if isinstance(policy, dict):
         return policy
     else:
@@ -108,14 +107,14 @@ def policy_to_dict(policy):
 
 
 def merge_dicts(first, second):
-    '''fixme'''
+    """Merges dictionaries"""
     final = first.copy()
     final.update(second)
     return final
 
 
 def verify_pages(max_pages):
-    '''fixme'''
+    """Verify the user isn't trying to pull too many pages in one query"""
     exc = None
     if type(max_pages) is not int:
         fail_msg = "Type wrong for max_pages.  Should be int."
@@ -127,7 +126,7 @@ def verify_pages(max_pages):
 
 
 def parse_status(url, resp_code, resp_text):
-    ''' parse http status from response'''
+    """Parse status from HTTP response"""
     success = True
     exc = None
     if resp_code not in [200, 201, 202, 204]:

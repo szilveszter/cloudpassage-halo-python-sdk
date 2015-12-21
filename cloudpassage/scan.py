@@ -1,6 +1,4 @@
-'''
-docstring
-'''
+"""Scan and CveException classes"""
 
 import cloudpassage.sanity as sanity
 import cloudpassage.utility as utility
@@ -201,29 +199,29 @@ class Scan(object):
         report = response["scan"]
         return report
 
-    # pylint: disable=missing-docstring
     def scan_status_supported(self, scan_status):
+        """Determine if scan status is supported for query"""
         if scan_status in self.supported_scan_status:
             return True
         else:
             return False
 
-    # pylint: disable=missing-docstring
     def scan_type_supported(self, scan_type):
+        """Determine if scan type is supported for query"""
         if scan_type in self.supported_scans:
             return True
         else:
             return False
 
-    # pylint: disable=missing-docstring
     def scan_history_supported(self, scan_type):
+        """Determine if scan type is supported for historical query"""
         if scan_type in self.supported_historical_scans:
             return True
         else:
             return False
 
     def verify_and_build_status_params(self, status_raw):
-        '''docstring'''
+        """Verifies status params and data types."""
         if type(status_raw) is list:
             for status in status_raw:
                 if self.scan_status_supported(status) is not True:
@@ -236,7 +234,7 @@ class Scan(object):
         return status_raw
 
     def verify_and_build_module_params(self, module_raw):
-        '''docstring'''
+        """Verifies module params and data types"""
         if type(module_raw) is list:
             for module in module_raw:
                 if self.scan_type_supported(module) is not True:
@@ -263,20 +261,26 @@ class CveException(Policy):
     policy = "cve_exception"
     policies = "cve_exceptions"
 
-    def endpoint(self):  # pylint: disable=no-self-use,missing-docstring
+    def endpoint(self):  # pylint: disable=no-self-use
+        """Defines endpoint for API requests"""
         return "/v1/%s" % CveException.policies
 
-    def pagination_key(self):  # pylint: disable=no-self-use,missing-docstring
+    def pagination_key(self):  # pylint: disable=no-self-use
+        """Defines the pagination key for parsing paged results"""
         return CveException.policies
 
-    def policy_key(self):  # pylint: disable=no-self-use,missing-docstring
+    def policy_key(self):  # pylint: disable=no-self-use
+        """Defines the key used to pull the policy from the json document"""
         return CveException.policy
 
-    def create(self, unimportant):  # pylint: disable=missing-docstring
+    def create(self, unimportant):
+        """Not implemented for this module.  Raises exception."""
         raise NotImplementedError
 
-    def delete(self, unimportant):  # pylint: disable=missing-docstring
+    def delete(self, unimportant):
+        """Not implemented for this module.  Raises exception."""
         raise NotImplementedError
 
-    def update(self, unimportant):  # pylint: disable=missing-docstring
+    def update(self, unimportant):
+        """Not implemented for this module.  Raises exception."""
         raise NotImplementedError

@@ -1,6 +1,4 @@
-'''
-docstring
-'''
+"""Policy class"""
 
 import cloudpassage.sanity as sanity
 import cloudpassage.utility as utility
@@ -8,9 +6,7 @@ from cloudpassage.http_helper import HttpHelper
 
 
 class Policy(object):
-    '''
-    docstring
-    '''
+    """Base class inherited by other specific policy classes."""
 
     def __init__(self, session):
         self.session = session

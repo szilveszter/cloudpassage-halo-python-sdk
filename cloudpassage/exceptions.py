@@ -1,4 +1,4 @@
-'''docstring'''
+"""CloudPassage-specific exceptions"""
 
 
 class CloudPassageAuthentication(Exception):

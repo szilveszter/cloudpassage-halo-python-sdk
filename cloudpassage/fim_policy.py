@@ -1,6 +1,5 @@
-'''docstring'''
+"""FimPolicy and FimBaseline classes"""
 
-import cloudpassage.utility as utility
 import cloudpassage.sanity as sanity
 from cloudpassage.policy import Policy
 from cloudpassage.http_helper import HttpHelper
@@ -20,13 +19,16 @@ class FimPolicy(Policy):
     policy = "fim_policy"
     policies = "fim_policies"
 
-    def endpoint(self):  # pylint: disable=no-self-use,missing-docstring
+    def endpoint(self):  # pylint: disable=no-self-use
+        """Defines endpoint for API requests"""
         return "/v1/%s" % FimPolicy.policies
 
-    def pagination_key(self):  # pylint: disable=no-self-use,missing-docstring
+    def pagination_key(self):  # pylint: disable=no-self-use
+        """Defines the pagination key for parsing paged results"""
         return FimPolicy.policies
 
-    def policy_key(self):  # pylint: disable=no-self-use,missing-docstring
+    def policy_key(self):  # pylint: disable=no-self-use
+        """Defines the key used to pull the policy from the json document"""
         return FimPolicy.policy
 
 

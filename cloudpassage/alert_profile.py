@@ -1,4 +1,4 @@
-'''docstring'''
+"""AlertProfile class"""
 
 from cloudpassage.policy import Policy
 
@@ -17,10 +17,12 @@ class AlertProfile(Policy):
     policy = "alert_profile"
     policies = "alert_profiles"
 
-    def endpoint(self):  # pylint: disable=no-self-use,missing-docstring
+    def endpoint(self):  # pylint: disable=no-self-use
+        """Defines endpoint for API requests"""
         return "/v1/%s" % AlertProfile.policies
 
-    def pagination_key(self):  # pylint: disable=no-self-use,missing-docstring
+    def pagination_key(self):  # pylint: disable=no-self-use
+        """Defines the pagination key for parsing paged results"""
         return AlertProfile.policies
 
     def create(self, unimportant):

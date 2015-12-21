@@ -1,4 +1,4 @@
-'''docstring'''
+"""SyetemAnnouncement class"""
 
 
 from cloudpassage.http_helper import HttpHelper
