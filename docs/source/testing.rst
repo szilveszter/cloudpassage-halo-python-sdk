@@ -19,6 +19,35 @@ Important locations for testing:
   tests/tests: This is where you'll find the actual tests.
 
 
+Environmental Requirements
+--------------------------
+
+You'll need to have a CloudPassage Halo account available for running the
+tests, as many are integration-focused.  These are the things you need to have
+(at the very least) to get a clean testing run:
+
+* Servers:
+    * Have at least one active Linux and active Windows server.
+    * One deactivated server of any type.
+* Policies:
+    * One alert profile
+    * One Linux CSM policy
+    * One Linux FIM policy
+    * One Windows FIM policy
+    * One LIDS policy
+* Scans:
+    * CSM (Failed scan)
+    * FIM (active baseline and successful scan)
+    * One CVE exception
+* Events:
+    * One event produced by a Windows server.
+* Server Group:
+    * Using the default group is fine.
+    * Assign the policies mentioned above to the group.
+    * Run FIM baselines against the Linux and Windows servers.
+    * Kick off a CSM scan if it doesn't happen automatically
+
+
 Running tests
 -------------
 
