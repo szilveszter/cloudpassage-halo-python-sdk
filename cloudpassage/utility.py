@@ -36,6 +36,7 @@ def determine_policy_metadata(policy):
 
     """
 
+    working_pol = None
     return_body = {"policy_type": None,
                    "policy_name": None,
                    "target_platform": None}
@@ -56,11 +57,11 @@ def determine_policy_metadata(policy):
             return_body["policy_type"] = "LIDS"
         if derived_type == "firewall_policy":
             return_body["policy_type"] = "Firewall"
-    except:
+    except AttributeError:
         pass
     try:
         return_body["policy_name"] = working_pol.items()[0][1]["name"]
-    except:
+    except AttributeError:
         pass
     try:
         derived_platform = working_pol.items()[0][1]["platform"]
@@ -68,7 +69,7 @@ def determine_policy_metadata(policy):
             return_body["target_platform"] = 'Linux'
         elif derived_platform == 'windows':
             return_body["target_platform"] = 'Windows'
-    except:
+    except AttributeError:
         pass
     return return_body
 
@@ -116,7 +117,7 @@ def merge_dicts(first, second):
 def verify_pages(max_pages):
     """Verify the user isn't trying to pull too many pages in one query"""
     exc = None
-    if type(max_pages) is not int:
+    if not isinstance(max_pages, int):
         fail_msg = "Type wrong for max_pages.  Should be int."
         exc = CloudPassageValidation(fail_msg)
     if max_pages > 100:
@@ -127,24 +128,20 @@ def verify_pages(max_pages):
 
 def parse_status(url, resp_code, resp_text):
     """Parse status from HTTP response"""
+    bad_statuses = {500: CloudPassageInternalError(resp_text),
+                    400: CloudPassageValidation(resp_text),
+                    401: CloudPassageAuthentication(resp_text),
+                    404: CloudPassageResourceExistence(url),
+                    403: CloudPassageAuthorization(resp_text),
+                    422: CloudPassageValidation(resp_text)}
     success = True
     exc = None
     if resp_code not in [200, 201, 202, 204]:
         success = False
-        if resp_code == 500:
-            exc = CloudPassageInternalError(resp_text)
-        elif resp_code == 400:
-            exc = CloudPassageValidation(resp_text)
-        elif resp_code == 401:
-            exc = CloudPassageAuthentication(resp_text)
-        elif resp_code == 404:
-            exc = CloudPassageResourceExistence(url)
-        elif resp_code == 403:
-            exc = CloudPassageAuthorization(resp_text)
-        elif resp_code == 422:
-            exc = CloudPassageValidation(resp_text)
+        if resp_code in bad_statuses:
+            return(success, bad_statuses[resp_code])
         else:
-            exc = CloudPassageGeneral(resp_text)
+            return(success, CloudPassageGeneral(resp_text))
     return success, exc
 
 
