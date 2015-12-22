@@ -61,13 +61,10 @@ class Event(object):
         """
 
         endpoint = "/v1/events"
-        request_params_raw = {}
         key = "events"
         max_pages = pages
         request = HttpHelper(self.session)
-        for param in self.supported_search_fields:
-            if param in kwargs:
-                request_params_raw[param] = kwargs[param]
+        request_params_raw = self.assemble_request_criteria(kwargs)
         if request_params_raw != {}:
             request_params = utility.sanitize_url_params(request_params_raw)
             response = request.get_paginated(endpoint, key, max_pages,
@@ -75,3 +72,11 @@ class Event(object):
         else:
             response = request.get_paginated(endpoint, key, max_pages)
         return response
+
+    def assemble_request_criteria(self, arguments):
+        """Verifies request params and returns a dict of validated arguments"""
+        request_params_raw = {}
+        for param in self.supported_search_fields:
+            if param in arguments:
+                request_params_raw[param] = arguments[param]
+        return request_params_raw
