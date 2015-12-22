@@ -26,11 +26,16 @@ class TestLidsPolicy:
         assert cloudpassage.LidsPolicy(session)
 
     def test_list_all(self):
+        """This test gets a list of LIDS policies from the Halo API.
+        If you have no configuration policies in your account, it will fail
+        """
         request = self.build_lids_policy_object()
         response = request.list_all()
         assert "id" in response[0]
 
     def test_get_details(self):
+        """This test requires at least one LIDS policy in your account.  If
+        you don't have one, this test will fail."""
         request = self.build_lids_policy_object()
         policy_list = request.list_all()
         target_policy_id = policy_list[0]["id"]

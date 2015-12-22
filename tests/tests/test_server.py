@@ -30,6 +30,9 @@ class TestServer:
         assert cloudpassage.Server(session)
 
     def test_get_server_details(self):
+        """This test requires at least one active server in your Halo
+        account.  If you have no active servers, this test will fail.
+        """
         s = self.build_server_object()
         s_group = self.build_server_group_object()
         server_group_list = s_group.list_all()
@@ -74,29 +77,49 @@ class TestServer:
         assert rejected
 
     def test_server_list(self):
+        """This test requires at least one active server in your Halo
+        account.  If you don't have an active server in your account, this
+        test will fail.
+        """
         s = self.build_server_object()
         result = s.list_all()
         assert "id" in result[0]
 
     def test_server_list_inactive_test1(self):
+        """This test requires at least one active or inactive server in your
+        Halo account.  If you don't have a server marked active or inactive
+        in your account, this test will fail.
+        """
         states = ["deactivated", "active"]
         s = self.build_server_object()
         result = s.list_all(state=states)
         assert "id" in result[0]
 
     def test_server_list_inactive_test2(self):
+        """This test requires one server in your account with a status of
+        deactivated.  If no such server exists in your account, the
+        test will fail.
+        """
         states = ["deactivated"]
         s = self.build_server_object()
         result = s.list_all(state=states)
         assert "id" in result[0]
 
     def test_server_list_inactive_test3(self):
+        """This test requires a server with a status of either missing or
+        deactivated.  If no such server exists in your account, the test will
+        fail.
+        """
         states = ["missing", "deactivated"]
         s = self.build_server_object()
         result = s.list_all(state=states)
         assert "id" in result[0]
 
     def test_server_list_inactive(self):
+        """This test requires a server with a status of either missing or
+        deactivated.  If no such server exists in your account, the test will
+        fail.
+        """
         states = ["deactivated", "missing"]
         s = self.build_server_object()
         result = s.list_all(state=states)
