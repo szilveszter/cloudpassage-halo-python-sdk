@@ -27,11 +27,17 @@ class TestFimPolicy:
         assert cloudpassage.FimPolicy(session)
 
     def test_list_all(self):
+        """This test attempts to get a list of all FIM policies for your
+        account.  If you don't have any FIM policies, it will fail.
+        """
         request = self.build_fim_policy_object()
         response = request.list_all()
         assert "id" in response[0]
 
     def test_get_details(self):
+        """This test attempts to get the details for one of your FIM policies.
+        If you have no configured FIM policies, it will fail.
+        """
         request = self.build_fim_policy_object()
         policy_list = request.list_all()
         target_policy_id = policy_list[0]["id"]
@@ -85,6 +91,10 @@ class TestFimBaseline:
         return(return_obj)
 
     def get_active_linux_policy(self):
+        """This test requires an active Linux FIM policy to run correctly.
+        If your account does not have an active Linux FIM policy, this
+        test will fail.
+        """
         request = self.build_fim_policy_object()
         response = request.list_all()
         target_id = None
@@ -96,6 +106,9 @@ class TestFimBaseline:
         return target_id
 
     def get_active_linux_host(self):
+        """This test requires an active Linux host in order to run
+        successfilly.
+        """
         session = cloudpassage.HaloSession(key_id, secret_key)
         server = cloudpassage.Server(session)
         list_of_active_linux_servers = server.list_all(state="active",
@@ -103,6 +116,11 @@ class TestFimBaseline:
         return list_of_active_linux_servers[0]["id"]
 
     def test_create_update_delete_baseline(self):
+        """This test attempts to get an existing, active FIM policy and
+        create a baseline using an active Linux host.  It then attempts
+        to update then delete the baseline.  If you are lacking an active
+        Linux host or an active FIM policy, this test will fail.
+        """
         fim_policy_id = self.get_active_linux_policy()
         target_host_id = self.get_active_linux_host()
         fim_baseline = self.build_fim_baseline_object()
@@ -121,12 +139,20 @@ class TestFimBaseline:
         assert cloudpassage.FimBaseline(session)
 
     def test_list_all_baselines_for_policy(self):
+        """This test attempts to get a list of baselines for a FIM policy
+        in your account.  If you don't have an active FIM policy, this test
+        will fail.
+        """
         baseline_request = self.build_fim_baseline_object()
         target_policy_id = self.get_active_linux_policy()
         baseline_response = baseline_request.list_all(target_policy_id)
         assert "id" in baseline_response[0]
 
     def test_get_details_of_baseline(self):
+        """This test attempts to get the details of a baseline configured
+        in your Halo account.  If you don't have an active FIM policy,
+        this test will fail.
+        """
         baseline_request = self.build_fim_baseline_object()
         target_policy_id = self.get_active_linux_policy()
         baseline_list = baseline_request.list_all(target_policy_id)

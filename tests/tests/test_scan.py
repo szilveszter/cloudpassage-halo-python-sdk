@@ -214,6 +214,9 @@ class TestScan:
     """
 
     def test_scan_history_by_single_scan_type(self):
+        """This test requires a completed SAM scan.  If you don't have one
+        in your account, this scan will fail.
+        """
         scan_type = "sam"
         scanner = self.build_scan_object()
         target_id = self.get_sam_target()
@@ -221,6 +224,10 @@ class TestScan:
         assert report[0]["module"] == scan_type
 
     def test_scan_history_by_multi_scan_type(self):
+        """This test requires a completed SAM and SVM scan.  If your account
+        doesn't have results from both of these scan types, the test will
+        fail.
+        """
         scan_types = ["sam", "svm"]
         scanner = self.build_scan_object()
         target_id = self.get_sam_target()
@@ -228,9 +235,12 @@ class TestScan:
         assert report[0]["module"] in scan_types
 
     def test_scan_history_by_single_status(self):
+        """This test requires scan results in your account with a status
+        of completed_clean.  If you don't have any scan results with
+        this status, this test will fail.
+        """
         scan_status = "completed_clean"
         scanner = self.build_scan_object()
-        target_id = self.get_sam_target()
         report = scanner.scan_history(status=scan_status, max_pages=2)
         assert report[0]["status"] == scan_status
 
@@ -251,6 +261,9 @@ class TestScan:
     """
 
     def test_fim_findings_details(self):
+        """This test requires a FIM scan with findings.  If you don't
+        have a FIM scan with resulting findings, this test will fail.
+        """
         target_fim_scan_id = self.get_fim_scan_with_findings()
         scanner = self.build_scan_object()
         details = scanner.scan_details(target_fim_scan_id)
@@ -261,6 +274,9 @@ class TestScan:
         assert "id" in target_findings_body
 
     def test_scan_history_by_date(self):
+        """This test requires scan results in your account, produced in the
+        last week.  If no such records exist, this test will fail.
+        """
         scan = self.build_scan_object()
         until = cloudpassage.utility.time_string_now()
         since = datetime.datetime.utcnow() - datetime.timedelta(weeks=1)
@@ -278,11 +294,19 @@ class TestCveException:
         assert self.create_cve_exception_object()
 
     def test_get_list(self):
+        """Your account must have at least one CVE exception set.
+        If you haven't set any CVE exceptions in your account,
+        this test will fail.
+        """
         cve_exc = self.create_cve_exception_object()
         list_of_exceptions = cve_exc.list_all()
         assert "id" in list_of_exceptions[0]
 
     def test_get_details(self):
+        """Your account must have at least one CVE exception set.
+        If you haven't set any CVE exceptions in your account,
+        this test will fail.
+        """
         cve_exc = self.create_cve_exception_object()
         list_of_exceptions = cve_exc.list_all()
         details = cve_exc.describe(list_of_exceptions[0]["id"])

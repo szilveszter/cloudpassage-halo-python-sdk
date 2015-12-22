@@ -22,6 +22,8 @@ class TestAlertProfiles:
         assert self.create_alert_profile_obj()
 
     def test_list_all(self):
+        """This gets a list of alert profiles from the Halo API.  It will
+        fail if there are no alert profiles configured for your account."""
         profile = self.create_alert_profile_obj()
         profile_list = profile.list_all()
         assert "id" in profile_list[0]

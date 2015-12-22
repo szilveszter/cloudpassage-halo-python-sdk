@@ -64,6 +64,10 @@ class TestFirewallPolicy:
         assert cloudpassage.FirewallPolicy(session)
 
     def test_firewall_policy_list_all(self):
+        """This test requires that a firewall policy exist in your Halo
+        account.  If you don't have a firewall policy in your Halo account,
+        this test will fail.
+        """
         firewall_policy = create_firewall_policy_object()
         firewall_policy_list = firewall_policy.list_all()
         assert "id" in firewall_policy_list[0]

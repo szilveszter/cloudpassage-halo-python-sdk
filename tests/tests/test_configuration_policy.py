@@ -26,11 +26,18 @@ class TestConfigurationPolicy:
         assert cloudpassage.ConfigurationPolicy(session)
 
     def test_list_all(self):
+        """This test gets a list of configuration policies from the Halo API.
+        If you have no configuration policies in your account, it will fail
+        """
         request = self.build_config_policy_object()
         response = request.list_all()
         assert "id" in response[0]
 
     def test_get_details(self):
+        """This test gets the details of a configuration policy in your
+        Halo account.  If you don't have any policies configured,
+        it will fail.
+        """
         request = self.build_config_policy_object()
         policy_list = request.list_all()
         target_policy_id = policy_list[0]["id"]
@@ -38,6 +45,9 @@ class TestConfigurationPolicy:
         assert "id" in target_policy_body
 
     def test_configuration_policy_create_delete(self):
+        """This test attempts to create and delete a configuration
+        policy.
+        """
         deleted = False
         policy_retrieved = {"policy": None}
         request = self.build_config_policy_object()
@@ -53,6 +63,9 @@ class TestConfigurationPolicy:
         assert deleted
 
     def test_configuration_policy_create_update_delete(self):
+        """This test attempts to create, update, then delete a configuration
+        policy.
+        """
         deleted = False
         policy_retrieved = {"policy": None}
         request = self.build_config_policy_object()
