@@ -49,26 +49,46 @@ class ApiKeyManager(object):
             self.config_file = kwargs["config_file"]
         else:
             self.config_file = "/etc/cloudpassage.yaml"
+        env_config = self.get_config_from_env()
+        file_config = self.get_config_from_file(self.config_file)
+        if env_config is not None:
+            self.set_config_variables(env_config)
+            return
+        if file_config is not None:
+            self.set_config_variables(file_config)
+        return
 
+    def set_config_variables(self, config_variables):
+        """Sets configuration vars for object"""
+        self.key_id = config_variables["key_id"]
+        self.secret_key = config_variables["secret_key"]
+        if sanity.validate_api_hostname(config_variables["api_hostname"]):
+            self.api_hostname = config_variables["api_hostname"]
+        return
+
+    def get_config_from_file(self, config_file):
+        """Extracts config from file"""
+        session_yaml = None
+        try:
+            with open(self.config_file) as y_config_file:
+                session_yaml = yaml.load(y_config_file)["defaults"]
+        except IOError:
+            error_message = "Unable to load config from file: %s" % config_file
+            print error_message
+        return session_yaml
+
+    def get_config_from_env(self):
+        """Derives config information from environment vars"""
+        config = None
         env_variables = {"key_id": os.getenv("HALO_API_KEY"),
                          "secret_key": os.getenv("HALO_API_SECRET_KEY"),
                          "api_hostname": os.getenv("HALO_API_HOSTNAME")}
         if self.env_vars_are_set(env_variables):
-            self.key_id = env_variables["key_id"]
-            self.secret_key = env_variables["secret_key"]
-            if sanity.validate_api_hostname(env_variables["api_hostname"]):
-                self.api_hostname = env_variables["api_hostname"]
-            return
-        else:
-            with open(self.config_file) as y_config_file:
-                session_yaml = yaml.load(y_config_file)["defaults"]
-            self.key_id = session_yaml["key_id"]
-            self.secret_key = session_yaml["secret_key"]
-            if sanity.validate_api_hostname(session_yaml["api_hostname"]):
-                self.api_hostname = session_yaml["api_hostname"]
-            return
+            config = env_variables
+        return config
 
-    def env_vars_are_set(self, env_vars):  # pylint: disable=no-self-use
+    @classmethod
+    def env_vars_are_set(cls, env_vars):
         """Determine if environment vars are correctly set"""
         vars_are_set = True
         if env_vars["key_id"] is None or env_vars["secret_key"] is None:
