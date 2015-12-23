@@ -15,16 +15,24 @@ class SystemAnnouncement(object):
 
     """
 
+    module_name = "system_announcements"
+
     def __init__(self, session):
         self.session = session
+
         return None
+
+    @classmethod
+    def build_endpoint(cls):
+        """Defines endpoint for API requests"""
+        return "/v1/%s" % SystemAnnouncement.module_name
 
     def list_all(self):
         """Returns a list of all system announcements
         """
 
         session = self.session
-        endpoint = "/v1/system_announcements"
+        endpoint = self.build_endpoint()
         request = HttpHelper(session)
         response = request.get(endpoint)
         announcement_list = response["announcements"]

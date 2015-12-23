@@ -18,11 +18,13 @@ class SpecialEventsPolicy(Policy):
     policy = "special_events_policy"
     policies = "special_events_policies"
 
-    def endpoint(self):  # pylint: disable=no-self-use
+    @classmethod
+    def endpoint(cls):
         """Defines endpoint for API requests"""
         return "/v1/%s" % SpecialEventsPolicy.policies
 
-    def pagination_key(self):  # pylint: disable=no-self-use
+    @classmethod
+    def pagination_key(cls):
         """Defines the pagination key for parsing paged results"""
         return SpecialEventsPolicy.policies
 

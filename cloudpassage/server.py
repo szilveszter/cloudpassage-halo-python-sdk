@@ -23,9 +23,9 @@ class Server(object):
         self.valid_server_states = ["active",
                                     "deactivated",
                                     "missing"]
-        self.cve_validator = re.compile("^CVE-\d+-\d{4,}$")
-        self.kb_validator = re.compile("^kb\d+$")
-        self.platform_validator = re.compile("^[a-z]+$")
+        self.cve_validator = re.compile(r"^CVE-\d+-\d{4,}$")
+        self.kb_validator = re.compile(r"^kb\d+$")
+        self.platform_validator = re.compile(r"^[a-z]+$")
         self.supported_search_fields = ["state",
                                         "platform",
                                         "cve",
@@ -223,46 +223,46 @@ class Server(object):
                 arguments_valid = False
         return arguments_valid
 
-    def validate_server_state(self, state):
+    def validate_server_state(self, states):
         """Ensure that server state in query is valid"""
-        if isinstance(state, list):
-            for s in state:
-                if s not in self.valid_server_states:
+        if isinstance(states, list):
+            for state in states:
+                if state not in self.valid_server_states:
                     return False
         else:
-            if state not in self.valid_server_states:
+            if states not in self.valid_server_states:
                 return False
         return True
 
-    def validate_platform(self, platform):
+    def validate_platform(self, platforms):
         """Validate platform in query is valid"""
-        if isinstance(platform, list):
-            for p in platform:
-                if not self.platform_validator.match(p):
+        if isinstance(platforms, list):
+            for platform in platforms:
+                if not self.platform_validator.match(platform):
                     return False
         else:
-            if not self.platform_validator.match(platform):
+            if not self.platform_validator.match(platforms):
                 return False
         return True
 
-    def validate_cve_id(self, cve_id):
+    def validate_cve_id(self, cve_ids):
         """Validate CVE ID designation"""
-        if isinstance(cve_id, list):
-            for c in cve_id:
-                if not self.cve_validator.match(c):
+        if isinstance(cve_ids, list):
+            for cve_id in cve_ids:
+                if not self.cve_validator.match(cve_id):
                     return False
         else:
-            if not self.cve_validator.match(cve_id):
+            if not self.cve_validator.match(cve_ids):
                 return False
         return True
 
-    def validate_kb_id(self, kb_id):
+    def validate_kb_id(self, kb_ids):
         """Validate KB ID is valid"""
-        if isinstance(kb_id, list):
-            for k in kb_id:
-                if not self.kb_validator.match(k):
+        if isinstance(kb_ids, list):
+            for kb_id in kb_ids:
+                if not self.kb_validator.match(kb_id):
                     return False
         else:
-            if not self.kb_validator.match(kb_id):
+            if not self.kb_validator.match(kb_ids):
                 return False
         return True
