@@ -19,15 +19,18 @@ class FimPolicy(Policy):
     policy = "fim_policy"
     policies = "fim_policies"
 
-    def endpoint(self):  # pylint: disable=no-self-use
+    @classmethod
+    def endpoint(cls):
         """Defines endpoint for API requests"""
         return "/v1/%s" % FimPolicy.policies
 
-    def pagination_key(self):  # pylint: disable=no-self-use
+    @classmethod
+    def pagination_key(cls):
         """Defines the pagination key for parsing paged results"""
         return FimPolicy.policies
 
-    def policy_key(self):  # pylint: disable=no-self-use
+    @classmethod
+    def policy_key(cls):
         """Defines the key used to pull the policy from the json document"""
         return FimPolicy.policy
 
@@ -130,7 +133,7 @@ class FimBaseline(object):
         request = HttpHelper(self.session)
         endpoint = "/v1/fim_policies/%s/baselines/%s" % (fim_policy_id,
                                                          fim_baseline_id)
-        response = request.delete(endpoint)
+        request.delete(endpoint)
         return None
 
     def update(self, fim_policy_id, fim_baseline_id, server_id):
@@ -151,5 +154,5 @@ class FimBaseline(object):
         endpoint = "/v1/fim_policies/%s/baselines/%s" % (fim_policy_id,
                                                          fim_baseline_id)
         request_body = {"baseline": {"server_id": server_id}}
-        response = request.put(endpoint, request_body)
+        request.put(endpoint, request_body)
         return None

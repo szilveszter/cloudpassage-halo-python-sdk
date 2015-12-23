@@ -18,14 +18,17 @@ class LidsPolicy(Policy):
     policy = "lids_policy"
     policies = "lids_policies"
 
-    def endpoint(self):  # pylint: disable=no-self-use
+    @classmethod
+    def endpoint(cls):
         """Defines endpoint for API requests"""
         return "/v1/%s" % LidsPolicy.policies
 
-    def pagination_key(self):  # pylint: disable=no-self-use
+    @classmethod
+    def pagination_key(cls):
         """Defines the pagination key for parsing paged results"""
         return LidsPolicy.policies
 
-    def policy_key(self):  # pylint: disable=no-self-use
+    @classmethod
+    def policy_key(cls):
         """Defines the key used to pull the policy from the json document"""
         return LidsPolicy.policy

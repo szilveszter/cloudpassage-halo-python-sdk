@@ -12,6 +12,21 @@ class Policy(object):
         self.session = session
         self.max_pages = 30
 
+    @classmethod
+    def endpoint(cls):
+        """Not implemented at this level.  Raises exception."""
+        raise NotImplementedError
+
+    @classmethod
+    def pagination_key(cls):
+        """Not implemented at this level.  Raises exception."""
+        raise NotImplementedError
+
+    @classmethod
+    def policy_key(cls):
+        """Not implemented at this level.  Raises exception."""
+        raise NotImplementedError
+
     def list_all(self):
         """Lists all policies of this type.
 
