@@ -20,15 +20,18 @@ class FirewallPolicy(Policy):
     policy = "firewall_policy"
     policies = "firewall_policies"
 
-    def endpoint(self):  # pylint: disable=no-self-use
+    @classmethod
+    def endpoint(cls):
         """Defines endpoint for API requests"""
         return "/v1/%s" % FirewallPolicy.policies
 
-    def pagination_key(self):  # pylint: disable=no-self-use
+    @classmethod
+    def pagination_key(cls):
         """Defines the pagination key for parsing paged results"""
         return FirewallPolicy.policies
 
-    def policy_key(self):  # pylint: disable=no-self-use
+    @classmethod
+    def policy_key(cls):
         """Defines the key used to pull the policy from the json document"""
         return FirewallPolicy.policy
 
@@ -147,7 +150,7 @@ class FirewallRule(object):
         request = HttpHelper(self.session)
         endpoint = ("/v1/firewall_policies/%s/firewall_rules/%s" %
                     (firewall_policy_id, firewall_rule_id))
-        response = request.delete(endpoint)
+        request.delete(endpoint)
         return None
 
     def update(self, firewall_policy_id, firewall_rule_id, firewall_rule_body):
@@ -189,7 +192,7 @@ class FirewallRule(object):
         request = HttpHelper(self.session)
         endpoint = ("/v1/firewall_policies/%s/firewall_rules/%s" %
                     (firewall_policy_id, firewall_rule_id))
-        response = request.put(endpoint, firewall_rule_body)
+        request.put(endpoint, firewall_rule_body)
         return None
 
 
@@ -207,15 +210,18 @@ class FirewallZone(Policy):
     policy = "firewall_zone"
     policies = "firewall_zones"
 
-    def endpoint(self):  # pylint: disable=no-self-use
+    @classmethod
+    def endpoint(cls):
         """Defines endpoint for API requests"""
         return "/v1/%s" % FirewallZone.policies
 
-    def pagination_key(self):  # pylint: disable=no-self-use
+    @classmethod
+    def pagination_key(cls):
         """Defines the pagination key for parsing paged results"""
         return FirewallZone.policies
 
-    def policy_key(self):  # pylint: disable=no-self-use
+    @classmethod
+    def policy_key(cls):
         """Defines the key used to pull the policy from the json document"""
         return FirewallZone.policy
 
@@ -234,15 +240,18 @@ class FirewallService(Policy):
     policy = "firewall_service"
     policies = "firewall_services"
 
-    def endpoint(self):  # pylint: disable=no-self-use
+    @classmethod
+    def endpoint(cls):
         """Defines endpoint for API requests"""
         return "/v1/%s" % FirewallService.policies
 
-    def pagination_key(self):  # pylint: disable=no-self-use
+    @classmethod
+    def pagination_key(cls):
         """Defines the pagination key for parsing paged results"""
         return FirewallService.policies
 
-    def policy_key(self):  # pylint: disable=no-self-use
+    @classmethod
+    def policy_key(cls):
         """Defines the key used to pull the policy from the json document"""
         return FirewallService.policy
 
@@ -261,14 +270,17 @@ class FirewallInterface(Policy):
     policy = "firewall_interface"
     policies = "firewall_interfaces"
 
-    def endpoint(self):  # pylint: disable=no-self-use
+    @classmethod
+    def endpoint(cls):
         """Defines endpoint for API requests"""
         return "/v1/%s" % FirewallInterface.policies
 
-    def pagination_key(self):  # pylint: disable=no-self-use
+    @classmethod
+    def pagination_key(cls):
         """Defines the pagination key for parsing paged results"""
         return FirewallInterface.policies
 
-    def policy_key(self):  # pylint: disable=no-self-use
+    @classmethod
+    def policy_key(cls):
         """Defines the key used to pull the policy from the json document"""
         return FirewallInterface.policy

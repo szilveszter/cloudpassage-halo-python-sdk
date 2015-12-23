@@ -41,6 +41,9 @@ class HaloSession(object):
 
     """
 
+    # pylint: disable=too-many-instance-attributes
+    # In this case, an attribute count of 11 is necessary.
+
     def __init__(self, apikey, apisecret, **kwargs):
         self.auth_endpoint = 'oauth/access_token'
         self.api_host = 'api.cloudpassage.com'
@@ -53,8 +56,6 @@ class HaloSession(object):
         self.proxy_host = None
         self.proxy_port = None
         self.lock = threading.RLock()
-        self.api_count = 0
-        self.api_time = 0.0
         # Override defaults for proxy
         if "proxy_host" in kwargs:
             self.proxy_host = kwargs["proxy_host"]
@@ -69,7 +70,8 @@ class HaloSession(object):
             self.user_agent = kwargs["user_agent"]
         return None
 
-    def build_proxy_struct(self, host, port):  # pylint: disable=no-self-use
+    @classmethod
+    def build_proxy_struct(cls, host, port):
         """This builds a structure describing the environment's HTTP
         proxy requirements.
 
@@ -84,7 +86,8 @@ class HaloSession(object):
             ret_struct["https"] = "http://" + str(host) + ":8080"
         return ret_struct
 
-    def get_auth_token(self, endpoint, headers):  # pylint: disable=no-self-use
+    @classmethod
+    def get_auth_token(cls, endpoint, headers):
         """This method takes endpoint and header info, and returns the
         oauth token and scope.
 
@@ -124,7 +127,7 @@ class HaloSession(object):
         encoded = base64.b64encode(combined)
         headers = {"Authorization": str("Basic " + encoded)}
         max_tries = 5
-        for i in range(max_tries):
+        for _ in range(max_tries):
             token, scope = self.get_auth_token(endpoint, headers)
             if token == "BAD":
                 # Add message for IP restrictions

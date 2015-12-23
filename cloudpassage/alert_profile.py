@@ -17,11 +17,13 @@ class AlertProfile(Policy):
     policy = "alert_profile"
     policies = "alert_profiles"
 
-    def endpoint(self):  # pylint: disable=no-self-use
+    @classmethod
+    def endpoint(cls):
         """Defines endpoint for API requests"""
         return "/v1/%s" % AlertProfile.policies
 
-    def pagination_key(self):  # pylint: disable=no-self-use
+    @classmethod
+    def pagination_key(cls):
         """Defines the pagination key for parsing paged results"""
         return AlertProfile.policies
 
