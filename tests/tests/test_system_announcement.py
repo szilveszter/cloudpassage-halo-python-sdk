@@ -27,3 +27,7 @@ class TestSystemAnnouncement:
         announcement = cloudpassage.SystemAnnouncement(session)
         announcement_list = announcement.list_all()
         assert "announcement" in announcement_list[0]
+
+    def test_build_endpoint(self):
+        endpoint = cloudpassage.SystemAnnouncement.build_endpoint()
+        assert endpoint == "/v1/system_announcements"

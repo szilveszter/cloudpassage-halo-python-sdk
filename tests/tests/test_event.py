@@ -52,3 +52,13 @@ class TestEvent:
         since = datetime.datetime.utcnow() - datetime.timedelta(days=1)
         event_list = event.list_all(10, since=since, until=until)
         assert "id" in event_list[0]
+
+    def test_assemble_request_criteria(self):
+        test_input = {"group_id": "123abc",
+                      "server_platform": "windows",
+                      "nonexistent_field": "not_included"}
+        expected_out = {"group_id": "123abc",
+                        "server_platform": "windows"}
+        event = self.create_event_obj()
+        actual_out = event.assemble_request_criteria(test_input)
+        assert actual_out == expected_out
