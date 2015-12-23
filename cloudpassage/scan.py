@@ -201,28 +201,28 @@ class Scan(object):
 
     def scan_status_supported(self, scan_status):
         """Determine if scan status is supported for query"""
+        result = False
         if scan_status in self.supported_scan_status:
-            return True
-        else:
-            return False
+            result = True
+        return result
 
     def scan_type_supported(self, scan_type):
         """Determine if scan type is supported for query"""
+        result = False
         if scan_type in self.supported_scans:
-            return True
-        else:
-            return False
+            result = True
+        return result
 
     def scan_history_supported(self, scan_type):
         """Determine if scan type is supported for historical query"""
+        result = False
         if scan_type in self.supported_historical_scans:
-            return True
-        else:
-            return False
+            result = True
+        return result
 
     def verify_and_build_status_params(self, status_raw):
         """Verifies status params and data types."""
-        if type(status_raw) is list:
+        if isinstance(status_raw, list):
             for status in status_raw:
                 if self.scan_status_supported(status) is not True:
                     exception_message = "%s is not supported" % status
@@ -235,7 +235,7 @@ class Scan(object):
 
     def verify_and_build_module_params(self, module_raw):
         """Verifies module params and data types"""
-        if type(module_raw) is list:
+        if isinstance(module_raw, list):
             for module in module_raw:
                 if self.scan_type_supported(module) is not True:
                     exception_message = "%s is not supported" % module
@@ -261,15 +261,18 @@ class CveException(Policy):
     policy = "cve_exception"
     policies = "cve_exceptions"
 
-    def endpoint(self):  # pylint: disable=no-self-use
+    @classmethod
+    def endpoint(cls):
         """Defines endpoint for API requests"""
         return "/v1/%s" % CveException.policies
 
-    def pagination_key(self):  # pylint: disable=no-self-use
+    @classmethod
+    def pagination_key(cls):
         """Defines the pagination key for parsing paged results"""
         return CveException.policies
 
-    def policy_key(self):  # pylint: disable=no-self-use
+    @classmethod
+    def policy_key(cls):
         """Defines the key used to pull the policy from the json document"""
         return CveException.policy
 

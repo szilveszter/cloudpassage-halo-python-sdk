@@ -90,8 +90,8 @@ class ServerGroup(object):
         group_data = {"name": group_name, "policy_ids": [], "tag": None}
         try:
             sanity.validate_servergroup_create(kwargs)
-        except TypeError as e:
-            raise CloudPassageValidation(e)
+        except TypeError as exc:
+            raise CloudPassageValidation(exc)
         body = {"group": utility.merge_dicts(group_data, kwargs)}
         request = HttpHelper(self.session)
         response = request.post(endpoint, body)
@@ -148,8 +148,8 @@ class ServerGroup(object):
         group_data = {}
         try:
             sanity.validate_servergroup_update(kwargs)
-        except TypeError as e:
-            raise CloudPassageValidation(e)
+        except TypeError as exc:
+            raise CloudPassageValidation(exc)
         body = {"group": utility.merge_dicts(group_data, kwargs)}
         request = HttpHelper(self.session)
         response = request.put(endpoint, body)

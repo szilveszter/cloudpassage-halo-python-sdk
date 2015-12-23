@@ -1,7 +1,7 @@
 """Collection of functions for doing validation and sanity checking"""
 
-import cloudpassage
 import re
+import cloudpassage
 
 
 def validate_servergroup_create(server_group_attributes):
@@ -104,8 +104,8 @@ def validate_object_id(object_id):
 
 def validate_api_hostname(api_hostname):
     """Validate hostname for API endpoint"""
-    valid_api_host = re.compile('^([A-Za-z0-9-]+\.){1,2}cloudpassage\.com$')
+    hostname_is_valid = False
+    valid_api_host = re.compile(r'^([A-Za-z0-9-]+\.){1,2}cloudpassage\.com$')
     if valid_api_host.match(api_hostname):
-        return True
-    else:
-        return False
+        hostname_is_valid = True
+    return hostname_is_valid
