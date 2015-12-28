@@ -113,9 +113,9 @@ class HttpHelper(object):
 
         """
 
-        exception = utility.verify_pages(max_pages)
-        if exception:
-            raise exception
+        max_pages_valid, pages_invalid_msg = utility.verify_pages(max_pages)
+        if not max_pages_valid:
+            raise CloudPassageValidation(pages_invalid_msg)
         more_pages = False
         response_accumulator = []
         if "params" in kwargs:
@@ -138,7 +138,8 @@ class HttpHelper(object):
                 more_pages = False
         return response_accumulator
 
-    def process_page(self, page, key):
+    @classmethod
+    def process_page(cls, page, key):
         """Page goes in, list data comes out."""
         response_accumulator = []
         next_page = None
@@ -241,7 +242,7 @@ class HttpHelper(object):
             # Sometimes we don't get json back...
             try:
                 return_value = response.json()
-            except:
+            except ValueError:
                 return_value = response.text
             return return_value
 
@@ -271,7 +272,8 @@ class HttpHelper(object):
         url = prefix + endpoint
         headers = self.connection.build_header()
         if "params" in kwargs:
-            response = requests.delete(url, headers=headers, params=params)
+            response = requests.delete(url, headers=headers,
+                                       params=kwargs["params"])
         else:
             response = requests.delete(url, headers=headers)
         success, exception = utility.parse_status(url, response.status_code,
@@ -292,6 +294,6 @@ class HttpHelper(object):
             # Sometimes we don't get json back...
             try:
                 return_value = response.json()
-            except:
+            except ValueError:
                 return_value = response.text
             return return_value

@@ -14,7 +14,7 @@ secret_key = session_info.secret_key
 api_hostname = session_info.api_hostname
 
 
-class TestScan:
+class TestIntegrationScan:
     def get_fim_scan_with_findings(self):
         scan_type = "fim"
         scan_status = "completed_clean"
@@ -284,7 +284,7 @@ class TestScan:
         assert "id" in scan_list[0]
 
 
-class TestCveException:
+class TestIntegrationCveException:
     def create_cve_exception_object(self):
         session = cloudpassage.HaloSession(key_id, secret_key)
         return_obj = cloudpassage.CveException(session)

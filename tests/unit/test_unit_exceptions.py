@@ -7,7 +7,7 @@ from cloudpassage.exceptions import CloudPassageResourceExistence
 from cloudpassage.exceptions import CloudPassageValidation
 
 
-class TestExceptions:
+class TestUnitExceptions:
     def raise_authentication(self, msg):
         raise CloudPassageAuthentication(msg)
 

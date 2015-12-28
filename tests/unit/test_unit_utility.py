@@ -18,7 +18,7 @@ secret_key = session_info.secret_key
 api_hostname = session_info.api_hostname
 
 
-class TestFn:
+class TestUnitFn:
     def test_merge_dicts(self):
         one = {"a": "Alpha",
                "b": "Bravo",
@@ -72,8 +72,8 @@ class TestFn:
             assert success == o
 
     def test_verify_pages(self):
-        assert utility.verify_pages("cats") is not None
-        assert utility.verify_pages(101) is not None
+        assert utility.verify_pages("cats")[0] is False
+        assert utility.verify_pages(101)[0] is False
 
     def test_sanitize_url_params(self):
         params = {"states": ["deactivated", "missing"],

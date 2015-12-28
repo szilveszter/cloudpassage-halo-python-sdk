@@ -13,23 +13,13 @@ secret_key = session_info.secret_key
 api_hostname = session_info.api_hostname
 
 
-class TestSpecialEventsPolicy:
-    def create_special_events_policy_obj(self):
-        session = cloudpassage.HaloSession(key_id, secret_key)
-        return cloudpassage.SpecialEventsPolicy(session)
-
+class TestUnitSpecialEventsPolicy:
     def test_instantiation(self):
-        assert self.create_special_events_policy_obj()
-
-    def test_list_all(self):
-        session = cloudpassage.HaloSession(key_id, secret_key)
-        se_policy = cloudpassage.SpecialEventsPolicy(session)
-        se_policy_list = se_policy.list_all()
-        assert "id" in se_policy_list[0]
+        assert cloudpassage.SpecialEventsPolicy(None)
 
     def test_create(self):
         rejected = False
-        policy = self.create_special_events_policy_obj()
+        policy = cloudpassage.SpecialEventsPolicy(None)
         try:
             policy.create("DoesNotEvenMatter")
         except NotImplementedError:
@@ -38,7 +28,7 @@ class TestSpecialEventsPolicy:
 
     def test_update(self):
         rejected = False
-        policy = self.create_special_events_policy_obj()
+        policy = cloudpassage.SpecialEventsPolicy(None)
         try:
             policy.update("DoesNotEvenMatter")
         except NotImplementedError:
@@ -47,7 +37,7 @@ class TestSpecialEventsPolicy:
 
     def test_describe(self):
         rejected = False
-        policy = self.create_special_events_policy_obj()
+        policy = cloudpassage.SpecialEventsPolicy(None)
         try:
             policy.describe("DoesNotEvenMatter")
         except NotImplementedError:
@@ -56,7 +46,7 @@ class TestSpecialEventsPolicy:
 
     def test_delete(self):
         rejected = False
-        policy = self.create_special_events_policy_obj()
+        policy = cloudpassage.SpecialEventsPolicy(None)
         try:
             policy.delete("DoesNotEvenMatter")
         except NotImplementedError:

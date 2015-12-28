@@ -65,6 +65,7 @@ for s in list_of_servers:
       * Have at least one active Linux and active Windows server.
       * One deactivated server of any type.
   * Policies:
+      * One firewall policy
       * One alert profile
       * One Linux CSM policy
       * One Linux FIM policy

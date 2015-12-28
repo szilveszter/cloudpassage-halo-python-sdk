@@ -22,7 +22,7 @@ content_name = str(content_prefix +
                    str(hashlib.md5(str(datetime.datetime.now())).hexdigest()))
 
 
-class TestGet:
+class TestIntegrationGet:
     def test_get_404(self):
         endpoint = "/v1/barf"
         pathfailed = False
@@ -44,7 +44,7 @@ class TestGet:
         assert "servers" in json_response
 
 
-class TestGetPaginated:
+class TestIntegrationGetPaginated:
     def test_get_paginated_404(self):
         endpoint = "/v1/barf"
         key = "barfs"
@@ -108,7 +108,7 @@ class TestGetPaginated:
         assert rejected
 
 
-class TestPost:
+class TestIntegrationPost:
     def test_post_404(self):
         endpoint = "/v1/barf"
         post_data = {"whatevs": "becausenobodycares"}
@@ -136,7 +136,7 @@ class TestPost:
         assert rejected
 
 
-class TestPut:
+class TestIntegrationPut:
     def test_put_bad_endpoint(self):
         endpoint = "/v1/barf"
         put_data = {"whatevs": "becausenobodycares"}
@@ -164,7 +164,7 @@ class TestPut:
         assert rejected
 
 
-class TestDelete:
+class TestIntegrationDelete:
     def test_delete_404(self):
         endpoint = "/v1/barf"
         pathfailed = False

@@ -6,7 +6,7 @@ import pytest
 sanity = cloudpassage.sanity
 
 
-class TestSanity:
+class TestUnitSanity:
     def test_servergroup_create_validate(self):
         rejected = False
         arguments = {"firewall_policy_id": unicode("12345"),

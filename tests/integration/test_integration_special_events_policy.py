@@ -13,21 +13,16 @@ secret_key = session_info.secret_key
 api_hostname = session_info.api_hostname
 
 
-class TestSystemAnnouncement:
-    def create_announcement(self):
+class TestIntegrationSpecialEventsPolicy:
+    def create_special_events_policy_obj(self):
         session = cloudpassage.HaloSession(key_id, secret_key)
-        return(cloudpassage.SystemAnnouncement(session))
+        return cloudpassage.SpecialEventsPolicy(session)
 
     def test_instantiation(self):
-        session = cloudpassage.HaloSession(key_id, secret_key)
-        assert cloudpassage.SystemAnnouncement(session)
+        assert self.create_special_events_policy_obj()
 
     def test_list_all(self):
         session = cloudpassage.HaloSession(key_id, secret_key)
-        announcement = cloudpassage.SystemAnnouncement(session)
-        announcement_list = announcement.list_all()
-        assert "announcement" in announcement_list[0]
-
-    def test_build_endpoint(self):
-        endpoint = cloudpassage.SystemAnnouncement.build_endpoint()
-        assert endpoint == "/v1/system_announcements"
+        se_policy = cloudpassage.SpecialEventsPolicy(session)
+        se_policy_list = se_policy.list_all()
+        assert "id" in se_policy_list[0]
