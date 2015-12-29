@@ -135,6 +135,18 @@ class TestIntegrationPost:
             rejected = True
         assert rejected
 
+    def test_post_rekey(self):
+        rejected = False
+        endpoint = "/v1/gropes"
+        session = cloudpassage.HaloSession(key_id, secret_key)
+        session.auth_token = "abc123"
+        req = cloudpassage.HttpHelper(session)
+        try:
+            json_response = req.post(endpoint, {"nonexist": "nothing"})
+        except cloudpassage.CloudPassageResourceExistence:
+            rejected = True
+        assert rejected
+
 
 class TestIntegrationPut:
     def test_put_bad_endpoint(self):
@@ -159,6 +171,20 @@ class TestIntegrationPut:
         req = cloudpassage.HttpHelper(session)
         try:
             json_response = req.put(endpoint, put_data)
+        except cloudpassage.CloudPassageResourceExistence:
+            rejected = True
+        assert rejected
+
+    def test_put_rekey(self):
+        rejected = False
+        body = {"server":
+                {"retire": True}}
+        endpoint = "/v1/servers/1234567890"
+        session = cloudpassage.HaloSession(key_id, secret_key)
+        session.auth_token = "abc123"
+        req = cloudpassage.HttpHelper(session)
+        try:
+            json_response = req.put(endpoint, body)
         except cloudpassage.CloudPassageResourceExistence:
             rejected = True
         assert rejected
