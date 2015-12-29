@@ -86,8 +86,11 @@ for s in list_of_servers:
 
 #### Running tests:
 
-  Navigate to tests/ and run ```py.test ./tests/``` to run the test suite.
+ Navigate to tests/ and run ``py.test ./integration ./unit ./style``
+ to run the entire test suite.  You can remove any of these if you
+ want to focus on a particular section.  For instance, to run only
+ the unit and style tests, you would use ``py.test ./unit ./style``.
 
-  If you've got the coverage module
-  installed, ```py.test --cov=cloudpassage ./tests/``` will show
-  statement test coverage.
+ If you've got the coverage module installed,
+ ``py.test --cov=cloudpassage ./integration ./unit ./style``
+ will show statement test coverage.
