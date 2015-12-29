@@ -138,7 +138,6 @@ class Scan(object):
         """
 
         max_pages = 20
-        request_params_raw = {}
         url_params = {}
         if "server_id" in kwargs:
             url_params["server_id"] = kwargs["server_id"]
@@ -153,16 +152,10 @@ class Scan(object):
         endpoint = "/v1/scans"
         key = "scans"
         request = HttpHelper(self.session)
-        for param in self.supported_search_fields:
-            if param in kwargs:
-                request_params_raw[param] = kwargs[param]
-        if request_params_raw != {}:
-            request_params = utility.sanitize_url_params(request_params_raw)
-            response = request.get_paginated(endpoint, key, max_pages,
-                                             params=request_params)
-            print request_params
-        else:
-            response = request.get_paginated(endpoint, key, max_pages)
+        params = utility.assemble_search_criteria(self.supported_search_fields,
+                                                  url_params)
+        response = request.get_paginated(endpoint, key, max_pages,
+                                         params=params)
         return response
 
     def findings(self, scan_id, findings_id):

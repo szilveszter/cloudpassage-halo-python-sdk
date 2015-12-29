@@ -74,6 +74,16 @@ def determine_policy_metadata(policy):
     return return_body
 
 
+def assemble_search_criteria(supported_search_fields, arguments):
+    """Verifies request params and returns a dict of validated arguments"""
+    request_params_raw = {}
+    for param in supported_search_fields:
+        if param in arguments:
+            request_params_raw[param] = arguments[param]
+    request_params = sanitize_url_params(request_params_raw)
+    return request_params
+
+
 def sanitize_url_params(params):
     """Sanitize URL arguments for the Halo API
 

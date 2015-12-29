@@ -58,7 +58,6 @@ class Server(object):
         """
 
         endpoint = "/v1/servers"
-        request_params_raw = {}
         key = "servers"
         max_pages = 50
         request = HttpHelper(self.session)
@@ -66,15 +65,10 @@ class Server(object):
         if criteria_valid is False:
             error_text = "Unsupported arguments in " + str(kwargs)
             raise CloudPassageValidation(error_text)
-        for param in self.supported_search_fields:
-            if param in kwargs:
-                request_params_raw[param] = kwargs[param]
-        if request_params_raw != {}:
-            request_params = utility.sanitize_url_params(request_params_raw)
-            response = request.get_paginated(endpoint, key, max_pages,
-                                             params=request_params)
-        else:
-            response = request.get_paginated(endpoint, key, max_pages)
+        params = utility.assemble_search_criteria(self.supported_search_fields,
+                                                  kwargs)
+        response = request.get_paginated(endpoint, key,
+                                         max_pages, params=params)
         return response
 
     def assign_group(self, server_id, group_id):

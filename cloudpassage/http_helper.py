@@ -118,7 +118,7 @@ class HttpHelper(object):
             raise CloudPassageValidation(pages_invalid_msg)
         more_pages = False
         response_accumulator = []
-        if "params" in kwargs:
+        if "params" in kwargs and kwargs["params"] is not {}:
             initial_page = self.get(endpoint, params=kwargs["params"])
         else:
             initial_page = self.get(endpoint)
