@@ -16,7 +16,14 @@ Important locations for testing:
   tests/policies: These are Halo policies, used primarily for integration
   tests.
 
-  tests/tests: This is where you'll find the actual tests.
+  tests/integration: This is where you'll find the integration tests, which
+  require valid API credentials be placed in the
+  tests/configs/portal.yaml.local file.
+
+  tests/unit: You'll find the unit tests here, which do not require API
+  credentials.
+
+  tests/style: We put style checking tests here.  For now, just pep8-related.
 
 
 Environmental Requirements
@@ -51,7 +58,11 @@ tests, as many are integration-focused.  These are the things you need to have
 Running tests
 -------------
 
-  Navigate to tests/ and run ``py.test ./tests/`` to run the test suite.
+  Navigate to tests/ and run ``py.test ./integration ./unit ./style``
+  to run the entire test suite.  You can remove any of these if you
+  want to focus on a particular section.  For instance, to run only
+  the unit and style tests, you would use ``py.test ./unit ./style``.
 
   If you've got the coverage module installed,
-  ``py.test --cov=cloudpassage ./tests/`` will show statement test coverage.
+  ``py.test --cov=cloudpassage ./integration ./unit ./style``
+  will show statement test coverage.
