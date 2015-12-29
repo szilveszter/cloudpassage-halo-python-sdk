@@ -16,7 +16,7 @@ secret_key = session_info.secret_key
 api_hostname = session_info.api_hostname
 
 
-class TestFimPolicy:
+class TestIntegrationFimPolicy:
     def build_fim_policy_object(self):
         session = cloudpassage.HaloSession(key_id, secret_key)
         return_obj = cloudpassage.FimPolicy(session)
@@ -79,7 +79,7 @@ class TestFimPolicy:
         assert deleted
 
 
-class TestFimBaseline:
+class TestIntegrationFimBaseline:
     def build_fim_baseline_object(self):
         session = cloudpassage.HaloSession(key_id, secret_key)
         return_obj = cloudpassage.FimBaseline(session)

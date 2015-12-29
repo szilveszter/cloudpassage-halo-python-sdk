@@ -14,7 +14,7 @@ secret_key = session_info.secret_key
 api_hostname = session_info.api_hostname
 
 
-class TestEvent:
+class TestIntegrationEvent:
     def create_event_obj(self):
         session = cloudpassage.HaloSession(key_id, secret_key)
         return cloudpassage.Event(session)
@@ -26,15 +26,6 @@ class TestEvent:
         event = self.create_event_obj()
         event_list = event.list_all(5)
         assert "id" in event_list[0]
-
-    def test_too_big(self):
-        rejected = False
-        event = self.create_event_obj()
-        try:
-            event.list_all(101)
-        except cloudpassage.CloudPassageValidation:
-            rejected = True
-        assert rejected
 
     def test_windows(self):
         """This test attempts to get a list of events, search criteria
@@ -52,13 +43,3 @@ class TestEvent:
         since = datetime.datetime.utcnow() - datetime.timedelta(days=1)
         event_list = event.list_all(10, since=since, until=until)
         assert "id" in event_list[0]
-
-    def test_assemble_request_criteria(self):
-        test_input = {"group_id": "123abc",
-                      "server_platform": "windows",
-                      "nonexistent_field": "not_included"}
-        expected_out = {"group_id": "123abc",
-                        "server_platform": "windows"}
-        event = self.create_event_obj()
-        actual_out = event.assemble_request_criteria(test_input)
-        assert actual_out == expected_out

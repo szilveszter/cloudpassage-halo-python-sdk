@@ -13,7 +13,7 @@ secret_key = session_info.secret_key
 api_hostname = session_info.api_hostname
 
 
-class TestAlertProfiles:
+class TestIntegrationAlertProfiles:
     def create_alert_profile_obj(self):
         session = cloudpassage.HaloSession(key_id, secret_key)
         return cloudpassage.AlertProfile(session)

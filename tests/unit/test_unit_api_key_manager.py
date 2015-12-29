@@ -17,7 +17,7 @@ api_secret_key = "APISECRETKEYSAMPLE000"
 api_hostname = "api.nonexist.cloudpassage.com"
 
 
-class TestApiKeyManager:
+class TestUnitApiKeyManager:
     def test_keys_from_env(self):
         os.environ['HALO_API_HOSTNAME'] = api_hostname
         os.environ['HALO_API_KEY'] = api_key_id

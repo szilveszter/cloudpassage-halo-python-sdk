@@ -25,7 +25,7 @@ content_name = str(content_prefix +
                    str(hashlib.md5(str(datetime.datetime.now())).hexdigest()))
 
 
-class TestHaloSession:
+class TestUnitHaloSession:
     def create_halo_session_object(self):
         session = cloudpassage.HaloSession(key_id, secret_key)
         return session
@@ -101,18 +101,3 @@ class TestHaloSession:
                                            proxy_port=proxy_port)
         assert ((session.proxy_host == proxy_host) and
                 (session.proxy_port == proxy_port))
-
-    def test_halosession_authentication(self):
-        session = self.create_halo_session_object()
-        session.authenticate_client()
-        assert ((session.auth_token is not None) and
-                (session.auth_scope is not None))
-
-    def test_halosession_throws_auth_exception(self):
-        session = cloudpassage.HaloSession(bad_key, secret_key)
-        authfailed = False
-        try:
-            session.authenticate_client()
-        except cloudpassage.CloudPassageAuthentication:
-            authfailed = True
-        assert authfailed

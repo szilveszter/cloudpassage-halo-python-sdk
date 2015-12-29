@@ -13,7 +13,7 @@ secret_key = session_info.secret_key
 api_hostname = session_info.api_hostname
 
 
-class TestServerGroup:
+class TestIntegrationServerGroup:
     def create_server_group_object(self):
         session = cloudpassage.HaloSession(key_id, secret_key)
         return(cloudpassage.ServerGroup(session))

@@ -57,7 +57,7 @@ def get_target_linux_firewall_policy():
     return None
 
 
-class TestFirewallPolicy:
+class TestIntegrationFirewallPolicy:
 
     def test_instantiation(self):
         session = cloudpassage.HaloSession(key_id, secret_key)
@@ -73,6 +73,10 @@ class TestFirewallPolicy:
         assert "id" in firewall_policy_list[0]
 
     def test_firewall_policy_describe(self):
+        """This test requires that a firewall policy exist in your Halo
+        account.  If you don't have a firewall policy in your Halo account,
+        this test will fail.
+        """
         firewall_policy = create_firewall_policy_object()
         firewall_policy_list = firewall_policy.list_all()
         target_firewall_policy_id = firewall_policy_list[0]["id"]
@@ -89,7 +93,7 @@ class TestFirewallPolicy:
         assert delete_error is None
 
 
-class TestFirewallRule:
+class TestIntegrationFirewallRule:
     def test_instantiation(self):
         session = cloudpassage.HaloSession(key_id, secret_key)
         assert cloudpassage.FirewallRule(session)
@@ -132,7 +136,7 @@ class TestFirewallRule:
         assert delete_policy_error is None
 
 
-class TestFirewallZone:
+class TestIntegraationFirewallZone:
     def test_instantiation(self):
         session = cloudpassage.HaloSession(key_id, secret_key)
         assert cloudpassage.FirewallZone(session)
@@ -160,7 +164,7 @@ class TestFirewallZone:
         assert delete_error is None
 
 
-class TestFirewallService:
+class TestIntegrationFirewallService:
     def test_instantiation(self):
         session = cloudpassage.HaloSession(key_id, secret_key)
         assert cloudpassage.FirewallService(session)
@@ -189,7 +193,7 @@ class TestFirewallService:
         assert delete_error is None
 
 
-class TestFirewallInterface:
+class TestIntegrationFirewallInterface:
     def test_instantiation(self):
         session = cloudpassage.HaloSession(key_id, secret_key)
         assert cloudpassage.FirewallInterface(session)

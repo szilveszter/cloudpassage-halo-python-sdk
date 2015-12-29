@@ -116,14 +116,15 @@ def merge_dicts(first, second):
 
 def verify_pages(max_pages):
     """Verify the user isn't trying to pull too many pages in one query"""
-    exc = None
+    valid = True
+    fail_msg = None
     if not isinstance(max_pages, int):
         fail_msg = "Type wrong for max_pages.  Should be int."
-        exc = CloudPassageValidation(fail_msg)
+        valid = False
     if max_pages > 100:
         fail_msg = "You're asking for too many pages.  100 max."
-        exc = CloudPassageValidation(fail_msg)
-    return exc
+        valid = False
+    return(valid, fail_msg)
 
 
 def parse_status(url, resp_code, resp_text):

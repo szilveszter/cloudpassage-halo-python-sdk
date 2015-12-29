@@ -14,7 +14,7 @@ secret_key = session_info.secret_key
 api_hostname = session_info.api_hostname
 
 
-class TestServer:
+class TestIntegrationServer:
     def build_server_object(self):
         session = cloudpassage.HaloSession(key_id, secret_key)
         server_object = cloudpassage.Server(session)
@@ -124,21 +124,3 @@ class TestServer:
         s = self.build_server_object()
         result = s.list_all(state=states)
         assert "id" in result[0]
-
-    def test_validate_server_search_criteria(self):
-        search_criteria = {"state": ["deactivated", "missing"],
-                           "cve": ["CVE-2014-0001"],
-                           "kb": "kb22421121",
-                           "missing_kb": "kb990099"}
-        s = self.build_server_object()
-        success = s.validate_server_search_criteria(search_criteria)
-        assert success
-
-    def test_validate_server_search_criteria_fail(self):
-        search_criteria = {"state": ["deactivated", "missing"],
-                           "cve": ["KB-2014-0001"],
-                           "kb": "kb22421121",
-                           "missing_kb": "kb990099"}
-        s = self.build_server_object()
-        valid = s.validate_server_search_criteria(search_criteria)
-        assert valid is False
