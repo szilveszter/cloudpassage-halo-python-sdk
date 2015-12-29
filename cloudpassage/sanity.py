@@ -1,7 +1,7 @@
 """Collection of functions for doing validation and sanity checking"""
 
 import re
-import cloudpassage
+from cloudpassage.exceptions import CloudPassageValidation
 
 
 def validate_servergroup_create(server_group_attributes):
@@ -88,14 +88,14 @@ def validate_object_id(object_id):
     if isinstance(object_id, (str, unicode)):
         if not rex.match(object_id):
             error_message = "Object ID failed validation: %s" % object_id
-            raise cloudpassage.CloudPassageValidation(error_message)
+            raise CloudPassageValidation(error_message)
         else:
             return True
     elif isinstance(object_id, list):
         for individual in object_id:
             if not rex.match(individual):
                 error_message = "Object ID failed validation: %s" % object_id
-                raise cloudpassage.CloudPassageValidation(error_message)
+                raise CloudPassageValidation(error_message)
         return True
     else:
         error_message = "Wrong type for object ID: %s" % str(type(object_id))
