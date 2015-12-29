@@ -27,13 +27,3 @@ class TestUnitEvent:
         except cloudpassage.CloudPassageValidation:
             rejected = True
         assert rejected
-
-    def test_assemble_request_criteria(self):
-        test_input = {"group_id": "123abc",
-                      "server_platform": "windows",
-                      "nonexistent_field": "not_included"}
-        expected_out = {"group_id": "123abc",
-                        "server_platform": "windows"}
-        event = cloudpassage.Event(None)
-        actual_out = event.assemble_request_criteria(test_input)
-        assert actual_out == expected_out

@@ -18,7 +18,7 @@ secret_key = session_info.secret_key
 api_hostname = session_info.api_hostname
 
 
-class TestUnitFn:
+class TestUnitUtility:
     def test_merge_dicts(self):
         one = {"a": "Alpha",
                "b": "Bravo",
@@ -120,3 +120,12 @@ class TestUnitFn:
 
     def test_time_string_now(self):
         assert type(utility.time_string_now()) is str
+
+    def test_assemble_search_criteria(self):
+        valid_search_fields = ["something", "something_else"]
+        input_search_criteria = {"something": "that thing over there",
+                                 "cats": "Do not belong here"}
+        result = utility.assemble_search_criteria(valid_search_fields,
+                                                  input_search_criteria)
+        assert "something" in result
+        assert "cats" not in result

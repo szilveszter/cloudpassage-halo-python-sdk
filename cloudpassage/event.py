@@ -16,6 +16,9 @@ class Event(object):
 
     """
 
+    # pylint: disable=too-few-public-methods
+    # This cannot be combined with any other module, and still make sense
+
     def __init__(self, session):
         self.session = session
         self.supported_search_fields = [
@@ -64,19 +67,8 @@ class Event(object):
         key = "events"
         max_pages = pages
         request = HttpHelper(self.session)
-        request_params_raw = self.assemble_request_criteria(kwargs)
-        if request_params_raw != {}:
-            request_params = utility.sanitize_url_params(request_params_raw)
-            response = request.get_paginated(endpoint, key, max_pages,
-                                             params=request_params)
-        else:
-            response = request.get_paginated(endpoint, key, max_pages)
+        params = utility.assemble_search_criteria(self.supported_search_fields,
+                                                  kwargs)
+        response = request.get_paginated(endpoint, key, max_pages,
+                                         params=params)
         return response
-
-    def assemble_request_criteria(self, arguments):
-        """Verifies request params and returns a dict of validated arguments"""
-        request_params_raw = {}
-        for param in self.supported_search_fields:
-            if param in arguments:
-                request_params_raw[param] = arguments[param]
-        return request_params_raw
