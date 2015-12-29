@@ -18,18 +18,25 @@ class ApiKeyManager(object):
 
     Environment variables::
         HALO_API_KEY
+
         HALO_API_SECRET_KEY
+
         HALO_API_HOSTNAME
 
 
     Yaml file structure::
         defaults:
+
             key_id:
+
             secret_key:
+
             api_hostname:
+
 
     Keyword args:
         config_file (str): full path to yaml config file
+
 
     Attributes:
         api_hostname: Hostname of api endpoint. \

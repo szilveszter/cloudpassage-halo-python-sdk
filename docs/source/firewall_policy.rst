@@ -7,7 +7,7 @@ Firewall Policies
 -----------------
 
 .. autoclass:: cloudpassage.FirewallPolicy
-   :inherited-members:
+   :members: create, delete, describe, list_all, update
 
 
 Firewall Rules
@@ -21,18 +21,18 @@ Firewall IP Zones
 -----------------
 
 .. autoclass:: cloudpassage.FirewallZone
-   :inherited-members:
+   :members: create, delete, describe, list_all, update
 
 
 Firewall Services
 -----------------
 
 .. autoclass:: cloudpassage.FirewallService
-   :inherited-members:
+   :members: create, delete, describe, list_all, update
 
 
 Firewall Interfaces
 -------------------
 
 .. autoclass:: cloudpassage.FirewallInterface
-   :inherited-members:
+   :members: create, delete, describe, list_all, update

@@ -4,4 +4,4 @@ ConfigurationPolicy
 .. toctree::
 
 .. autoclass:: cloudpassage.ConfigurationPolicy
-   :inherited-members:
+   :members: create, delete, describe, list_all, update

@@ -4,4 +4,4 @@ Event
 .. toctree::
 
 .. autoclass:: cloudpassage.Event
-   :members:
+   :members: list_all

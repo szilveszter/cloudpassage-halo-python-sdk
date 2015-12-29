@@ -4,4 +4,4 @@ FimPolicy
 .. toctree::
 
 .. autoclass:: cloudpassage.FimPolicy
-   :inherited-members:
+   :members: create, delete, describe, list_all, update

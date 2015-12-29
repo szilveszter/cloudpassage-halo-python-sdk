@@ -4,4 +4,4 @@ AlertProfile
 .. toctree::
 
 .. autoclass:: cloudpassage.AlertProfile
-   :inherited-members:
+   :members: list_all

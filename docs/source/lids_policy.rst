@@ -4,4 +4,4 @@ LidsPolicy
 .. toctree::
 
 .. autoclass:: cloudpassage.LidsPolicy
-   :inherited-members:
+   :members: create, delete, describe, list_all, update
