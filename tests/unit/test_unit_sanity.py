@@ -49,6 +49,24 @@ class TestUnitSanity:
             accepted = False
         assert accepted
 
+    def test_servergroup_update_validate_bad_type(self):
+        rejected = False
+        arguments = {"firewall_policy_id": float(12345.0090011)}
+        try:
+            sanity.validate_servergroup_update(arguments)
+        except:
+            rejected = True
+        assert rejected
+
+    def test_servergroup_update_validate_bad_attribute(self):
+        rejected = False
+        arguments = {"cats": float(12345.0090011)}
+        try:
+            sanity.validate_servergroup_update(arguments)
+        except:
+            rejected = True
+        assert rejected
+
     def test_valid_object_id(self):
         sample_object_id = "951ffd865e4f11e59ba055477bd3e868"
         assert sanity.validate_object_id(sample_object_id)

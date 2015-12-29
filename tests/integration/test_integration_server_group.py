@@ -50,8 +50,10 @@ class TestIntegrationServerGroup:
         # Confirm that we actually have a populated server group
         assert confirmed
 
-    def test_create_delete_server_group(self):
+    def test_create_update_delete_server_group(self):
+        update_name = "WHATS_YOUR_TWENTY"
         s_grp = self.create_server_group_object()
         new_grp_id = s_grp.create("TEN_FOUR_GOOD_BUDDY")
+        s_grp.update(new_grp_id, name=update_name)
         delete_return = s_grp.delete(new_grp_id)
         assert delete_return is None
