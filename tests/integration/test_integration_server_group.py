@@ -18,6 +18,13 @@ class TestIntegrationServerGroup:
         session = cloudpassage.HaloSession(key_id, secret_key)
         return(cloudpassage.ServerGroup(session))
 
+    def remove_group_by_name(self, group_name):
+        server_grp_obj = self.create_server_group_object()
+        grp_list = server_grp_obj.list_all()
+        for group in grp_list:
+            if group["name"] == group_name:
+                server_group_obj.delete(group["id"])
+
     def test_instantiation(self):
         session = cloudpassage.HaloSession(key_id, secret_key)
         assert cloudpassage.ServerGroup(session)
@@ -52,6 +59,8 @@ class TestIntegrationServerGroup:
 
     def test_create_update_delete_server_group(self):
         update_name = "WHATS_YOUR_TWENTY"
+        self.remove_group_by_name(update_name)
+        self.remove_group_by_name("TEN_FOUR_GOOD_BUDDY")
         s_grp = self.create_server_group_object()
         new_grp_id = s_grp.create("TEN_FOUR_GOOD_BUDDY")
         s_grp.update(new_grp_id, name=update_name)

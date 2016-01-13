@@ -2,6 +2,7 @@ import cloudpassage
 import json
 import os
 import pytest
+import cloudpassage.utility
 
 policy_file_name = "firewall.json"
 config_file_name = "portal.yaml.local"
@@ -56,6 +57,13 @@ def get_target_linux_firewall_policy():
             return policy["id"]
     return None
 
+def remove_policy_by_name(policy_name):
+    fw_policy_obj = create_firewall_policy_object()
+    policy_list = fw_policy_obj.list_all()
+    for policy in policy_list:
+        if policy["name"] == policy_name:
+            fw_policy_obj.delete(policy["id"])
+
 
 class TestIntegrationFirewallPolicy:
 
@@ -85,6 +93,10 @@ class TestIntegrationFirewallPolicy:
 
     def test_firewall_policy_create_update_delete(self):
         firewall_policy = create_firewall_policy_object()
+        pol_meta = cloudpassage.utility.determine_policy_metadata(
+            firewall_policy_body)
+        remove_policy_by_name(pol_meta["policy_name"])
+        remove_policy_by_name("NewName")
         new_policy_id = firewall_policy.create(firewall_policy_body)
         policy_update = {"firewall_policy": {"name": "NewName",
                                              "id": new_policy_id}}
