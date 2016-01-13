@@ -2,6 +2,7 @@ import cloudpassage
 import datetime
 import json
 import os
+import cloudpassage.utility
 
 
 policy_file_name = "core-system-files-centos-v1.fim.json"
@@ -26,6 +27,13 @@ class TestIntegrationFimPolicy:
         session = cloudpassage.HaloSession(key_id, secret_key)
         assert cloudpassage.FimPolicy(session)
 
+    def remove_policy_by_name(self, policy_name):
+        fim_policy_obj = self.build_fim_policy_object()
+        policy_list = fim_policy_obj.list_all()
+        for policy in policy_list:
+            if policy["name"] == policy_name:
+                fim_policy_obj.delete(policy["id"])
+
     def test_list_all(self):
         """This test attempts to get a list of all FIM policies for your
         account.  If you don't have any FIM policies, it will fail.
@@ -48,9 +56,10 @@ class TestIntegrationFimPolicy:
         deleted = False
         policy_retrieved = {"fim_policy": None}
         request = self.build_fim_policy_object()
-        newname = "Functional Test Name Change"
         with open(policy_file, 'r') as policy_file_object:
             policy_body = policy_file_object.read()
+        pol_meta = cloudpassage.utility.determine_policy_metadata(policy_body)
+        self.remove_policy_by_name(pol_meta["policy_name"])
         policy_id = request.create(policy_body)
         request.delete(policy_id)
         try:
@@ -64,6 +73,7 @@ class TestIntegrationFimPolicy:
         policy_retrieved = {"fim_policy": None}
         request = self.build_fim_policy_object()
         newname = "Functional Test Name Change"
+        self.remove_policy_by_name(newname)
         with open(policy_file, 'r') as policy_file_object:
             policy_body = policy_file_object.read()
         policy_id = request.create(policy_body)

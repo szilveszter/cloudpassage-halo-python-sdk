@@ -2,6 +2,7 @@ import cloudpassage
 import json
 import os
 import pytest
+import cloudpassage.utility
 
 config_file_name = "portal.yaml.local"
 policy_file_name = "cis-benchmark-for-centos-7-v1.policy.json"
@@ -20,6 +21,13 @@ class TestIntegrationConfigurationPolicy:
         session = cloudpassage.HaloSession(key_id, secret_key)
         return_obj = cloudpassage.ConfigurationPolicy(session)
         return(return_obj)
+
+    def remove_policy_by_name(self, policy_name):
+        config_policy_obj = self.build_config_policy_object()
+        policy_list = config_policy_obj.list_all()
+        for policy in policy_list:
+            if policy["name"] == policy_name:
+                config_policy_obj.delete(policy["id"])
 
     def test_instantiation(self):
         session = cloudpassage.HaloSession(key_id, secret_key)
@@ -51,9 +59,11 @@ class TestIntegrationConfigurationPolicy:
         deleted = False
         policy_retrieved = {"policy": None}
         request = self.build_config_policy_object()
-        newname = "Functional Test Name Change"
+        # newname = "Functional Test Name Change"
         with open(policy_file, 'r') as policy_file_object:
             policy_body = policy_file_object.read()
+        pol_meta = cloudpassage.utility.determine_policy_metadata(policy_body)
+        self.remove_policy_by_name(pol_meta["policy_name"])
         policy_id = request.create(policy_body)
         request.delete(policy_id)
         try:
@@ -70,6 +80,7 @@ class TestIntegrationConfigurationPolicy:
         policy_retrieved = {"policy": None}
         request = self.build_config_policy_object()
         newname = "Functional Test Name Change"
+        self.remove_policy_by_name(newname)
         with open(policy_file, 'r') as policy_file_object:
             policy_body = policy_file_object.read()
         policy_id = request.create(policy_body)
