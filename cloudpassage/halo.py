@@ -106,7 +106,10 @@ class HaloSession(object):
         if resp.status_code == 200:
             auth_resp_json = resp.json()
             token = auth_resp_json["access_token"]
-            scope = auth_resp_json["scope"]
+            try:
+                scope = auth_resp_json["scope"]
+            except KeyError:
+                scope = None
         if resp.status_code == 401:
             token = "BAD"
         return token, scope
@@ -150,6 +153,7 @@ class HaloSession(object):
             error_message = "Bad API hostname: %s" % self.api_host
             raise CloudPassageValidation(error_message)
         prefix = "https://" + self.api_host + ":" + str(self.api_port)
+        print prefix
         return prefix
 
     def build_header(self):

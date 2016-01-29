@@ -7,3 +7,4 @@ defaults:
   ro_key_id:
   ro_secret_key:
   api_hostname: api.cloudpassage.com
+  api_port: 443

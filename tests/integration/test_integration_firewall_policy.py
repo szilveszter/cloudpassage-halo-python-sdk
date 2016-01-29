@@ -14,37 +14,49 @@ session_info = cloudpassage.ApiKeyManager(config_file=config_file)
 key_id = session_info.key_id
 secret_key = session_info.secret_key
 api_hostname = session_info.api_hostname
+api_port = session_info.api_port
+
 
 with open(policy_file, 'r') as p_file:
     firewall_policy_body = p_file.read().replace('\n', '')
 
 
 def create_firewall_policy_object():
-    session = cloudpassage.HaloSession(key_id, secret_key)
+    session = cloudpassage.HaloSession(key_id, secret_key,
+                                       api_host=api_hostname,
+                                       api_port=api_port)
     firewall_policy_object = cloudpassage.FirewallPolicy(session)
     return firewall_policy_object
 
 
 def create_firewall_rule_object():
-    session = cloudpassage.HaloSession(key_id, secret_key)
+    session = cloudpassage.HaloSession(key_id, secret_key,
+                                       api_host=api_hostname,
+                                       api_port=api_port)
     firewall_rule_object = cloudpassage.FirewallRule(session)
     return firewall_rule_object
 
 
 def create_firewall_zone_object():
-    session = cloudpassage.HaloSession(key_id, secret_key)
+    session = cloudpassage.HaloSession(key_id, secret_key,
+                                       api_host=api_hostname,
+                                       api_port=api_port)
     firewall_zone_object = cloudpassage.FirewallZone(session)
     return firewall_zone_object
 
 
 def create_firewall_service_object():
-    session = cloudpassage.HaloSession(key_id, secret_key)
+    session = cloudpassage.HaloSession(key_id, secret_key,
+                                       api_host=api_hostname,
+                                       api_port=api_port)
     firewall_service_object = cloudpassage.FirewallService(session)
     return firewall_service_object
 
 
 def create_firewall_interface_object():
-    session = cloudpassage.HaloSession(key_id, secret_key)
+    session = cloudpassage.HaloSession(key_id, secret_key,
+                                       api_host=api_hostname,
+                                       api_port=api_port)
     firewall_interface_object = cloudpassage.FirewallInterface(session)
     return firewall_interface_object
 
@@ -56,6 +68,7 @@ def get_target_linux_firewall_policy():
         if policy["platform"] == 'linux':
             return policy["id"]
     return None
+
 
 def remove_policy_by_name(policy_name):
     fw_policy_obj = create_firewall_policy_object()

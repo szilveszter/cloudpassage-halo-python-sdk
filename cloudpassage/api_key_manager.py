@@ -23,6 +23,8 @@ class ApiKeyManager(object):
 
         HALO_API_HOSTNAME
 
+        HALO_API_PORT
+
 
     Yaml file structure::
         defaults:
@@ -33,6 +35,8 @@ class ApiKeyManager(object):
 
             api_hostname:
 
+            api_port:
+
 
     Keyword args:
         config_file (str): full path to yaml config file
@@ -41,6 +45,7 @@ class ApiKeyManager(object):
     Attributes:
         api_hostname: Hostname of api endpoint. \
         Defaults to api.cloudpassage.com
+        api_port: API port
         key_id: API key ID
         secret_key: API key secret
 
@@ -50,6 +55,7 @@ class ApiKeyManager(object):
         self.api_hostname = "api.cloudpassage.com"
         self.key_id = None
         self.secret_key = None
+        self.api_port = None
         self.config_file = None
 
         if "config_file" in kwargs:
@@ -71,6 +77,8 @@ class ApiKeyManager(object):
         self.secret_key = config_variables["secret_key"]
         if sanity.validate_api_hostname(config_variables["api_hostname"]):
             self.api_hostname = config_variables["api_hostname"]
+        if 65535 > config_variables["api_port"] > 0:
+            self.api_port = config_variables["api_port"]
         return
 
     def get_config_from_file(self, config_file):
@@ -89,7 +97,8 @@ class ApiKeyManager(object):
         config = None
         env_variables = {"key_id": os.getenv("HALO_API_KEY"),
                          "secret_key": os.getenv("HALO_API_SECRET_KEY"),
-                         "api_hostname": os.getenv("HALO_API_HOSTNAME")}
+                         "api_hostname": os.getenv("HALO_API_HOSTNAME"),
+                         "api_port": os.getenv("HALO_API_PORT")}
         if self.env_vars_are_set(env_variables):
             config = env_variables
         return config

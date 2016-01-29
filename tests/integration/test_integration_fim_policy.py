@@ -15,11 +15,14 @@ session_info = cloudpassage.ApiKeyManager(config_file=config_file)
 key_id = session_info.key_id
 secret_key = session_info.secret_key
 api_hostname = session_info.api_hostname
+api_port = session_info.api_port
 
 
 class TestIntegrationFimPolicy:
     def build_fim_policy_object(self):
-        session = cloudpassage.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           api_host=api_hostname,
+                                           api_port=api_port)
         return_obj = cloudpassage.FimPolicy(session)
         return(return_obj)
 
@@ -91,12 +94,16 @@ class TestIntegrationFimPolicy:
 
 class TestIntegrationFimBaseline:
     def build_fim_baseline_object(self):
-        session = cloudpassage.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           api_host=api_hostname,
+                                           api_port=api_port)
         return_obj = cloudpassage.FimBaseline(session)
         return(return_obj)
 
     def build_fim_policy_object(self):
-        session = cloudpassage.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           api_host=api_hostname,
+                                           api_port=api_port)
         return_obj = cloudpassage.FimPolicy(session)
         return(return_obj)
 
@@ -119,7 +126,9 @@ class TestIntegrationFimBaseline:
         """This test requires an active Linux host in order to run
         successfilly.
         """
-        session = cloudpassage.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           api_host=api_hostname,
+                                           api_port=api_port)
         server = cloudpassage.Server(session)
         list_of_active_linux_servers = server.list_all(state="active",
                                                        platform="linux")
