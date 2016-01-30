@@ -153,7 +153,6 @@ class HaloSession(object):
             error_message = "Bad API hostname: %s" % self.api_host
             raise CloudPassageValidation(error_message)
         prefix = "https://" + self.api_host + ":" + str(self.api_port)
-        print prefix
         return prefix
 
     def build_header(self):
