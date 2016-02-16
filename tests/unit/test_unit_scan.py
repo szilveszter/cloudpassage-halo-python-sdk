@@ -64,7 +64,6 @@ class TestUnitScan:
                 assert accepted == status
 
 
-
 class TestUnitCveException:
     def test_instantiation(self):
         assert cloudpassage.CveException(None)

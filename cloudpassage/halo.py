@@ -106,7 +106,10 @@ class HaloSession(object):
         if resp.status_code == 200:
             auth_resp_json = resp.json()
             token = auth_resp_json["access_token"]
-            scope = auth_resp_json["scope"]
+            try:
+                scope = auth_resp_json["scope"]
+            except KeyError:
+                scope = None
         if resp.status_code == 401:
             token = "BAD"
         return token, scope

@@ -12,6 +12,7 @@ session_info = cloudpassage.ApiKeyManager(config_file=config_file)
 key_id = session_info.key_id
 secret_key = session_info.secret_key
 api_hostname = session_info.api_hostname
+api_port = session_info.api_port
 
 
 class TestIntegrationScan:
@@ -27,17 +28,23 @@ class TestIntegrationScan:
         return None
 
     def build_scan_object(self):
-        session = cloudpassage.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           api_host=api_hostname,
+                                           api_port=api_port)
         return_obj = cloudpassage.Scan(session)
         return(return_obj)
 
     def build_server_group_object(self):
-        session = cloudpassage.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           api_host=api_hostname,
+                                           api_port=api_port)
         return_obj = cloudpassage.ServerGroup(session)
         return(return_obj)
 
     def build_server_object(self):
-        session = cloudpassage.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           api_host=api_hostname,
+                                           api_port=api_port)
         return_obj = cloudpassage.Server(session)
         return(return_obj)
 
@@ -98,12 +105,16 @@ class TestIntegrationScan:
         return(target_id)
 
     def test_instantiation(self):
-        session = cloudpassage.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           api_host=api_hostname,
+                                           api_port=api_port)
         assert cloudpassage.Scan(session)
 
     def test_bad_scan_type(self):
         rejected = False
-        session = cloudpassage.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           api_host=api_hostname,
+                                           api_port=api_port)
         scanner = cloudpassage.Scan(session)
         s_group = cloudpassage.ServerGroup(session)
         scan_type = "barfola"
@@ -116,7 +127,9 @@ class TestIntegrationScan:
 
     def test_bad_server_id(self):
         rejected = False
-        session = cloudpassage.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           api_host=api_hostname,
+                                           api_port=api_port)
         scanner = cloudpassage.Scan(session)
         scan_type = "svm"
         server_id = "ABC123"
@@ -129,7 +142,9 @@ class TestIntegrationScan:
     def test_scan_type_valid(self):
         valid_types = ["svm", "sva", "csm", "sca", "fim", "sam", "sv"]
         invalid_types = ["death_stare", "lids"]
-        session = cloudpassage.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           api_host=api_hostname,
+                                           api_port=api_port)
         scanner = cloudpassage.Scan(session)
         for v in valid_types:
             assert scanner.scan_type_supported(v)
@@ -284,7 +299,9 @@ class TestIntegrationScan:
 
 class TestIntegrationCveException:
     def create_cve_exception_object(self):
-        session = cloudpassage.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           api_host=api_hostname,
+                                           api_port=api_port)
         return_obj = cloudpassage.CveException(session)
         return(return_obj)
 

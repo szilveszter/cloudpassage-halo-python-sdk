@@ -38,7 +38,6 @@ class TestUnitFirewallService:
         assert cloudpassage.FirewallService(None)
 
 
-
 class TestUnitFirewallInterface:
     def test_instantiation(self):
         assert cloudpassage.FirewallInterface(None)

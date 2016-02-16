@@ -63,15 +63,6 @@ class TestUnitHaloSession:
         session = self.create_halo_session_object()
         assert session
 
-    def test_halosession_useragent_override(self):
-        ua_override = content_prefix
-        session = cloudpassage.HaloSession(key_id, secret_key,
-                                           user_agent=ua_override)
-        session.authenticate_client()
-        header = session.build_header()
-        assert session.user_agent == ua_override
-        assert header["User-Agent"] == ua_override
-
     def test_halosession_build_endpoint_prefix(self):
         session = cloudpassage.HaloSession(key_id, secret_key)
         default_good = "https://api.cloudpassage.com:443"
@@ -87,13 +78,6 @@ class TestUnitHaloSession:
         except:
             rejected = True
         assert rejected
-
-    def test_halosession_build_header(self):
-        session = cloudpassage.HaloSession(key_id, secret_key)
-        session.authenticate_client()
-        header = session.build_header()
-        assert "Authorization" in header
-        assert header["Content-Type"] == "application/json"
 
     def test_halosession_with_proxy(self):
         session = cloudpassage.HaloSession(key_id, secret_key,

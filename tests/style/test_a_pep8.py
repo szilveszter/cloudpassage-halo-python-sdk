@@ -2,7 +2,8 @@ import os
 import pep8
 import re
 
-test_directory = os.path.abspath('./tests')
+integration_test_directory = os.path.abspath('./integration')
+unit_test_directory = os.path.abspath('./unit')
 code_directory = os.path.abspath('../cloudpassage/')
 
 
@@ -24,7 +25,9 @@ def get_all_py_files(directory):
 
 class TestPep8:
     def test_pep8(self):
-        dirs_to_test = [test_directory, code_directory]
+        dirs_to_test = [integration_test_directory,
+                        unit_test_directory,
+                        code_directory]
         files_to_test = []
         for d in dirs_to_test:
             files_to_test.extend(get_all_py_files(d))

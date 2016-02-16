@@ -14,6 +14,7 @@ session_info = cloudpassage.ApiKeyManager(config_file=config_file)
 key_id = session_info.key_id
 secret_key = session_info.secret_key
 api_hostname = session_info.api_hostname
+api_port = session_info.api_port
 
 
 # This will make cleaning up easier...
@@ -26,7 +27,9 @@ class TestIntegrationGet:
     def test_get_404(self):
         endpoint = "/v1/barf"
         pathfailed = False
-        session = cloudpassage.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           api_host=api_hostname,
+                                           api_port=api_port)
         session.authenticate_client()
         req = cloudpassage.HttpHelper(session)
         try:
@@ -37,7 +40,9 @@ class TestIntegrationGet:
 
     def test_get_rekey(self):
         endpoint = "/v1/servers"
-        session = cloudpassage.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           api_host=api_hostname,
+                                           api_port=api_port)
         session.auth_token = "abc123"
         req = cloudpassage.HttpHelper(session)
         json_response = req.get(endpoint)
@@ -50,7 +55,9 @@ class TestIntegrationGetPaginated:
         key = "barfs"
         pages = 5
         pathfailed = False
-        session = cloudpassage.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           api_host=api_hostname,
+                                           api_port=api_port)
         session.authenticate_client()
         req = cloudpassage.HttpHelper(session)
         try:
@@ -63,7 +70,9 @@ class TestIntegrationGetPaginated:
         endpoint = "/v1/events"
         key = "events"
         pages = 5
-        session = cloudpassage.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           api_host=api_hostname,
+                                           api_port=api_port)
         session.auth_token = "abc123"
         req = cloudpassage.HttpHelper(session)
         json_response = req.get_paginated(endpoint, key, pages)
@@ -73,7 +82,9 @@ class TestIntegrationGetPaginated:
         endpoint = "/v1/events"
         key = "events"
         pages = 5
-        session = cloudpassage.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           api_host=api_hostname,
+                                           api_port=api_port)
         session.auth_token = "abc123"
         req = cloudpassage.HttpHelper(session)
         json_response = req.get_paginated(endpoint, key, pages)
@@ -84,7 +95,9 @@ class TestIntegrationGetPaginated:
         endpoint = "/v1/events"
         key = "events"
         pages = 101
-        session = cloudpassage.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           api_host=api_hostname,
+                                           api_port=api_port)
         session.auth_token = "abc123"
         req = cloudpassage.HttpHelper(session)
         try:
@@ -98,7 +111,9 @@ class TestIntegrationGetPaginated:
         endpoint = "/v1/events"
         key = "badkey"
         pages = 2
-        session = cloudpassage.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           api_host=api_hostname,
+                                           api_port=api_port)
         session.auth_token = "abc123"
         req = cloudpassage.HttpHelper(session)
         try:
@@ -113,7 +128,9 @@ class TestIntegrationPost:
         endpoint = "/v1/barf"
         post_data = {"whatevs": "becausenobodycares"}
         pathfailed = False
-        session = cloudpassage.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           api_host=api_hostname,
+                                           api_port=api_port)
         session.authenticate_client()
         req = cloudpassage.HttpHelper(session)
         try:
@@ -126,7 +143,9 @@ class TestIntegrationPost:
         rejected = False
         endpoint = "/v1/groups"
         post_data = {"whatevs": "becausenobodycares"}
-        session = cloudpassage.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           api_host=api_hostname,
+                                           api_port=api_port)
         session.authenticate_client()
         req = cloudpassage.HttpHelper(session)
         try:
@@ -138,7 +157,9 @@ class TestIntegrationPost:
     def test_post_rekey(self):
         rejected = False
         endpoint = "/v1/gropes"
-        session = cloudpassage.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           api_host=api_hostname,
+                                           api_port=api_port)
         session.auth_token = "abc123"
         req = cloudpassage.HttpHelper(session)
         try:
@@ -153,7 +174,9 @@ class TestIntegrationPut:
         endpoint = "/v1/barf"
         put_data = {"whatevs": "becausenobodycares"}
         pathfailed = False
-        session = cloudpassage.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           api_host=api_hostname,
+                                           api_port=api_port)
         session.authenticate_client()
         req = cloudpassage.HttpHelper(session)
         try:
@@ -166,7 +189,9 @@ class TestIntegrationPut:
         rejected = False
         endpoint = "/v1/groups"
         put_data = {"whatevs": "becausenobodycares"}
-        session = cloudpassage.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           api_host=api_hostname,
+                                           api_port=api_port)
         session.authenticate_client()
         req = cloudpassage.HttpHelper(session)
         try:
@@ -180,7 +205,9 @@ class TestIntegrationPut:
         body = {"server":
                 {"retire": True}}
         endpoint = "/v1/servers/1234567890"
-        session = cloudpassage.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           api_host=api_hostname,
+                                           api_port=api_port)
         session.auth_token = "abc123"
         req = cloudpassage.HttpHelper(session)
         try:
@@ -194,7 +221,9 @@ class TestIntegrationDelete:
     def test_delete_404(self):
         endpoint = "/v1/barf"
         pathfailed = False
-        session = cloudpassage.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           api_host=api_hostname,
+                                           api_port=api_port)
         session.authenticate_client()
         req = cloudpassage.HttpHelper(session)
         try:
@@ -206,7 +235,9 @@ class TestIntegrationDelete:
     def test_delete_rekey(self):
         delfailed = False
         endpoint = "/v1/servers/123455432"
-        session = cloudpassage.HaloSession(key_id, secret_key)
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           api_host=api_hostname,
+                                           api_port=api_port)
         session.auth_token = "abc123"
         req = cloudpassage.HttpHelper(session)
         try:
