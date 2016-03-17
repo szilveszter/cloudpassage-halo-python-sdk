@@ -77,8 +77,11 @@ class ApiKeyManager(object):
         self.secret_key = config_variables["secret_key"]
         if sanity.validate_api_hostname(config_variables["api_hostname"]):
             self.api_hostname = config_variables["api_hostname"]
-        if 65535 > config_variables["api_port"] > 0:
-            self.api_port = config_variables["api_port"]
+        try:
+            if 65535 > int(config_variables["api_port"]) > 0:
+                self.api_port = int(config_variables["api_port"])
+        except:
+            self.api_port = 443
         return
 
     def get_config_from_file(self, config_file):
