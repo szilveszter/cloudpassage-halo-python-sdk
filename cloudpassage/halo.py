@@ -126,7 +126,7 @@ class HaloSession(object):
         success = False
         prefix = self.build_endpoint_prefix()
         endpoint = prefix + "/oauth/access_token?grant_type=client_credentials"
-        combined = self.key_id + ':' + self.secret
+        combined = str(self.key_id) + ':' + str(self.secret)
         encoded = base64.b64encode(combined)
         headers = {"Authorization": str("Basic " + encoded)}
         max_tries = 5

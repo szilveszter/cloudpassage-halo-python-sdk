@@ -85,7 +85,6 @@ class TestIntegrationGetPaginated:
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
                                            api_port=api_port)
-        session.auth_token = "abc123"
         req = cloudpassage.HttpHelper(session)
         json_response = req.get_paginated(endpoint, key, pages)
         assert "id" in json_response[0]
