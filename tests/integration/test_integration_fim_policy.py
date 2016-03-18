@@ -116,7 +116,7 @@ class TestIntegrationFimBaseline:
         response = request.list_all()
         target_id = None
         for policy in response:
-            if (policy["active"] == True and policy["platform"] == "linux"):
+            if (policy["active"] is True and policy["platform"] == "linux"):
                 target_id = policy["id"]
                 break
         assert target_id is not None
