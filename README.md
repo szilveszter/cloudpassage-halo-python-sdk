@@ -2,6 +2,8 @@
 
 ## Python SDK for CloudPassage Halo API
 
+### This is a BETA (v0.99).  Please don't forget to pin your work against the version you're working with, especially if it's a beta :-)
+
 ### Installation
 
 Requirements:
