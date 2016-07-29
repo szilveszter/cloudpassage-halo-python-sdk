@@ -96,3 +96,9 @@ for s in list_of_servers:
  If you've got the coverage module installed,
  ``py.test --cov=cloudpassage ./integration ./unit ./style``
  will show statement test coverage.
+
+
+<!---
+#CPTAGS:community-supported integration api-example
+#TBICON:images/python_icon.png
+-->
