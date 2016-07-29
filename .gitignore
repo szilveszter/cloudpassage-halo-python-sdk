@@ -1,3 +1,9 @@
-*old
-*local
-*pyc
+*.old
+*.local
+*.pyc
+.cache
+tests/public
+cloudpassage.egg-info
+.coverage
+docs/build
+htmlcov

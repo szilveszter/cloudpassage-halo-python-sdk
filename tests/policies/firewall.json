@@ -1,0 +1,57 @@
+{
+  "firewall_policy" : {
+    "name" : "CPAPI TEST",
+    "description" : "AUTOMATED TEST",
+    "platform" : "linux",
+    "ignore_forwarding_rules": true,
+    "firewall_rules" : [
+      {
+        "chain" : "INPUT",
+        "active" : true,
+        "firewall_interface" : null,
+        "firewall_source" : {
+          "name" : "All GhostPorts users",
+          "type" : "UserGroup"
+        },
+        "firewall_service" : null,
+        "connection_states" : "NEW, ESTABLISHED",
+        "action" : "ACCEPT",
+        "log" : false
+      },
+      {
+        "chain" : "INPUT",
+        "active" : true,
+        "firewall_interface" : null,
+        "firewall_source" : {
+          "name" : "All Active Servers",
+          "type" : "Group"
+        },
+        "firewall_service" : null,
+        "connection_states" : "NEW, ESTABLISHED",
+        "action" : "ACCEPT",
+        "log" : false
+      },
+      {
+        "chain" : "INPUT",
+        "active" : true,
+        "firewall_interface" : null,
+        "firewall_source" : null,
+        "firewall_service" : null,
+        "connection_states" : null,
+        "action" : "REJECT",
+        "log" : true,
+        "comment": "Default reject-all"
+      },
+      {
+        "chain" : "OUTPUT",
+        "active" : true,
+        "firewall_interface" : null,
+        "firewall_target" : null,
+        "firewall_service" : null,
+        "connection_states" : null,
+        "action" : "ACCEPT",
+        "log" : false
+      }
+    ]
+  }
+}
