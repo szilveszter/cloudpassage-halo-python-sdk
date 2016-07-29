@@ -48,7 +48,7 @@ class HaloSession(object):
         self.auth_endpoint = 'oauth/access_token'
         self.api_host = 'api.cloudpassage.com'
         self.api_port = 443
-        self.user_agent = 'CloudPassage Halo Python SDK v1.0'
+        self.user_agent = 'CloudPassage Halo Python SDK v0.99'
         self.key_id = apikey
         self.secret = apisecret
         self.auth_token = None
