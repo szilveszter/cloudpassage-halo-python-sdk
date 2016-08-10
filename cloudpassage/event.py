@@ -49,7 +49,7 @@ class Event(object):
             server_id (list or str): A list or comma-separated string \
             containing the server IDs to retrieve events for.
             server_platform (str): (linux | windows)
-            critical (true | false): Returns only critical or \
+            critical (bool): Returns only critical or \
             noncritical events.
             type (list or str): A list or comma-separated string containing \
             the event types to query for.  A complete list of event types is \
