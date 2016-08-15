@@ -1,6 +1,9 @@
 """AlertProfile class"""
 
+import cloudpassage.sanity as sanity
 from cloudpassage.policy import Policy
+from cloudpassage.http_helper import HttpHelper
+import cloudpassage.utility as utility
 
 
 class AlertProfile(Policy):
@@ -23,18 +26,10 @@ class AlertProfile(Policy):
         return "/v1/%s" % AlertProfile.policies
 
     @classmethod
+    def policy_key(cls):
+        return AlertProfile.policy
+
+    @classmethod
     def pagination_key(cls):
         """Defines the pagination key for parsing paged results"""
         return AlertProfile.policies
-
-    def create(self, unimportant):
-        raise NotImplementedError
-
-    def delete(self, unimportant):
-        raise NotImplementedError
-
-    def describe(self, unimportant):
-        raise NotImplementedError
-
-    def update(self, unimportant):
-        raise NotImplementedError
