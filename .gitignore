@@ -7,3 +7,5 @@ cloudpassage.egg-info
 .coverage
 docs/build
 htmlcov
+build/
+dist/
