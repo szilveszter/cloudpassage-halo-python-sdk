@@ -2,6 +2,8 @@
 
 ## Python SDK for CloudPassage Halo API
 
+### This is a BETA (v0.99).  Please don't forget to pin your work against the version you're working with, especially if it's a beta :-)
+
 ### Installation
 
 Requirements:
@@ -94,3 +96,9 @@ for s in list_of_servers:
  If you've got the coverage module installed,
  ``py.test --cov=cloudpassage ./integration ./unit ./style``
  will show statement test coverage.
+
+
+<!---
+#CPTAGS:community-supported integration api-example
+#TBICON:images/python_icon.png
+-->
