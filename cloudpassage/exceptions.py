@@ -23,7 +23,8 @@ class CloudPassageAuthentication(Exception):
         return str(self.msg)
 
     def __str__(self):
-        return repr(self.msg)
+        return str(self.msg)
+
 
 
 class CloudPassageAuthorization(Exception):
@@ -47,7 +48,7 @@ class CloudPassageAuthorization(Exception):
         return str(self.msg)
 
     def __str__(self):
-        return repr(self.msg)
+        return str(self.msg)
 
 
 class CloudPassageValidation(Exception):
@@ -73,7 +74,8 @@ class CloudPassageValidation(Exception):
         return str(self.msg)
 
     def __str__(self):
-        return repr(self.msg)
+        return str(self.msg)
+
 
 
 class CloudPassageCollision(Exception):
@@ -115,7 +117,8 @@ class CloudPassageInternalError(Exception):
         return str(self.msg)
 
     def __str__(self):
-        return repr(self.msg)
+        return str(self.msg)
+
 
 
 class CloudPassageResourceExistence(Exception):
@@ -143,7 +146,8 @@ class CloudPassageResourceExistence(Exception):
         return str(self.msg)
 
     def __str__(self):
-        return repr(self.msg)
+        return str(self.msg)
+
 
 
 class CloudPassageGeneral(Exception):
