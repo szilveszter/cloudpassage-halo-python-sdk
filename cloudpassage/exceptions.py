@@ -22,10 +22,6 @@ class CloudPassageAuthentication(Exception):
     def __str__(self):
         return str(self.msg)
 
-    def __str__(self):
-        return str(self.msg)
-
-
 
 class CloudPassageAuthorization(Exception):
     """Exception related to authorization.
@@ -43,9 +39,6 @@ class CloudPassageAuthorization(Exception):
             self.msg = "%d %s" % (self.code, error_msg)
         else:
             self.msg = error_msg
-
-    def __str__(self):
-        return str(self.msg)
 
     def __str__(self):
         return str(self.msg)
@@ -72,10 +65,6 @@ class CloudPassageValidation(Exception):
 
     def __str__(self):
         return str(self.msg)
-
-    def __str__(self):
-        return str(self.msg)
-
 
 
 class CloudPassageCollision(Exception):
@@ -116,10 +105,6 @@ class CloudPassageInternalError(Exception):
     def __str__(self):
         return str(self.msg)
 
-    def __str__(self):
-        return str(self.msg)
-
-
 
 class CloudPassageResourceExistence(Exception):
     """This exception indicates that you're trying to access a
@@ -144,10 +129,6 @@ class CloudPassageResourceExistence(Exception):
 
     def __str__(self):
         return str(self.msg)
-
-    def __str__(self):
-        return str(self.msg)
-
 
 
 class CloudPassageGeneral(Exception):
