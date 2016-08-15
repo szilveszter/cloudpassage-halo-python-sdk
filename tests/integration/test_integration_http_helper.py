@@ -23,6 +23,22 @@ content_name = str(content_prefix +
                    str(hashlib.md5(str(datetime.datetime.now())).hexdigest()))
 
 
+class TestPythonVersion:
+    def test_systemerror_python(self):
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           api_host=api_hostname,
+                                           api_port=api_port)
+        with mock.patch.object(sys, 'version_info') as v_info:
+            v_info.major = 2
+            v_info.minor = 4
+            v_info.micro = 10
+            v_info = (v_info.major, v_info.minor, v_info.micro)
+            sys.version_info = v_info
+            with pytest.raises(SystemError) as e:
+                cloudpassage.HttpHelper(session)
+            assert e
+            
+
 class TestIntegrationGet:
     def test_get_404(self):
         endpoint = "/v1/barf"

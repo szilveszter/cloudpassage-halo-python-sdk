@@ -20,6 +20,8 @@ class HttpHelper(object):
     """
 
     def __init__(self, connection):
+        if sys.version_info < (2, 7, 10):
+            raise SystemError("Please make sure your python veresion is greater than 2.7.10")
         self.connection = connection
 
     def get(self, endpoint, **kwargs):
