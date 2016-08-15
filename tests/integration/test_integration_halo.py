@@ -43,11 +43,9 @@ class TestIntegrationHaloSession:
                                            api_host=api_hostname,
                                            api_port=api_port)
         authfailed = False
-        try:
+        with pytest.raises(cloudpassage.CloudPassageAuthentication) as e:
             session.authenticate_client()
-        except cloudpassage.CloudPassageAuthentication:
-            authfailed = True
-        assert authfailed
+        assert 'Invalid credentials- can not obtain session token.' in str(e)
 
     def test_halosession_useragent_override(self):
         ua_override = content_prefix

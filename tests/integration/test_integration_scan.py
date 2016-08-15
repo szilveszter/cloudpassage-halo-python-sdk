@@ -119,11 +119,9 @@ class TestIntegrationScan:
         s_group = cloudpassage.ServerGroup(session)
         scan_type = "barfola"
         server_id = s_group.list_all()[0]["id"]
-        try:
-            command = scanner.initiate_scan(server_id, scan_type)
-        except cloudpassage.CloudPassageValidation:
-            rejected = True
-        assert rejected
+        with pytest.raises(cloudpassage.CloudPassageValidation) as e:
+            scanner.initiate_scan(server_id, scan_type)
+        assert 'Unsupported scan type: barfola' in str(e)
 
     def test_bad_server_id(self):
         rejected = False
@@ -133,11 +131,9 @@ class TestIntegrationScan:
         scanner = cloudpassage.Scan(session)
         scan_type = "svm"
         server_id = "ABC123"
-        try:
-            command = scanner.initiate_scan(server_id, scan_type)
-        except cloudpassage.CloudPassageResourceExistence:
-            rejected = True
-        assert rejected
+        with pytest.raises(cloudpassage.CloudPassageResourceExistence) as e:
+            scanner.initiate_scan(server_id, scan_type)
+        assert server_id in str(e)
 
     def test_sam_historical_is_unsupported(self):
         rejected = False
