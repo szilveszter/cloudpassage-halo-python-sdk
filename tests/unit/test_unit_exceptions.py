@@ -30,11 +30,12 @@ class TestUnitExceptions:
         raise CloudPassageValidation(msg)
 
     def test_authentication(self):
-        msg = "test"
+        msg = 'test'
         try:
             self.raise_authentication(msg)
         except CloudPassageAuthentication as e:
             assert msg == e.msg
+            assert str(e) == msg
 
     def test_authorization(self):
         msg = "test"
@@ -42,6 +43,7 @@ class TestUnitExceptions:
             self.raise_authorization(msg)
         except CloudPassageAuthorization as e:
             assert msg == e.msg
+            assert str(e) == msg
 
     def test_collision(self):
         msg = "test"
@@ -49,6 +51,7 @@ class TestUnitExceptions:
             self.raise_collision(msg)
         except CloudPassageCollision as e:
             assert msg == e.msg
+            assert str(e) == msg
 
     def test_general(self):
         msg = "test"
@@ -56,6 +59,7 @@ class TestUnitExceptions:
             self.raise_general(msg)
         except CloudPassageGeneral as e:
             assert msg == e.msg
+            assert str(e) == msg
 
     def test_internal(self):
         msg = "test"
@@ -63,6 +67,7 @@ class TestUnitExceptions:
             self.raise_internal(msg)
         except CloudPassageInternalError as e:
             assert msg == e.msg
+            assert str(e) == msg
 
     def test_resource_existence(self):
         msg = "test"
@@ -70,6 +75,7 @@ class TestUnitExceptions:
             self.raise_resource_exist(msg)
         except CloudPassageResourceExistence as e:
             assert msg == e.msg
+            assert str(e) == msg
 
     def test_validation(self):
         msg = "test"
@@ -77,3 +83,4 @@ class TestUnitExceptions:
             self.raise_validation(msg)
         except CloudPassageValidation as e:
             assert msg == e.msg
+            assert str(e) == msg
