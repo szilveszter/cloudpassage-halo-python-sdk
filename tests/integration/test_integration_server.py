@@ -56,32 +56,26 @@ class TestIntegrationServer:
         rejected = False
         request = self.build_server_object()
         bad_server_id = "123456789"
-        try:
+        with pytest.raises(cloudpassage.CloudPassageResourceExistence) as e:
             request.describe(bad_server_id)
-        except cloudpassage.CloudPassageResourceExistence:
-            rejected = True
-        assert rejected
+        assert bad_server_id in str(e)
 
     def test_retire_server_404(self):
         rejected = False
         request = self.build_server_object()
         server_id = "12345"
-        try:
-            result = request.retire(server_id)
-        except cloudpassage.CloudPassageResourceExistence:
-            rejected = True
-        assert rejected
+        with pytest.raises(cloudpassage.CloudPassageResourceExistence) as e:
+            request.retire(server_id)
+        assert server_id in str(e)
 
     def test_command_details_404(self):
         rejected = False
         request = self.build_server_object()
         server_id = "12345"
         command_id = "56789"
-        try:
-            result = request.command_details(server_id, command_id)
-        except cloudpassage.CloudPassageResourceExistence:
-            rejected = True
-        assert rejected
+        with pytest.raises(cloudpassage.CloudPassageResourceExistence) as e:
+            request.command_details(server_id, command_id)
+        assert server_id in str(e)
 
     def test_server_list(self):
         """This test requires at least one active server in your Halo
