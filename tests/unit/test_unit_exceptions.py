@@ -5,7 +5,7 @@ from cloudpassage.exceptions import CloudPassageGeneral
 from cloudpassage.exceptions import CloudPassageInternalError
 from cloudpassage.exceptions import CloudPassageResourceExistence
 from cloudpassage.exceptions import CloudPassageValidation
-
+import unittest
 
 class TestUnitExceptions:
     def raise_authentication(self, msg):
@@ -69,6 +69,7 @@ class TestUnitExceptions:
         try:
             self.raise_resource_exist(msg)
         except CloudPassageResourceExistence as e:
+            print e.args
             assert msg == e.msg
 
     def test_validation(self):

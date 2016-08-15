@@ -32,11 +32,9 @@ class TestIntegrationGet:
                                            api_port=api_port)
         session.authenticate_client()
         req = cloudpassage.HttpHelper(session)
-        try:
-            json_response = req.get(endpoint)
-        except cloudpassage.CloudPassageResourceExistence:
-            pathfailed = True
-        assert pathfailed
+        with pytest.raises(cloudpassage.CloudPassageResourceExistence) as e:
+            req.get(endpoint)
+        assert '404' in str(e)
 
     def test_get_rekey(self):
         endpoint = "/v1/servers"
@@ -60,11 +58,9 @@ class TestIntegrationGetPaginated:
                                            api_port=api_port)
         session.authenticate_client()
         req = cloudpassage.HttpHelper(session)
-        try:
-            json_response = req.get_paginated(endpoint, key, pages)
-        except cloudpassage.CloudPassageResourceExistence:
-            pathfailed = True
-        assert pathfailed
+        with pytest.raises(cloudpassage.CloudPassageResourceExistence) as e:
+            req.get_paginated(endpoint, key, pages)
+        assert '404' in str(e)
 
     def test_get_paginated_rekey(self):
         endpoint = "/v1/events"
@@ -99,11 +95,9 @@ class TestIntegrationGetPaginated:
                                            api_port=api_port)
         session.auth_token = "abc123"
         req = cloudpassage.HttpHelper(session)
-        try:
-            json_response = req.get_paginated(endpoint, key, pages)
-        except cloudpassage.CloudPassageValidation:
-            rejected = True
-        assert rejected
+        with pytest.raises(cloudpassage.CloudPassageValidation) as e:
+            req.get_paginated(endpoint, key, pages)
+        assert '100 max.' in str(e)
 
     def test_get_paginated_badkey(self):
         rejected = False
@@ -115,11 +109,9 @@ class TestIntegrationGetPaginated:
                                            api_port=api_port)
         session.auth_token = "abc123"
         req = cloudpassage.HttpHelper(session)
-        try:
-            json_response = req.get_paginated(endpoint, key, pages)
-        except cloudpassage.CloudPassageValidation:
-            rejected = True
-        assert rejected
+        with pytest.raises(cloudpassage.CloudPassageValidation) as e:
+            req.get_paginated(endpoint, key, pages)
+        assert key in str(e)
 
 
 class TestIntegrationPost:
@@ -132,11 +124,9 @@ class TestIntegrationPost:
                                            api_port=api_port)
         session.authenticate_client()
         req = cloudpassage.HttpHelper(session)
-        try:
-            json_response = req.post(endpoint, post_data)
-        except cloudpassage.CloudPassageResourceExistence:
-            pathfailed = True
-        assert pathfailed
+        with pytest.raises(cloudpassage.CloudPassageResourceExistence) as e:
+            req.post(endpoint, post_data)
+        assert '404' in str(e)
 
     def test_post_bad_payload(self):
         rejected = False
@@ -147,11 +137,9 @@ class TestIntegrationPost:
                                            api_port=api_port)
         session.authenticate_client()
         req = cloudpassage.HttpHelper(session)
-        try:
-            json_response = req.post(endpoint, post_data)
-        except cloudpassage.CloudPassageValidation:
-            rejected = True
-        assert rejected
+        with pytest.raises(cloudpassage.CloudPassageValidation) as e:
+            req.post(endpoint, post_data)
+        assert '400' in str(e)
 
     def test_post_rekey(self):
         rejected = False
@@ -161,11 +149,9 @@ class TestIntegrationPost:
                                            api_port=api_port)
         session.auth_token = "abc123"
         req = cloudpassage.HttpHelper(session)
-        try:
-            json_response = req.post(endpoint, {"nonexist": "nothing"})
-        except cloudpassage.CloudPassageResourceExistence:
-            rejected = True
-        assert rejected
+        with pytest.raises(cloudpassage.CloudPassageResourceExistence) as e:
+            req.post(endpoint, {"nonexist": "nothing"})
+        assert '404' in str(e)
 
 
 class TestIntegrationPut:
@@ -178,11 +164,9 @@ class TestIntegrationPut:
                                            api_port=api_port)
         session.authenticate_client()
         req = cloudpassage.HttpHelper(session)
-        try:
-            json_response = req.put(endpoint, put_data)
-        except cloudpassage.CloudPassageResourceExistence:
-            pathfailed = True
-        assert pathfailed
+        with pytest.raises(cloudpassage.CloudPassageResourceExistence) as e:
+            req.put(endpoint, put_data)
+        assert '404' in str(e)
 
     def test_post_bad_payload(self):
         rejected = False
@@ -193,11 +177,9 @@ class TestIntegrationPut:
                                            api_port=api_port)
         session.authenticate_client()
         req = cloudpassage.HttpHelper(session)
-        try:
-            json_response = req.put(endpoint, put_data)
-        except cloudpassage.CloudPassageResourceExistence:
-            rejected = True
-        assert rejected
+        with pytest.raises(cloudpassage.CloudPassageResourceExistence) as e:
+            req.put(endpoint, put_data)
+        assert '404' in str(e)
 
     def test_put_rekey(self):
         rejected = False
@@ -209,11 +191,9 @@ class TestIntegrationPut:
                                            api_port=api_port)
         session.auth_token = "abc123"
         req = cloudpassage.HttpHelper(session)
-        try:
-            json_response = req.put(endpoint, body)
-        except cloudpassage.CloudPassageResourceExistence:
-            rejected = True
-        assert rejected
+        with pytest.raises(cloudpassage.CloudPassageResourceExistence) as e:
+            req.put(endpoint, body)
+        assert '404' in str(e)
 
 
 class TestIntegrationDelete:
@@ -225,11 +205,9 @@ class TestIntegrationDelete:
                                            api_port=api_port)
         session.authenticate_client()
         req = cloudpassage.HttpHelper(session)
-        try:
-            json_response = req.delete(endpoint)
-        except cloudpassage.CloudPassageResourceExistence:
-            pathfailed = True
-        assert pathfailed
+        with pytest.raises(cloudpassage.CloudPassageResourceExistence) as e:
+            req.delete(endpoint)
+        assert '404' in str(e)
 
     def test_delete_rekey(self):
         delfailed = False
@@ -239,8 +217,6 @@ class TestIntegrationDelete:
                                            api_port=api_port)
         session.auth_token = "abc123"
         req = cloudpassage.HttpHelper(session)
-        try:
-            json_response = req.delete(endpoint)
-        except cloudpassage.CloudPassageResourceExistence:
-            delfailed = True
-        assert delfailed
+        with pytest.raises(cloudpassage.CloudPassageResourceExistence) as e:
+            req.delete(endpoint)
+        assert '404' in str(e)
