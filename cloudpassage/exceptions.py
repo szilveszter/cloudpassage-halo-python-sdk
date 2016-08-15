@@ -22,6 +22,7 @@ class CloudPassageAuthentication(Exception):
     def __str__(self):
         return repr(self.msg)
 
+
 class CloudPassageAuthorization(Exception):
     """Exception related to authorization.
 
@@ -65,6 +66,7 @@ class CloudPassageValidation(Exception):
     def __str__(self):
         return repr(self.msg)
 
+
 class CloudPassageCollision(Exception):
     """Exception indicates a resource collision.
 
@@ -107,6 +109,7 @@ class CloudPassageInternalError(Exception):
     def __str__(self):
         return repr(self.msg)
 
+
 class CloudPassageResourceExistence(Exception):
     """This exception indicates that you're trying to access a
        resource that doesn't exist.
@@ -127,6 +130,7 @@ class CloudPassageResourceExistence(Exception):
 
     def __str__(self):
         return repr(self.msg)
+
 
 class CloudPassageGeneral(Exception):
     """This is thrown when a more specific exception type is unavailable.
