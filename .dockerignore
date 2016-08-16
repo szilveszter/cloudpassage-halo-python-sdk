@@ -1,0 +1,12 @@
+*.old
+*.local
+*.pyc
+.cache
+tests/public
+cloudpassage.egg-info
+.coverage
+docs/build
+htmlcov
+build/
+dist/
+tests/*/__pycache__
