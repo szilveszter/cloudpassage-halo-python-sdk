@@ -16,7 +16,7 @@ setup(
     url="http://github.com/cloudpassage/cloudpassage-halo-python-sdk",
     packages=["cloudpassage"],
     install_requires=["requests", "pyaml"],
-    long_description=read("README.md"),
+    long_description=read("README.rst"),
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
