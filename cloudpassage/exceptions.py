@@ -117,7 +117,6 @@ class CloudPassageResourceExistence(Exception):
     """
 
     def __init__(self, error_msg, **kwargs):
-        print error_msg
         super(CloudPassageResourceExistence, self).__init__()
         if "code" in kwargs:
             self.code = kwargs["code"]
