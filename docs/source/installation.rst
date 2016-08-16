@@ -5,7 +5,8 @@ Installation
 
 Requirements
 ------------
-The CloudPassage Python SDK is currently verified against Python v2.7
+The CloudPassage Python SDK is currently verified against Python v2.7.10.  \
+Versions less than this will throw an ImportError exception.
 
 The only dependencies are the requests and pyaml modules, which are available \
 through pip.
