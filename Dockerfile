@@ -8,6 +8,8 @@ RUN apt-get update && \
 
 COPY ./ /source/
 
+WORKDIR /source/cloudpassage/
+
 RUN cd /source/cloudpassage && \
     pip install -r requirements.txt && \
     pip install pytest && \
