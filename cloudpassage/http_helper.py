@@ -23,9 +23,6 @@ class HttpHelper(object):
     def __init__(self, connection):
         self.connection = connection
 
-    def python_version(self):
-        return sys.version.split(" ")[0]
-
     def get(self, endpoint, **kwargs):
         """This method performs a GET against Halo's API.
 
