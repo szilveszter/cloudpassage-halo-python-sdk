@@ -1,13 +1,21 @@
 import os
+import re
 from setuptools import setup
 
 
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
+
+def get_version():
+    raw_init_file = read("cloudpassage/__init__.py")
+    rx_compiled = re.compile(r"\s*__version__\s*=\s*\"(\S+)\"")
+    ver = rx_compiled.search(raw_init_file).group(1)
+    return ver
+
 setup(
     name="cloudpassage",
-    version="0.99",
+    version=get_version(),
     author="CloudPassage",
     author_email="toolbox@cloudpassage.com",
     description="Python SDK for CloudPassage Halo API",

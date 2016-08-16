@@ -29,4 +29,5 @@ from cloudpassage.system_announcement import SystemAnnouncement
 
 
 __author__ = "CloudPassage"
+__version__ = "0.99"
 __license__ = "BSD"
