@@ -32,7 +32,7 @@ class TestIntegrationSpecialEventsPolicy:
         se_policy_list = se_policy.list_all()
         assert "id" in se_policy_list[0]
 
-    def test_get_details(self):
+    def test_describe(self):
         """This test gets the details of a special events policy in
         your Halo account.  If you don't have any special events policies
         configured, it will fail.
@@ -42,3 +42,39 @@ class TestIntegrationSpecialEventsPolicy:
         target_policy_id = policy_list[0]["id"]
         target_policy_body = request.describe(target_policy_id)
         assert "id" in target_policy_body
+
+    def test_create(self):
+        rejected = False
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           api_host=api_hostname,
+                                           api_port=api_port)
+        policy = cloudpassage.SpecialEventsPolicy(session)
+        try:
+            policy.create("DoesNotEvenMatter")
+        except NotImplementedError:
+            rejected = True
+        assert rejected
+
+    def test_update(self):
+        rejected = False
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           api_host=api_hostname,
+                                           api_port=api_port)
+        policy = cloudpassage.SpecialEventsPolicy(session)
+        try:
+            policy.update("DoesNotEvenMatter")
+        except NotImplementedError:
+            rejected = True
+        assert rejected
+
+    def test_delete(self):
+        rejected = False
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           api_host=api_hostname,
+                                           api_port=api_port)
+        policy = cloudpassage.SpecialEventsPolicy(session)
+        try:
+            policy.delete("DoesNotEvenMatter")
+        except NotImplementedError:
+            rejected = True
+        assert rejected
