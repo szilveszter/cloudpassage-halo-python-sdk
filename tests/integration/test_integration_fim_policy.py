@@ -1,5 +1,4 @@
 import cloudpassage
-import datetime
 import json
 import os
 import pytest
@@ -57,8 +56,6 @@ class TestIntegrationFimPolicy:
         assert "id" in target_policy_body
 
     def test_fim_policy_create_delete(self):
-        deleted = False
-        policy_retrieved = {"fim_policy": None}
         request = self.build_fim_policy_object()
         with open(policy_file, 'r') as policy_file_object:
             policy_body = policy_file_object.read()
@@ -71,8 +68,6 @@ class TestIntegrationFimPolicy:
         assert policy_id in str(e)
 
     def test_fim_policy_create_update_delete(self):
-        deleted = False
-        policy_retrieved = {"fim_policy": None}
         request = self.build_fim_policy_object()
         newname = "Functional Test Name Change"
         self.remove_policy_by_name(newname)

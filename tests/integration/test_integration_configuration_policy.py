@@ -59,8 +59,6 @@ class TestIntegrationConfigurationPolicy:
         """This test attempts to create and delete a configuration
         policy.
         """
-        deleted = False
-        policy_retrieved = {"policy": None}
         request = self.build_config_policy_object()
         # newname = "Functional Test Name Change"
         with open(policy_file, 'r') as policy_file_object:
@@ -77,8 +75,6 @@ class TestIntegrationConfigurationPolicy:
         """This test attempts to create, update, then delete a configuration
         policy.
         """
-        deleted = False
-        policy_retrieved = {"policy": None}
         request = self.build_config_policy_object()
         newname = "Functional Test Name Change"
         self.remove_policy_by_name(newname)

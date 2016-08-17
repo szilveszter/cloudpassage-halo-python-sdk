@@ -1,5 +1,4 @@
 import cloudpassage
-import json
 import os
 import pytest
 
@@ -53,7 +52,6 @@ class TestIntegrationServer:
         assert "id" in s.describe(target_server_id)
 
     def test_get_server_details_404(self):
-        rejected = False
         request = self.build_server_object()
         bad_server_id = "123456789"
         with pytest.raises(cloudpassage.CloudPassageResourceExistence) as e:
@@ -61,7 +59,6 @@ class TestIntegrationServer:
         assert bad_server_id in str(e)
 
     def test_retire_server_404(self):
-        rejected = False
         request = self.build_server_object()
         server_id = "12345"
         with pytest.raises(cloudpassage.CloudPassageResourceExistence) as e:
@@ -73,7 +70,7 @@ class TestIntegrationServer:
         request = self.build_server_object()
         server_id = "12345"
         try:
-            result = request.issues(server_id)
+            request.issues(server_id)
         except cloudpassage.CloudPassageResourceExistence:
             rejected = True
         assert rejected
@@ -89,7 +86,6 @@ class TestIntegrationServer:
         assert rejected
 
     def test_command_details_404(self):
-        rejected = False
         request = self.build_server_object()
         server_id = "12345"
         command_id = "56789"

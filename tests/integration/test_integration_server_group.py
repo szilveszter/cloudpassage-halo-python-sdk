@@ -1,7 +1,5 @@
 import cloudpassage
-import json
 import os
-import pytest
 
 config_file_name = "portal.yaml.local"
 tests_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../"))
@@ -26,7 +24,7 @@ class TestIntegrationServerGroup:
         grp_list = server_grp_obj.list_all()
         for group in grp_list:
             if group["name"] == group_name:
-                server_group_obj.delete(group["id"])
+                server_grp_obj.delete(group["id"])
 
     def test_instantiation(self):
         session = cloudpassage.HaloSession(key_id, secret_key,
