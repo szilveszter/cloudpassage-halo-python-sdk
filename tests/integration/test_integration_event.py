@@ -51,4 +51,4 @@ class TestIntegrationEvent:
         event = self.create_event_obj()
         event_list = event.list_all(1, critical="true")
         for e in event_list:
-            assert e["critical"] == True
+            assert e["critical"] is True
