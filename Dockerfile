@@ -14,4 +14,4 @@ RUN pip install -r requirements-testing.txt && \
 
 WORKDIR /source/tests
 
-CMD py.test --flakes style unit
+CMD py.test style unit
