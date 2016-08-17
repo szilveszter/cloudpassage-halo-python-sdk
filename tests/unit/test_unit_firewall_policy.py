@@ -1,7 +1,5 @@
 import cloudpassage
-import json
 import os
-import pytest
 
 policy_file_name = "firewall.json"
 config_file_name = "portal.yaml.local"

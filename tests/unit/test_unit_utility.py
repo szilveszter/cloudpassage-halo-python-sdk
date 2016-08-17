@@ -2,7 +2,6 @@ import cloudpassage
 import datetime
 import json
 import os
-import pytest
 
 utility = cloudpassage.utility
 policy_file_name = "firewall.json"
