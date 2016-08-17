@@ -1,6 +1,21 @@
 """CloudPassage-specific exceptions"""
 
 
+def massage_error_code(error_code):
+    """Massages error codes for cleaner exception handling.
+
+    Args:
+        int Error code
+
+    Returns:
+        int Error code.  If arg is not an integer, will change to 999999
+
+    """
+    if type(error_code) is not int:
+        error_code = 999999
+    return error_code
+
+
 class CloudPassageAuthentication(Exception):
     """Exception related to authentication.
     This is thrown in response to an issue authenticating against \
@@ -14,7 +29,7 @@ class CloudPassageAuthentication(Exception):
     def __init__(self, error_msg, **kwargs):
         super(CloudPassageAuthentication, self).__init__()
         if "code" in kwargs:
-            self.code = kwargs["code"]
+            self.code = massage_error_code(kwargs["code"])
             self.msg = "%d %s" % (self.code, error_msg)
         else:
             self.msg = error_msg
@@ -35,7 +50,7 @@ class CloudPassageAuthorization(Exception):
     def __init__(self, error_msg, **kwargs):
         super(CloudPassageAuthorization, self).__init__()
         if "code" in kwargs:
-            self.code = kwargs["code"]
+            self.code = massage_error_code(kwargs["code"])
             self.msg = "%d %s" % (self.code, error_msg)
         else:
             self.msg = error_msg
@@ -58,7 +73,7 @@ class CloudPassageValidation(Exception):
     def __init__(self, error_msg, **kwargs):
         super(CloudPassageValidation, self).__init__()
         if "code" in kwargs:
-            self.code = kwargs["code"]
+            self.code = massage_error_code(kwargs["code"])
             self.msg = "%d %s" % (self.code, error_msg)
         else:
             self.msg = error_msg
@@ -97,7 +112,7 @@ class CloudPassageInternalError(Exception):
     def __init__(self, error_msg, **kwargs):
         super(CloudPassageInternalError, self).__init__()
         if "code" in kwargs:
-            self.code = kwargs["code"]
+            self.code = massage_error_code(kwargs["code"])
             self.msg = "%d %s" % (self.code, error_msg)
         else:
             self.msg = error_msg
@@ -119,7 +134,7 @@ class CloudPassageResourceExistence(Exception):
     def __init__(self, error_msg, **kwargs):
         super(CloudPassageResourceExistence, self).__init__()
         if "code" in kwargs:
-            self.code = kwargs["code"]
+            self.code = massage_error_code(kwargs["code"])
             self.msg = "%d %s " % (self.code, error_msg)
             if "url" in kwargs:
                 self.msg += kwargs["url"]
@@ -142,7 +157,7 @@ class CloudPassageGeneral(Exception):
     def __init__(self, error_msg, **kwargs):
         super(CloudPassageGeneral, self).__init__()
         if "code" in kwargs:
-            self.code = kwargs["code"]
+            self.code = massage_error_code(kwargs["code"])
             self.msg = "%d %s" % (self.code, error_msg)
         else:
             self.msg = error_msg
