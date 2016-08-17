@@ -1,8 +1,5 @@
 import cloudpassage
-import datetime
-import json
 import os
-import pytest
 
 config_file_name = "portal.yaml.local"
 tests_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../"))
@@ -55,12 +52,12 @@ class TestUnitScan:
             scanner = cloudpassage.Scan(None)
             for status in bad_modules:
                 try:
-                    accepted = scanner.verify_and_build_module_params(module)
+                    accepted = scanner.verify_and_build_module_params(status)
                 except:
                     accepted = False
                 assert accepted is False
             for status in good_modules:
-                accepted = scanner.verify_and_build_module_params(module)
+                accepted = scanner.verify_and_build_module_params(status)
                 assert accepted == status
 
 

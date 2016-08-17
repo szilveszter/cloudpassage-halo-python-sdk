@@ -1,9 +1,7 @@
 import cloudpassage
 import datetime
 import hashlib
-import json
 import os
-import pytest
 
 
 config_file_name = "portal.yaml.local"
@@ -74,7 +72,7 @@ class TestUnitHaloSession:
         session = cloudpassage.HaloSession(key_id, secret_key)
         session.api_host = "apples.nonexist.nope.nada"
         try:
-            fn_out = session.build_endpoint_prefix()
+            session.build_endpoint_prefix()
         except:
             rejected = True
         assert rejected

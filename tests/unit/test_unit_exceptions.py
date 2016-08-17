@@ -5,7 +5,6 @@ from cloudpassage.exceptions import CloudPassageGeneral
 from cloudpassage.exceptions import CloudPassageInternalError
 from cloudpassage.exceptions import CloudPassageResourceExistence
 from cloudpassage.exceptions import CloudPassageValidation
-import unittest
 
 
 class TestUnitExceptions:

@@ -12,5 +12,5 @@ class TestPythonVersion:
             v_info = (v_info.major, v_info.minor, v_info.micro)
             sys.version_info = v_info
             with pytest.raises(ImportError) as e:
-                import cloudpassage
+                import cloudpassage  # noqa: F401
             assert e

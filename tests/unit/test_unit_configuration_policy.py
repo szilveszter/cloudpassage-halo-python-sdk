@@ -1,7 +1,5 @@
 import cloudpassage
-import json
 import os
-import pytest
 
 config_file_name = "portal.yaml.local"
 policy_file_name = "cis-benchmark-for-centos-7-v1.policy.json"
