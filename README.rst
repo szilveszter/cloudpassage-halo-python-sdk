@@ -4,6 +4,14 @@ cloudpassage-halo-python-sdk
 Python SDK for CloudPassage Halo API
 ------------------------------------
 
+.. image:: https://codeclimate.com/github/cloudpassage/cloudpassage-halo-python-sdk/badges/gpa.svg
+   :target: https://codeclimate.com/github/cloudpassage/cloudpassage-halo-python-sdk
+   :alt: Code Climate
+
+.. image:: https://codeclimate.com/github/cloudpassage/cloudpassage-halo-python-sdk/badges/coverage.svg
+   :target: https://codeclimate.com/github/cloudpassage/cloudpassage-halo-python-sdk/coverage
+   :alt: Test Coverage
+
 This is a BETA.  Please don't forget to pin your work against the version you're working with, especially if it's a beta :-)
 
 Installation

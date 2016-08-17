@@ -4,6 +4,9 @@
 
 ### This is a BETA.  Please don't forget to pin your work against the version you're working with, especially if it's a beta :-)
 
+[![Code Climate](https://codeclimate.com/github/cloudpassage/cloudpassage-halo-python-sdk/badges/gpa.svg)](https://codeclimate.com/github/cloudpassage/cloudpassage-halo-python-sdk)
+
+[![Test Coverage](https://codeclimate.com/github/cloudpassage/cloudpassage-halo-python-sdk/badges/coverage.svg)](https://codeclimate.com/github/cloudpassage/cloudpassage-halo-python-sdk/coverage)
 ### Installation
 
 Requirements:
