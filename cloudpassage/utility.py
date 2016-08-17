@@ -3,12 +3,14 @@
 
 import json
 import datetime
+import sys
 from cloudpassage.exceptions import CloudPassageValidation
 from cloudpassage.exceptions import CloudPassageInternalError
 from cloudpassage.exceptions import CloudPassageAuthentication
 from cloudpassage.exceptions import CloudPassageAuthorization
 from cloudpassage.exceptions import CloudPassageResourceExistence
 from cloudpassage.exceptions import CloudPassageGeneral
+from distutils.version import LooseVersion
 
 
 def determine_policy_metadata(policy):
@@ -185,3 +187,27 @@ def datetime_to_8601(original_time):
                   original_time.hour, original_time.minute,
                   original_time.second, original_time.microsecond)
     return "%04d-%02d-%02dT%02d:%02d:%02d.%06dZ" % time_split
+
+
+def verify_python_version(actual_version, target_version):
+    """Verifies that the installed version of Python meets minimum requirements
+
+    Args:
+        str: Actual version, represented as a dotted string "2.4.9"
+        str: Target minimum version, represented as a dotted string "2.7.10"
+
+    Returns:
+        bool: True if it meets or exceeds the target minimum version.
+    """
+    if LooseVersion(actual_version) < LooseVersion(target_version):
+        return False
+    else:
+        return True
+
+
+def get_installed_python_version():
+    """Returns the version of Python currently running as a dotted string"""
+    installed_python_version = "%s.%s.%s" % (str(sys.version_info.major),
+                                             str(sys.version_info.minor),
+                                             str(sys.version_info.micro))
+    return installed_python_version

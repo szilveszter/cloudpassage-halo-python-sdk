@@ -2,6 +2,7 @@ import cloudpassage
 import datetime
 import json
 import os
+import re
 
 utility = cloudpassage.utility
 policy_file_name = "firewall.json"
@@ -128,3 +129,17 @@ class TestUnitUtility:
                                                   input_search_criteria)
         assert "something" in result
         assert "cats" not in result
+
+    def test_verify_python_version_pass(self):
+        actual = "2.7.99"
+        target = "2.7.10"
+        assert utility.verify_python_version(actual, target)
+
+    def test_verify_python_version_fail(self):
+        actual = "2.4.9"
+        target = "2.7.10"
+        assert not utility.verify_python_version(actual, target)
+
+    def test_get_installed_python_version(self):
+        rx = re.compile(r'^\d+\.\d+\.\d+$')
+        assert rx.match(utility.get_installed_python_version())

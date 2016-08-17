@@ -27,12 +27,14 @@ from cloudpassage.server import Server  # noqa: F401
 from cloudpassage.server_group import ServerGroup  # noqa: F401
 from cloudpassage.special_events_policy import SpecialEventsPolicy  # noqa: F401
 from cloudpassage.system_announcement import SystemAnnouncement  # noqa: F401
+import utility as init_util
 
 
-if sys.version_info < (2, 7, 10):
-    raise ImportError("Please make sure your python veresion is \
-                      greater than 2.7.10")
-
+target = "2.7.10"
+installed = init_util.get_installed_python_version()
+if init_util.verify_python_version(installed, target) is False:
+    err_msg = "Please make sure your python veresion is at least %s" % target
+    raise ImportError(err_msg)
 
 __author__ = "CloudPassage"
 __version__ = "0.99"
