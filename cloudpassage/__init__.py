@@ -29,10 +29,10 @@ from cloudpassage.system_announcement import SystemAnnouncement  # noqa: F401
 import utility as init_util
 
 
-target = "2.7.10"
+minimum = "2.7.10"
 installed = init_util.get_installed_python_version()
-if init_util.verify_python_version(installed, target) is False:
-    err_msg = "Please make sure your python veresion is at least %s" % target
+if init_util.verify_python_version(installed, minimum) is False:
+    err_msg = "Please make sure your python version is at least %s" % minimum
     raise ImportError(err_msg)
 
 __author__ = "CloudPassage"
