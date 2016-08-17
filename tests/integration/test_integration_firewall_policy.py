@@ -1,7 +1,5 @@
 import cloudpassage
-import json
 import os
-import pytest
 import cloudpassage.utility
 
 policy_file_name = "firewall.json"

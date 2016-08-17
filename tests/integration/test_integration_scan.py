@@ -1,6 +1,5 @@
 import cloudpassage
 import datetime
-import json
 import os
 import pytest
 
@@ -111,7 +110,6 @@ class TestIntegrationScan:
         assert cloudpassage.Scan(session)
 
     def test_bad_scan_type(self):
-        rejected = False
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
                                            api_port=api_port)
@@ -124,7 +122,6 @@ class TestIntegrationScan:
         assert 'Unsupported scan type: barfola' in str(e)
 
     def test_bad_server_id(self):
-        rejected = False
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
                                            api_port=api_port)
@@ -145,7 +142,7 @@ class TestIntegrationScan:
         scan_type = "sam"
         server_id = server.list_all()[0]["id"]
         try:
-            command = scanner.last_scan_results(server_id, scan_type)
+            scanner.last_scan_results(server_id, scan_type)
         except cloudpassage.CloudPassageValidation:
             rejected = True
         assert rejected
@@ -243,7 +240,6 @@ class TestIntegrationScan:
         """
         scan_type = "sam"
         scanner = self.build_scan_object()
-        target_id = self.get_sam_target()
         report = scanner.scan_history(module=scan_type, max_pages=2)
         assert report[0]["module"] == scan_type
 
@@ -254,7 +250,6 @@ class TestIntegrationScan:
         """
         scan_types = ["sam", "svm"]
         scanner = self.build_scan_object()
-        target_id = self.get_sam_target()
         report = scanner.scan_history(module=scan_types, max_pages=2)
         assert report[0]["module"] in scan_types
 
