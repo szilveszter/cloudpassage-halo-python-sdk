@@ -1,9 +1,5 @@
 """AlertProfile class"""
-
-import cloudpassage.sanity as sanity
 from cloudpassage.policy import Policy
-from cloudpassage.http_helper import HttpHelper
-import cloudpassage.utility as utility
 
 
 class AlertProfile(Policy):

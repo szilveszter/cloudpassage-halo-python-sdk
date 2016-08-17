@@ -9,9 +9,7 @@ COPY ./ /source/
 
 WORKDIR /source/
 
-RUN pip install -r requirements.txt && \
-    pip install pytest && \
-    pip install mock && \
+RUN pip install -r requirements-testing.txt && \
     pip install .
 
 WORKDIR /source/tests

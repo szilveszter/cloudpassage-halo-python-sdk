@@ -1,11 +1,10 @@
 """HttpHelper class.  Primary-level object, facilitates
 GET / POST / PUT / DELETE requests against API.
 """
-import sys
+
 import json
 import urlparse
 from cloudpassage.exceptions import CloudPassageValidation
-from cloudpassage.exceptions import CloudPassageGeneral
 import cloudpassage.utility as utility
 import requests
 
