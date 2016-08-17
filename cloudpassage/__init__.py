@@ -1,32 +1,32 @@
 """CloudPassage init"""
 import sys
-from cloudpassage.alert_profile import AlertProfile
-from cloudpassage.api_key_manager import ApiKeyManager
-from cloudpassage.configuration_policy import ConfigurationPolicy
-from cloudpassage.fim_policy import FimPolicy
-from cloudpassage.fim_policy import FimBaseline
-from cloudpassage.event import Event
-from cloudpassage.exceptions import CloudPassageAuthentication
-from cloudpassage.exceptions import CloudPassageAuthorization
-from cloudpassage.exceptions import CloudPassageCollision
-from cloudpassage.exceptions import CloudPassageGeneral
-from cloudpassage.exceptions import CloudPassageInternalError
-from cloudpassage.exceptions import CloudPassageResourceExistence
-from cloudpassage.exceptions import CloudPassageValidation
-from cloudpassage.firewall_policy import FirewallInterface
-from cloudpassage.firewall_policy import FirewallPolicy
-from cloudpassage.firewall_policy import FirewallRule
-from cloudpassage.firewall_policy import FirewallService
-from cloudpassage.firewall_policy import FirewallZone
-from cloudpassage.halo import HaloSession
-from cloudpassage.http_helper import HttpHelper
-from cloudpassage.lids_policy import LidsPolicy
-from cloudpassage.scan import CveException
-from cloudpassage.scan import Scan
-from cloudpassage.server import Server
-from cloudpassage.server_group import ServerGroup
-from cloudpassage.special_events_policy import SpecialEventsPolicy
-from cloudpassage.system_announcement import SystemAnnouncement
+from cloudpassage.alert_profile import AlertProfile  # NOQA
+from cloudpassage.api_key_manager import ApiKeyManager  # NOQA
+from cloudpassage.configuration_policy import ConfigurationPolicy  # NOQA
+from cloudpassage.fim_policy import FimPolicy  # NOQA
+from cloudpassage.fim_policy import FimBaseline  # NOQA
+from cloudpassage.event import Event  # NOQA
+from cloudpassage.exceptions import CloudPassageAuthentication  # NOQA
+from cloudpassage.exceptions import CloudPassageAuthorization  # NOQA
+from cloudpassage.exceptions import CloudPassageCollision  # NOQA
+from cloudpassage.exceptions import CloudPassageGeneral  # NOQA
+from cloudpassage.exceptions import CloudPassageInternalError  # NOQA
+from cloudpassage.exceptions import CloudPassageResourceExistence  # NOQA
+from cloudpassage.exceptions import CloudPassageValidation  # NOQA
+from cloudpassage.firewall_policy import FirewallInterface  # NOQA
+from cloudpassage.firewall_policy import FirewallPolicy  # NOQA
+from cloudpassage.firewall_policy import FirewallRule  # NOQA
+from cloudpassage.firewall_policy import FirewallService  # NOQA
+from cloudpassage.firewall_policy import FirewallZone  # NOQA
+from cloudpassage.halo import HaloSession  # NOQA
+from cloudpassage.http_helper import HttpHelper  # NOQA
+from cloudpassage.lids_policy import LidsPolicy  # NOQA
+from cloudpassage.scan import CveException  # NOQA
+from cloudpassage.scan import Scan  # NOQA
+from cloudpassage.server import Server  # NOQA
+from cloudpassage.server_group import ServerGroup  # NOQA
+from cloudpassage.special_events_policy import SpecialEventsPolicy  # NOQA
+from cloudpassage.system_announcement import SystemAnnouncement  # NOQA
 
 
 if sys.version_info < (2, 7, 10):
