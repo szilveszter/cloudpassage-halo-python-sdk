@@ -1,5 +1,5 @@
 import os
-import flake8.main as f8
+from flake8.api import legacy as f8
 import re
 
 heredir = os.path.abspath(os.path.dirname(__file__))
@@ -9,8 +9,10 @@ code_directory = os.path.join(heredir, '../../cloudpassage')
 
 
 def flake8_examine(file_location):
-    result = f8.check_file(file_location)
-    return result
+    style_guide = f8.get_style_guide()
+    result = style_guide.check_files([file_location])
+    num_of_errors = result.total_errors
+    return num_of_errors
 
 
 def get_all_py_files(directory):

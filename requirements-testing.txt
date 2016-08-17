@@ -2,5 +2,6 @@ mock
 pyaml
 pylama
 pytest
-flake8
+pytest-flake8
+flake8>=3.0
 requests>=2.7
