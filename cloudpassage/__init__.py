@@ -1,5 +1,4 @@
 """CloudPassage init"""
-import sys
 from cloudpassage.alert_profile import AlertProfile  # noqa: F401
 from cloudpassage.api_key_manager import ApiKeyManager  # noqa: F401
 from cloudpassage.configuration_policy import ConfigurationPolicy  # noqa: F401
@@ -27,12 +26,14 @@ from cloudpassage.server import Server  # noqa: F401
 from cloudpassage.server_group import ServerGroup  # noqa: F401
 from cloudpassage.special_events_policy import SpecialEventsPolicy  # noqa: F401
 from cloudpassage.system_announcement import SystemAnnouncement  # noqa: F401
+import utility as init_util
 
 
-if sys.version_info < (2, 7, 10):
-    raise ImportError("Please make sure your python veresion is \
-                      greater than 2.7.10")
-
+minimum = "2.7.10"
+installed = init_util.get_installed_python_version()
+if init_util.verify_python_version(installed, minimum) is False:
+    err_msg = "Please make sure your python version is at least %s" % minimum
+    raise ImportError(err_msg)
 
 __author__ = "CloudPassage"
 __version__ = "0.99"
