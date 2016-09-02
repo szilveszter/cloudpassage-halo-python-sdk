@@ -25,6 +25,9 @@ class CloudPassageAuthentication(Exception):
     Args:
         error_msg (str): Message describing error
 
+    Keyword Args:
+        code (int): Numeric ID for error
+
     Attributes:
         msg (str)
 
@@ -49,6 +52,9 @@ class CloudPassageAuthorization(Exception):
 
     Args:
         error_msg (str): Message describing the error
+
+    Keyword Args:
+        code (int): Numeric ID for error
 
     Attributes:
         msg (str)
@@ -77,6 +83,9 @@ class CloudPassageValidation(Exception):
     Args:
         error_msg (str): Message describing the error
 
+    Keyword Args:
+        code (int): Numeric ID for error
+
     Attributes:
         msg (str)
 
@@ -103,6 +112,9 @@ class CloudPassageCollision(Exception):
     Args:
         error_msg (str): Message describing the error
 
+    Keyword Args:
+        code (int): Numeric ID for error
+
     Attributes:
         msg (str)
 
@@ -123,6 +135,9 @@ class CloudPassageInternalError(Exception):
 
     Args:
         error_msg (str): Message describing the error
+
+    Keyword Args:
+        code (int): Numeric ID for error
 
     Attributes:
         msg (str)
@@ -150,6 +165,9 @@ class CloudPassageResourceExistence(Exception):
     Args:
         error_msg (str): Message describing the error
 
+    Keyword Args:
+        code (int): Numeric ID for error
+
     Attributes:
         msg (str)
 
@@ -176,6 +194,9 @@ class CloudPassageGeneral(Exception):
 
     Args:
         error_msg (str): Message describing the error
+
+    Keyword Args:
+        code (int): Numeric ID for error
 
     Attributes:
         msg (str)
