@@ -7,6 +7,7 @@ CloudPassage Halo API.
 import base64
 import threading
 import time
+import cloudpassage.utility as utility
 import cloudpassage.sanity as sanity
 from cloudpassage.exceptions import CloudPassageAuthentication
 from cloudpassage.exceptions import CloudPassageValidation
@@ -38,6 +39,8 @@ class HaloSession(object):
         we can see what tools are being used in the field and \
         set our development focus accordingly.  To override \
         the default, feel free to pass this kwarg in.
+        integration_string (str): If set, this will cause the user agent \
+        string to include an identifier for the integration being used.
 
     """
 
@@ -48,7 +51,10 @@ class HaloSession(object):
         self.auth_endpoint = 'oauth/access_token'
         self.api_host = 'api.cloudpassage.com'
         self.api_port = 443
-        self.user_agent = 'CloudPassage Halo Python SDK v0.99'
+        self.sdk_version = utility.get_sdk_version()
+        self.sdk_version_string = "Halo Python SDK v%s" % self.sdk_version
+        self.user_agent = ''
+        self.integration_string = ''
         self.key_id = apikey
         self.secret = apisecret
         self.auth_token = None
@@ -66,8 +72,13 @@ class HaloSession(object):
             self.api_host = kwargs["api_host"]
         if "api_port" in kwargs:
             self.api_port = kwargs["api_port"]
+        if "integration_string" in kwargs:
+            self.integration_string = kwargs["integration_string"]
         if "user_agent" in kwargs:
             self.user_agent = kwargs["user_agent"]
+        else:
+            self.user_agent = "%s -- %s" % (self.integration_string,
+                                            self.sdk_version_string)
         return None
 
     @classmethod
