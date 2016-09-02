@@ -3,6 +3,8 @@
 
 import json
 import datetime
+import os
+import re
 import sys
 from cloudpassage.exceptions import CloudPassageValidation
 from cloudpassage.exceptions import CloudPassageInternalError
@@ -211,3 +213,14 @@ def get_installed_python_version():
                                              str(sys.version_info.minor),
                                              str(sys.version_info.micro))
     return installed_python_version
+
+
+def get_sdk_version():
+    """ Gets the version of the SDK """
+    thisdir = os.path.dirname(__file__)
+    initfile = os.path.join(thisdir, "__init__.py")
+    with open(initfile, 'r') as i_file:
+        raw_init_file = i_file.read()
+    rx_compiled = re.compile(r"\s*__version__\s*=\s*\"(\S+)\"")
+    ver = rx_compiled.search(raw_init_file).group(1)
+    return ver

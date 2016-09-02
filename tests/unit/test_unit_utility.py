@@ -143,3 +143,8 @@ class TestUnitUtility:
     def test_get_installed_python_version(self):
         rx = re.compile(r'^\d+\.\d+\.\d+$')
         assert rx.match(utility.get_installed_python_version())
+
+    def test_get_sdk_version(self):
+        version = utility.get_sdk_version()
+        rx = re.compile(r'^\S+\.\S+')
+        assert rx.match(version)
