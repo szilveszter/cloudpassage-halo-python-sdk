@@ -100,7 +100,8 @@ class TestIntegrationScan:
                 members = s_group.list_members(g["id"])
                 for member in members:
                     if member["platform"] != "windows":
-                        return members[0]["id"]
+                        target_id = members[0]["id"]
+                        break
         return(target_id)
 
     def test_instantiation(self):
