@@ -91,4 +91,3 @@ class TestIntegrationServerGroup:
 
         assert delete_child is None
         assert delete_parent is None
-
