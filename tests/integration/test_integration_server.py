@@ -102,6 +102,23 @@ class TestIntegrationServer:
         result = s.list_all()
         assert "id" in result[0]
 
+    def test_get_server_by_group_name(self):
+        """This test requires at least one active server in your Halo
+        account.  If you have no active servers, this test will fail.
+        """
+        s = self.build_server_object()
+        s_group = self.build_server_group_object()
+        server_group_list = s_group.list_all()
+        target_group = None
+        for group in server_group_list:
+            if group["server_counts"]["active"] != 0:
+                target_group = group["name"]
+                break
+        assert target_group is not None
+        servers = s.list_all(group_name=target_group)
+        for server in servers:
+            assert server["group_name"] == target_group
+
     def test_server_list_inactive_test1(self):
         """This test requires at least one active or inactive server in your
         Halo account.  If you don't have a server marked active or inactive

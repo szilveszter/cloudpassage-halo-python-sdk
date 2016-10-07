@@ -19,7 +19,8 @@ def validate_servergroup_create(server_group_attributes):
         "lids_policy_ids": list,
         "tag": unicode,
         "server_events_policy": unicode,
-        "alert_profiles": list
+        "alert_profiles": list,
+        "parent_id": unicode
     }
 
     for k, value in server_group_attributes.items():
@@ -50,7 +51,8 @@ def validate_servergroup_update(server_group_attributes):
         "tag": str,
         "name": str,
         "special_events_policy": str,
-        "alert_profiles": list
+        "alert_profiles": list,
+        "parent_id": str
     }
 
     for k, value in server_group_attributes.items():

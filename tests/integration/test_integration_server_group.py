@@ -69,3 +69,26 @@ class TestIntegrationServerGroup:
         s_grp.update(new_grp_id, name=update_name)
         delete_return = s_grp.delete(new_grp_id)
         assert delete_return is None
+
+    def test_create_update_child_server_group(self):
+        s_grp = self.create_server_group_object()
+        parent_id = s_grp.create("TEN_FOUR_GOOD_BUDDY")
+        child_id = s_grp.create("TEN_FOUR_GOOD_BUDDY", parent_id=parent_id)
+        assert parent_id == s_grp.describe(child_id)["parent_id"]
+
+        groups = s_grp.list_all()
+        for group in groups:
+            if not group["parent_id"]:
+                root_id = group['id']
+                break
+
+        s_grp.update(child_id, parent_id=root_id)
+
+        assert root_id == s_grp.describe(child_id)["parent_id"]
+
+        delete_child = s_grp.delete(child_id)
+        delete_parent = s_grp.delete(parent_id)
+
+        assert delete_child is None
+        assert delete_parent is None
+

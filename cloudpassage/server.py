@@ -30,7 +30,8 @@ class Server(object):
                                         "platform",
                                         "cve",
                                         "kb",
-                                        "missing_kb"]
+                                        "missing_kb",
+                                        "group_name"]
         return None
 
     def list_all(self, **kwargs):
