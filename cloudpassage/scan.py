@@ -34,7 +34,6 @@ class Scan(object):
             "csm": "sca",
             "svm": "svm",
             "sva": "svm",
-            "sam": "sam",
             "fim": "fim"
         }
         self.supported_scan_status = [
@@ -101,7 +100,6 @@ class Scan(object):
           csm  - Configuration scan (same as sca)
           svm  - Software vulnerability scan
           sva  - Software vulnerability scan (same as svm)
-          sam  - Server access management scan
           fim  - File integrity monitoring scan
 
         Returns:
@@ -159,7 +157,7 @@ class Scan(object):
         return response
 
     def findings(self, scan_id, findings_id):
-        """Get FIM findings details by scan and findings ID
+        """Get FIM, CSM, and SVA findings details by scan and findings ID
 
         Args:
             scan_id (str): ID of scan_id

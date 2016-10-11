@@ -1,9 +1,7 @@
 import cloudpassage
 import datetime
 import hashlib
-import json
 import os
-import pytest
 
 
 config_file_name = "portal.yaml.local"
@@ -46,6 +44,12 @@ class TestUnitHaloSession:
         session.user_agent = override_string
         assert session.user_agent == override_string
 
+    def test_integration_string(self):
+        override_string = "Halo API SDK TEST SUITE"
+        session = cloudpassage.HaloSession("", "",
+                                           integration_string=override_string)
+        assert override_string in session.user_agent
+
     def test_build_proxy_struct_ip_only(self):
         proxy_ip = "10.0.0.1"
         session = self.create_halo_session_object()
@@ -74,7 +78,7 @@ class TestUnitHaloSession:
         session = cloudpassage.HaloSession(key_id, secret_key)
         session.api_host = "apples.nonexist.nope.nada"
         try:
-            fn_out = session.build_endpoint_prefix()
+            session.build_endpoint_prefix()
         except:
             rejected = True
         assert rejected

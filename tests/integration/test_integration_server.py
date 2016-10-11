@@ -1,5 +1,4 @@
 import cloudpassage
-import json
 import os
 import pytest
 
@@ -53,35 +52,46 @@ class TestIntegrationServer:
         assert "id" in s.describe(target_server_id)
 
     def test_get_server_details_404(self):
-        rejected = False
         request = self.build_server_object()
         bad_server_id = "123456789"
-        try:
+        with pytest.raises(cloudpassage.CloudPassageResourceExistence) as e:
             request.describe(bad_server_id)
-        except cloudpassage.CloudPassageResourceExistence:
-            rejected = True
-        assert rejected
+        assert bad_server_id in str(e)
 
     def test_retire_server_404(self):
+        request = self.build_server_object()
+        server_id = "12345"
+        with pytest.raises(cloudpassage.CloudPassageResourceExistence) as e:
+            request.retire(server_id)
+        assert server_id in str(e)
+
+    def test_issues_404(self):
         rejected = False
         request = self.build_server_object()
         server_id = "12345"
         try:
-            result = request.retire(server_id)
+            request.issues(server_id)
         except cloudpassage.CloudPassageResourceExistence:
+            rejected = True
+        assert rejected
+
+    def test_firewall_logs_422(self):
+        rejected = False
+        request = self.build_server_object()
+        server_id = "12345"
+        try:
+            request.get_firewall_logs(server_id, 10)
+        except cloudpassage.CloudPassageValidation:
             rejected = True
         assert rejected
 
     def test_command_details_404(self):
-        rejected = False
         request = self.build_server_object()
         server_id = "12345"
         command_id = "56789"
-        try:
-            result = request.command_details(server_id, command_id)
-        except cloudpassage.CloudPassageResourceExistence:
-            rejected = True
-        assert rejected
+        with pytest.raises(cloudpassage.CloudPassageResourceExistence) as e:
+            request.command_details(server_id, command_id)
+        assert server_id in str(e)
 
     def test_server_list(self):
         """This test requires at least one active server in your Halo
@@ -91,6 +101,23 @@ class TestIntegrationServer:
         s = self.build_server_object()
         result = s.list_all()
         assert "id" in result[0]
+
+    def test_get_server_by_group_name(self):
+        """This test requires at least one active server in your Halo
+        account.  If you have no active servers, this test will fail.
+        """
+        s = self.build_server_object()
+        s_group = self.build_server_group_object()
+        server_group_list = s_group.list_all()
+        target_group = None
+        for group in server_group_list:
+            if group["server_counts"]["active"] != 0:
+                target_group = group["name"]
+                break
+        assert target_group is not None
+        servers = s.list_all(group_name=target_group)
+        for server in servers:
+            assert server["group_name"] == target_group
 
     def test_server_list_inactive_test1(self):
         """This test requires at least one active or inactive server in your

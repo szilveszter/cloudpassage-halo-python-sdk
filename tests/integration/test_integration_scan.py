@@ -1,6 +1,5 @@
 import cloudpassage
 import datetime
-import json
 import os
 import pytest
 
@@ -101,7 +100,8 @@ class TestIntegrationScan:
                 members = s_group.list_members(g["id"])
                 for member in members:
                     if member["platform"] != "windows":
-                        return members[0]["id"]
+                        target_id = members[0]["id"]
+                        break
         return(target_id)
 
     def test_instantiation(self):
@@ -111,7 +111,6 @@ class TestIntegrationScan:
         assert cloudpassage.Scan(session)
 
     def test_bad_scan_type(self):
-        rejected = False
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
                                            api_port=api_port)
@@ -119,23 +118,33 @@ class TestIntegrationScan:
         s_group = cloudpassage.ServerGroup(session)
         scan_type = "barfola"
         server_id = s_group.list_all()[0]["id"]
-        try:
-            command = scanner.initiate_scan(server_id, scan_type)
-        except cloudpassage.CloudPassageValidation:
-            rejected = True
-        assert rejected
+        with pytest.raises(cloudpassage.CloudPassageValidation) as e:
+            scanner.initiate_scan(server_id, scan_type)
+        assert 'Unsupported scan type: barfola' in str(e)
 
     def test_bad_server_id(self):
-        rejected = False
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
                                            api_port=api_port)
         scanner = cloudpassage.Scan(session)
         scan_type = "svm"
         server_id = "ABC123"
+        with pytest.raises(cloudpassage.CloudPassageResourceExistence) as e:
+            scanner.initiate_scan(server_id, scan_type)
+        assert server_id in str(e)
+
+    def test_sam_historical_is_unsupported(self):
+        rejected = False
+        session = cloudpassage.HaloSession(key_id, secret_key,
+                                           api_host=api_hostname,
+                                           api_port=api_port)
+        scanner = cloudpassage.Scan(session)
+        server = cloudpassage.Server(session)
+        scan_type = "sam"
+        server_id = server.list_all()[0]["id"]
         try:
-            command = scanner.initiate_scan(server_id, scan_type)
-        except cloudpassage.CloudPassageResourceExistence:
+            scanner.last_scan_results(server_id, scan_type)
+        except cloudpassage.CloudPassageValidation:
             rejected = True
         assert rejected
 
@@ -207,12 +216,6 @@ class TestIntegrationScan:
         command = scanner.initiate_scan(target_id, "sam")
         assert command["id"]
 
-    def test_sam_retrieve(self):
-        scanner = self.build_scan_object()
-        target_id = self.get_sam_target()
-        report = scanner.last_scan_results(target_id, "sam")
-        assert report["id"]
-
     def test_scan_history(self):
         scanner = self.build_scan_object()
         report = scanner.scan_history()
@@ -232,7 +235,6 @@ class TestIntegrationScan:
         """
         scan_type = "sam"
         scanner = self.build_scan_object()
-        target_id = self.get_sam_target()
         report = scanner.scan_history(module=scan_type, max_pages=2)
         assert report[0]["module"] == scan_type
 
@@ -243,7 +245,6 @@ class TestIntegrationScan:
         """
         scan_types = ["sam", "svm"]
         scanner = self.build_scan_object()
-        target_id = self.get_sam_target()
         report = scanner.scan_history(module=scan_types, max_pages=2)
         assert report[0]["module"] in scan_types
 

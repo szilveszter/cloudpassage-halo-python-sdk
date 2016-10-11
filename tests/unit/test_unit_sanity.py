@@ -1,7 +1,4 @@
 import cloudpassage
-import json
-import os
-import pytest
 
 sanity = cloudpassage.sanity
 
