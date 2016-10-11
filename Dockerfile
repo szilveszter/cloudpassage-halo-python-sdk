@@ -3,7 +3,7 @@ MAINTAINER toolbox@cloudpassage.com
 
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y \
-    python-pip \ apt-get install -y git
+    python-pip && \apt-get install -y git
 
 COPY ./ /source/
 
