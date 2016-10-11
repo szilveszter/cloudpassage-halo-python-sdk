@@ -12,6 +12,8 @@ WORKDIR /source/
 RUN pip install -r requirements-testing.txt && \
     pip install .
 
+RUN pip install codeclimate-test-reporter
+
 WORKDIR /source/tests
 
 CMD py.test style unit
