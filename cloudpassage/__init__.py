@@ -33,7 +33,7 @@ minimum = "2.7.10"
 installed = init_util.get_installed_python_version()
 if init_util.verify_python_version(installed, minimum) is False:
     err_msg = "Unsupported version detected! Requires Python version %s or greater" % minimum
-    raise ImportError(err_msg)
+    print err_msg
 
 __author__ = "CloudPassage"
 __version__ = "0.101"
