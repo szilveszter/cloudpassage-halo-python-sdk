@@ -36,5 +36,5 @@ if init_util.verify_python_version(installed, minimum) is False:
     raise ImportError(err_msg)
 
 __author__ = "CloudPassage"
-__version__ = "0.99"
+__version__ = "0.101"
 __license__ = "BSD"
