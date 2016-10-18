@@ -1,3 +1,6 @@
+import os
+import re
+
 ##
 ## Format
 ##
@@ -49,6 +52,17 @@
 ##   tags, and other rules only applies to the summary.  The body of the commit
 ##   message will be displayed in the changelog without reformatting.
 
+
+## This is where we determine the current version, used for labeling the 'unreleased version'
+
+def read(fname):
+    return open(os.path.join(os.path.dirname('__file__'), fname)).read()
+
+def get_version():
+    raw_init_file = read("cloudpassage/__init__.py")
+    rx_compiled = re.compile(r"\s*__version__\s*=\s*\"(\S+)\"")
+    ver = rx_compiled.search(raw_init_file).group(1)
+    return ver
 
 ##
 ## ``ignore_regexps`` is a line of regexps
@@ -147,8 +161,8 @@ tag_filter_regexp = r'^v[0-9]+\.[0-9]+(\.[0-9]+)?$'
 ##
 ## This label will be used as the changelog Title of the last set of changes
 ## between last valid tag and HEAD if any.
-unreleased_version_label = "%%version%% (unreleased)"
-
+# unreleased_version_label = "%%version%% (unreleased)"
+unreleased_version_label = "v%s"% get_version()
 
 ## ``output_engine`` is a callable
 ##
