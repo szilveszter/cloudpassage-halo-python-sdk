@@ -1,6 +1,26 @@
 Changelog
 =========
 
+v0.101
+------
+
+Fix
+~~~
+
+- Flake8 correction in __init__.py. [Ash Wilson]
+
+- CS-66 Remove ImportError exception for unsupported Python version.
+  [Ash Wilson]
+
+- CS-66 implement soft failure for wrong Python version. [Ash Wilson]
+
+- Correcting docs build isssues, change revision to v0.101. [Ash Wilson]
+
+Other
+~~~~~
+
+- Add all supported search fields for servers endpoint. [Jye Lee]
+
 v0.100 (2016-10-11)
 -------------------
 
@@ -11,6 +31,8 @@ Fix
 
 Other
 ~~~~~
+
+- Adding CHANGELOG.md. [Ash Wilson]
 
 - Adding .gitchangelog.rc. [Ash Wilson]
 
