@@ -13,6 +13,14 @@ def get_version():
     ver = rx_compiled.search(raw_init_file).group(1)
     return ver
 
+
+def get_long_description(fnames):
+    retval = ""
+    for fname in fnames:
+        retval = retval + (read(fname)) + "\n\n"
+    return retval
+
+
 setup(
     name="cloudpassage",
     version=get_version(),
@@ -24,7 +32,7 @@ setup(
     url="http://github.com/cloudpassage/cloudpassage-halo-python-sdk",
     packages=["cloudpassage"],
     install_requires=["requests", "pyaml"],
-    long_description=read("README.rst"),
+    long_description=get_long_description(["README.rst", "CHANGELOG.rst"]),
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
