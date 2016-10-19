@@ -1,6 +1,6 @@
-============================
 cloudpassage-halo-python-sdk
 ============================
+
 Python SDK for CloudPassage Halo API
 ------------------------------------
 
@@ -39,7 +39,8 @@ modifications to the SDK you can install it in editable mode by downloading
 the source from this github repo, navigating to the top directory within the
 archive and running ``pip install -e .`` (note the . at the end).
 
-### Quick Start
+Quick Start
+-----------
 
 Here's the premise: you store your session configuration information (API
 credentials, proxy settings, etc) in the cloudpassage.HaloSession object.
@@ -64,7 +65,6 @@ We'll print a list of all servers in our account:
 
 
 
-====
 Docs
 ====
 Building documentation
@@ -76,7 +76,6 @@ Building documentation
 1. Docs will be located at ``cloudpassage-halo-python-sdk/docs/build/pdf/CloudPassage_Python_SDK_$VERSION.pdf``
 
 
-=======
 Testing
 =======
 Important locations for testing
