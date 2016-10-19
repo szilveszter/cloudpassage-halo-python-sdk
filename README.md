@@ -2,6 +2,8 @@
 
 ## Python SDK for CloudPassage Halo API
 
+[![Documentation Status](https://readthedocs.org/projects/cloudpassage-halo-python-sdk/badge/?version=latest)](http://cloudpassage-halo-python-sdk.readthedocs.io/en/latest/?badge=latest)
+
 ### This is a BETA.  Please don't forget to pin your work against the version you're working with, especially if it's a beta :-)
 
 ### Branch: master
@@ -55,6 +57,9 @@ for s in list_of_servers:
 ```
 
 ### Docs
+
+#### Browsing and downloading
+Built documentation can be found at http://cloudpassage-halo-python-sdk.readthedocs.io/en/latest/
 
 #### Building documentation
 1. Clone the repository locally

@@ -4,6 +4,8 @@ cloudpassage-halo-python-sdk
 Python SDK for CloudPassage Halo API
 ------------------------------------
 
+.. image:: https://readthedocs.org/projects/cloudpassage-halo-python-sdk/badge/?version=latest
+
 Branch: master
 
 .. image:: https://codeclimate.com/github/cloudpassage/cloudpassage-halo-python-sdk/badges/gpa.svg
@@ -67,6 +69,12 @@ We'll print a list of all servers in our account:
 
 Docs
 ====
+
+Where to download
+-----------------
+Documentation can be found at
+http://cloudpassage-halo-python-sdk.readthedocs.io/en/latest/?badge=latest
+
 Building documentation
 ----------------------
 
