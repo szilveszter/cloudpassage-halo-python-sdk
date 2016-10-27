@@ -77,6 +77,8 @@ class HaloSession(object):
         if "user_agent" in kwargs:
             self.user_agent = kwargs["user_agent"]
         else:
+            self.user_agent = self.sdk_version_string
+        if self.integration_string != '':
             self.user_agent = "%s %s" % (self.sdk_version_string,
                                          self.integration_string)
         return None
