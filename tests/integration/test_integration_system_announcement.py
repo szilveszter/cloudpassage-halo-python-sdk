@@ -16,19 +16,22 @@ class TestIntegrationSystemAnnouncement:
     def create_announcement(self):
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
-                                           api_port=api_port)
+                                           api_port=api_port,
+                                           integration_string="SDK-Smoke")
         return(cloudpassage.SystemAnnouncement(session))
 
     def test_instantiation(self):
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
-                                           api_port=api_port)
+                                           api_port=api_port,
+                                           integration_string="SDK-Smoke")
         assert cloudpassage.SystemAnnouncement(session)
 
     def test_list_all(self):
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
-                                           api_port=api_port)
+                                           api_port=api_port,
+                                           integration_string="SDK-Smoke")
         announcement = cloudpassage.SystemAnnouncement(session)
         announcement_list = announcement.list_all()
         assert "announcement" in announcement_list[0]

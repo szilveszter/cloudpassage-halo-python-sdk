@@ -27,7 +27,8 @@ class TestIntegrationGet:
         endpoint = "/v1/barf"
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
-                                           api_port=api_port)
+                                           api_port=api_port,
+                                           integration_string="SDK-Smoke")
         session.authenticate_client()
         req = cloudpassage.HttpHelper(session)
         with pytest.raises(cloudpassage.CloudPassageResourceExistence) as e:
@@ -38,7 +39,8 @@ class TestIntegrationGet:
         endpoint = "/v1/servers"
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
-                                           api_port=api_port)
+                                           api_port=api_port,
+                                           integration_string="SDK-Smoke")
         session.auth_token = "abc123"
         req = cloudpassage.HttpHelper(session)
         json_response = req.get(endpoint)
@@ -52,7 +54,8 @@ class TestIntegrationGetPaginated:
         pages = 5
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
-                                           api_port=api_port)
+                                           api_port=api_port,
+                                           integration_string="SDK-Smoke")
         session.authenticate_client()
         req = cloudpassage.HttpHelper(session)
         with pytest.raises(cloudpassage.CloudPassageResourceExistence) as e:
@@ -65,7 +68,8 @@ class TestIntegrationGetPaginated:
         pages = 5
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
-                                           api_port=api_port)
+                                           api_port=api_port,
+                                           integration_string="SDK-Smoke")
         session.auth_token = "abc123"
         req = cloudpassage.HttpHelper(session)
         json_response = req.get_paginated(endpoint, key, pages)
@@ -77,7 +81,8 @@ class TestIntegrationGetPaginated:
         pages = 5
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
-                                           api_port=api_port)
+                                           api_port=api_port,
+                                           integration_string="SDK-Smoke")
         req = cloudpassage.HttpHelper(session)
         json_response = req.get_paginated(endpoint, key, pages)
         assert "id" in json_response[0]
@@ -88,7 +93,8 @@ class TestIntegrationGetPaginated:
         pages = 101
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
-                                           api_port=api_port)
+                                           api_port=api_port,
+                                           integration_string="SDK-Smoke")
         session.auth_token = "abc123"
         req = cloudpassage.HttpHelper(session)
         with pytest.raises(cloudpassage.CloudPassageValidation) as e:
@@ -101,7 +107,8 @@ class TestIntegrationGetPaginated:
         pages = 2
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
-                                           api_port=api_port)
+                                           api_port=api_port,
+                                           integration_string="SDK-Smoke")
         session.auth_token = "abc123"
         req = cloudpassage.HttpHelper(session)
         with pytest.raises(cloudpassage.CloudPassageValidation) as e:
@@ -115,7 +122,8 @@ class TestIntegrationPost:
         post_data = {"whatevs": "becausenobodycares"}
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
-                                           api_port=api_port)
+                                           api_port=api_port,
+                                           integration_string="SDK-Smoke")
         session.authenticate_client()
         req = cloudpassage.HttpHelper(session)
         with pytest.raises(cloudpassage.CloudPassageResourceExistence) as e:
@@ -127,7 +135,8 @@ class TestIntegrationPost:
         post_data = {"whatevs": "becausenobodycares"}
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
-                                           api_port=api_port)
+                                           api_port=api_port,
+                                           integration_string="SDK-Smoke")
         session.authenticate_client()
         req = cloudpassage.HttpHelper(session)
         with pytest.raises(cloudpassage.CloudPassageValidation) as e:
@@ -138,7 +147,8 @@ class TestIntegrationPost:
         endpoint = "/v1/gropes"
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
-                                           api_port=api_port)
+                                           api_port=api_port,
+                                           integration_string="SDK-Smoke")
         session.auth_token = "abc123"
         req = cloudpassage.HttpHelper(session)
         with pytest.raises(cloudpassage.CloudPassageResourceExistence) as e:
@@ -152,7 +162,8 @@ class TestIntegrationPut:
         put_data = {"whatevs": "becausenobodycares"}
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
-                                           api_port=api_port)
+                                           api_port=api_port,
+                                           integration_string="SDK-Smoke")
         session.authenticate_client()
         req = cloudpassage.HttpHelper(session)
         with pytest.raises(cloudpassage.CloudPassageResourceExistence) as e:
@@ -164,7 +175,8 @@ class TestIntegrationPut:
         put_data = {"whatevs": "becausenobodycares"}
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
-                                           api_port=api_port)
+                                           api_port=api_port,
+                                           integration_string="SDK-Smoke")
         session.authenticate_client()
         req = cloudpassage.HttpHelper(session)
         with pytest.raises(cloudpassage.CloudPassageResourceExistence) as e:
@@ -177,7 +189,8 @@ class TestIntegrationPut:
         endpoint = "/v1/servers/1234567890"
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
-                                           api_port=api_port)
+                                           api_port=api_port,
+                                           integration_string="SDK-Smoke")
         session.auth_token = "abc123"
         req = cloudpassage.HttpHelper(session)
         with pytest.raises(cloudpassage.CloudPassageResourceExistence) as e:
@@ -190,7 +203,8 @@ class TestIntegrationDelete:
         endpoint = "/v1/barf"
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
-                                           api_port=api_port)
+                                           api_port=api_port,
+                                           integration_string="SDK-Smoke")
         session.authenticate_client()
         req = cloudpassage.HttpHelper(session)
         with pytest.raises(cloudpassage.CloudPassageResourceExistence) as e:
@@ -201,7 +215,8 @@ class TestIntegrationDelete:
         endpoint = "/v1/servers/123455432"
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
-                                           api_port=api_port)
+                                           api_port=api_port,
+                                           integration_string="SDK-Smoke")
         session.auth_token = "abc123"
         req = cloudpassage.HttpHelper(session)
         with pytest.raises(cloudpassage.CloudPassageResourceExistence) as e:
