@@ -79,8 +79,8 @@ class HaloSession(object):
         else:
             self.user_agent = self.sdk_version_string
         if self.integration_string != '':
-            self.user_agent = "%s %s" % (self.sdk_version_string,
-                                         self.integration_string)
+            self.user_agent = "%s %s" % (self.integration_string,
+                                         self.user_agent)
         return None
 
     @classmethod
