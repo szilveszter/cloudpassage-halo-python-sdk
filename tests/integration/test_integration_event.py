@@ -35,7 +35,8 @@ class TestIntegrationEvent:
         workloads, it will fail."""
         event = self.create_event_obj()
         event_list = event.list_all(2, server_platform="windows")
-        assert "id" in event_list[0]
+        for e in event_list:
+            assert e["server_platform"] == "Windows"
 
     def test_one_day_ago_until_now(self):
         event = self.create_event_obj()
