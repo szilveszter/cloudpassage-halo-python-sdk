@@ -70,8 +70,7 @@ class Event(object):
         key = "events"
         max_pages = pages
         request = HttpHelper(self.session)
-        params = utility.assemble_search_criteria(self.supported_search_fields,
-                                                  kwargs)
+        params = utility.sanitize_url_params(kwargs)
         response = request.get_paginated(endpoint, key, max_pages,
                                          params=params)
         return response
