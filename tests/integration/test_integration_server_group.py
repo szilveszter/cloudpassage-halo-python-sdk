@@ -21,8 +21,8 @@ class TestIntegrationServerGroup:
 
     def remove_group_by_name(self, group_name):
         server_grp_obj = self.create_server_group_object()
-        grp_list = server_grp_obj.list_all()
-        for group in grp_list:
+        grp_list = server_grp_obj.list()
+        for group in grp_list["groups"]:
             if group["name"] == group_name:
                 server_grp_obj.delete(group["id"])
 
@@ -32,15 +32,15 @@ class TestIntegrationServerGroup:
                                            api_port=api_port)
         assert cloudpassage.ServerGroup(session)
 
-    def test_list_all(self):
+    def test_list(self):
         s_grp = self.create_server_group_object()
-        groups = s_grp.list_all()
-        assert "id" in groups[0]
+        groups = s_grp.list()
+        assert "id" in groups["groups"][0]
 
     def test_describe(self):
         s_grp = self.create_server_group_object()
-        groups = s_grp.list_all()
-        target_group_id = groups[0]["id"]
+        groups = s_grp.list()
+        target_group_id = groups["groups"][0]["id"]
         target_group_object = s_grp.describe(target_group_id)
         assert "id" in target_group_object
 
@@ -48,9 +48,9 @@ class TestIntegrationServerGroup:
         # Rolls through all server groups, confirms active server IDs
         confirmed = False
         s_grp = self.create_server_group_object()
-        groups = s_grp.list_all()
+        groups = s_grp.list()
         num_members = 0
-        for g in groups:
+        for g in groups["groups"]:
             target_group_id = g["id"]
             num_members = g["server_counts"]["active"]
             if num_members > 0:
@@ -76,8 +76,8 @@ class TestIntegrationServerGroup:
         child_id = s_grp.create("TEN_FOUR_GOOD_BUDDY", parent_id=parent_id)
         assert parent_id == s_grp.describe(child_id)["parent_id"]
 
-        groups = s_grp.list_all()
-        for group in groups:
+        groups = s_grp.list()
+        for group in groups["groups"]:
             if not group["parent_id"]:
                 root_id = group['id']
                 break

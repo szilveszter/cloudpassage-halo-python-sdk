@@ -20,7 +20,7 @@ class TestIntegrationScan:
         scan_status = "completed_clean"
         scanner = self.build_scan_object()
         report = scanner.scan_history(module=scan_type, status=scan_status)
-        for item in report:
+        for item in report["scans"]:
             if (item["critical_findings_count"] >= 0 or
                     item["non_critical_findings_count"] >= 0):
                 return item["id"]
@@ -50,9 +50,9 @@ class TestIntegrationScan:
     def get_svm_target(self):
         target_id = None
         s_group = self.build_server_group_object()
-        list_of_groups = s_group.list_all()
+        list_of_groups = s_group.list()
         num_members = 0
-        for g in list_of_groups:
+        for g in list_of_groups["groups"]:
             target_group_id = g["id"]
             num_members = g["server_counts"]["active"]
             if num_members > 0:
@@ -64,9 +64,9 @@ class TestIntegrationScan:
     def get_csm_target(self):
         target_id = None
         s_group = self.build_server_group_object()
-        list_of_groups = s_group.list_all()
+        list_of_groups = s_group.list()
         num_members = 0
-        for g in list_of_groups:
+        for g in list_of_groups["groups"]:
             csm_policies = g["policy_ids"]
             num_members = g["server_counts"]["active"]
             if num_members > 0 and len(csm_policies) > 0:
@@ -78,9 +78,9 @@ class TestIntegrationScan:
     def get_fim_target(self):
         target_id = None
         s_group = self.build_server_group_object()
-        list_of_groups = s_group.list_all()
+        list_of_groups = s_group.list()
         num_members = 0
-        for g in list_of_groups:
+        for g in list_of_groups["groups"]:
             fim_policies = g["fim_policy_ids"]
             num_members = g["server_counts"]["active"]
             if num_members > 0 and len(fim_policies) > 0:
@@ -92,9 +92,9 @@ class TestIntegrationScan:
     def get_sam_target(self):
         target_id = None
         s_group = self.build_server_group_object()
-        list_of_groups = s_group.list_all()
+        list_of_groups = s_group.list()
         num_members = 0
-        for g in list_of_groups:
+        for g in list_of_groups["groups"]:
             num_members = g["server_counts"]["active"]
             if num_members > 0:
                 members = s_group.list_members(g["id"])
@@ -117,7 +117,7 @@ class TestIntegrationScan:
         scanner = cloudpassage.Scan(session)
         s_group = cloudpassage.ServerGroup(session)
         scan_type = "barfola"
-        server_id = s_group.list_all()[0]["id"]
+        server_id = s_group.list()["groups"][0]["id"]
         with pytest.raises(cloudpassage.CloudPassageValidation) as e:
             scanner.initiate_scan(server_id, scan_type)
         assert 'Unsupported scan type: barfola' in str(e)
@@ -141,7 +141,7 @@ class TestIntegrationScan:
         scanner = cloudpassage.Scan(session)
         server = cloudpassage.Server(session)
         scan_type = "sam"
-        server_id = server.list_all()[0]["id"]
+        server_id = server.list()["servers"][0]["id"]
         try:
             scanner.last_scan_results(server_id, scan_type)
         except cloudpassage.CloudPassageValidation:
@@ -219,15 +219,13 @@ class TestIntegrationScan:
     def test_scan_history(self):
         scanner = self.build_scan_object()
         report = scanner.scan_history()
-        assert report[0]["id"]
+        assert report["scans"][0]["id"]
 
-    """
     def test_scan_history_by_serverid(self):
         scanner = self.build_scan_object()
         target_id = self.get_sam_target()
         report = scanner.scan_history(server_id=target_id)
-        assert report[0]["server_id"] == target_id
-    """
+        assert report["scans"][0]["server_id"] == target_id
 
     def test_scan_history_by_single_scan_type(self):
         """This test requires a completed SAM scan.  If you don't have one
@@ -236,7 +234,7 @@ class TestIntegrationScan:
         scan_type = "sam"
         scanner = self.build_scan_object()
         report = scanner.scan_history(module=scan_type, max_pages=2)
-        assert report[0]["module"] == scan_type
+        assert report["scans"][0]["module"] == scan_type
 
     def test_scan_history_by_multi_scan_type(self):
         """This test requires a completed SAM and SVM scan.  If your account
@@ -246,7 +244,7 @@ class TestIntegrationScan:
         scan_types = ["sam", "svm"]
         scanner = self.build_scan_object()
         report = scanner.scan_history(module=scan_types, max_pages=2)
-        assert report[0]["module"] in scan_types
+        assert report["scans"][0]["module"] in scan_types
 
     def test_scan_history_by_single_status(self):
         """This test requires scan results in your account with a status
@@ -256,23 +254,21 @@ class TestIntegrationScan:
         scan_status = "completed_clean"
         scanner = self.build_scan_object()
         report = scanner.scan_history(status=scan_status, max_pages=2)
-        assert report[0]["status"] == scan_status
+        assert report["scans"][0]["status"] == scan_status
 
-    """
     def test_scan_history_by_multi_status(self):
         scan_status = ["completed_clean", "completed_with_errors"]
         scanner = self.build_scan_object()
         target_id = self.get_sam_target()
         report = scanner.scan_history(status=scan_status, max_pages=2)
-        assert report[0]["status"] in scan_status
+        assert report["scans"][0]["status"] in scan_status
 
     def test_scan_details(self):
         scanner = self.build_scan_object()
         target_id = self.get_fim_target()
         report = scanner.scan_history(server_id=target_id)
-        details = scanner.scan_details(report[0]["id"])
+        details = scanner.scan_details(report["scans"][0]["id"])
         assert "id" in details
-    """
 
     def test_fim_findings_details(self):
         """This test requires a FIM scan with findings.  If you don't
@@ -293,9 +289,10 @@ class TestIntegrationScan:
         """
         scan = self.build_scan_object()
         until = cloudpassage.utility.time_string_now()
-        since = datetime.datetime.utcnow() - datetime.timedelta(weeks=1)
+        raw_since = datetime.datetime.utcnow() - datetime.timedelta(weeks=1)
+        since = cloudpassage.utility.datetime_to_8601(raw_since)
         scan_list = scan.scan_history(max_pages=2, since=since, until=until)
-        assert "id" in scan_list[0]
+        assert "id" in scan_list["scans"][0]
 
 
 class TestIntegrationCveException:

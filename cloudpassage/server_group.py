@@ -21,23 +21,16 @@ class ServerGroup(object):
         self.session = session
         return None
 
-    def list_all(self):
-        """Returns a list of all groups for an account
+    def list(self, **kwargs):
+        """Returns a list of groups for an account
 
-        This is represented as a list of dictionaries
-
-        This will only return a maximum of 20 pages, which amounts to
-        200 groups.  If you have more than that, you should consider
-        using the SDK within a multi-threaded application so you don't
-        spend the rest of your life waiting on a list of groups.
+        This is represented as a dictionary
         """
 
         session = self.session
-        max_pages = 20
-        key = "groups"
         endpoint = "/v1/groups"
         request = HttpHelper(session)
-        groups = request.get_paginated(endpoint, key, max_pages)
+        groups = request.get(endpoint, params=kwargs)
         return groups
 
     def list_members(self, group_id):
