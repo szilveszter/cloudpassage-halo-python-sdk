@@ -26,6 +26,11 @@ class FirewallPolicy(Policy):
         return "/v1/%s" % FirewallPolicy.policies
 
     @classmethod
+    def pagination_key(cls):
+        """Defines the pagination key for parsing paged results"""
+        return FirewallPolicy.policies
+
+    @classmethod
     def policy_key(cls):
         """Defines the key used to pull the policy from the json document"""
         return FirewallPolicy.policy
@@ -46,8 +51,8 @@ class FirewallRule(object):
         self.session = session
         return None
 
-    def list(self, firewall_policy_id):
-        """List rules associated with a firewall policy.
+    def list_all(self, firewall_policy_id):
+        """List all rules associated with a firewall policy.
 
         Args:
             firewall_policy_id (str): ID of firewall policy
@@ -61,7 +66,9 @@ class FirewallRule(object):
         request = HttpHelper(self.session)
         endpoint = ("/v1/firewall_policies/%s/firewall_rules/" %
                     firewall_policy_id)
-        response = request.get(endpoint)
+        key = "firewall_rules"
+        max_pages = 30
+        response = request.get_paginated(endpoint, key, max_pages)
         return response
 
     def describe(self, firewall_policy_id, firewall_rule_id):
@@ -209,6 +216,11 @@ class FirewallZone(Policy):
         return "/v1/%s" % FirewallZone.policies
 
     @classmethod
+    def pagination_key(cls):
+        """Defines the pagination key for parsing paged results"""
+        return FirewallZone.policies
+
+    @classmethod
     def policy_key(cls):
         """Defines the key used to pull the policy from the json document"""
         return FirewallZone.policy
@@ -234,6 +246,11 @@ class FirewallService(Policy):
         return "/v1/%s" % FirewallService.policies
 
     @classmethod
+    def pagination_key(cls):
+        """Defines the pagination key for parsing paged results"""
+        return FirewallService.policies
+
+    @classmethod
     def policy_key(cls):
         """Defines the key used to pull the policy from the json document"""
         return FirewallService.policy
@@ -257,6 +274,11 @@ class FirewallInterface(Policy):
     def endpoint(cls):
         """Defines endpoint for API requests"""
         return "/v1/%s" % FirewallInterface.policies
+
+    @classmethod
+    def pagination_key(cls):
+        """Defines the pagination key for parsing paged results"""
+        return FirewallInterface.policies
 
     @classmethod
     def policy_key(cls):
