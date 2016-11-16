@@ -99,8 +99,8 @@ class TestIntegrationServer:
         test will fail.
         """
         s = self.build_server_object()
-        result = s.list()
-        assert "id" in result["servers"][0]
+        result = s.list_all()
+        assert "id" in result[0]
 
     def test_get_server_by_group_name(self):
         """This test requires at least one active server in your Halo
@@ -115,8 +115,8 @@ class TestIntegrationServer:
                 target_group = group["name"]
                 break
         assert target_group is not None
-        servers = s.list(group_name=target_group)
-        for server in servers["servers"]:
+        servers = s.list_all(group_name=target_group)
+        for server in servers:
             assert server["group_name"] == target_group
 
     def test_server_list_inactive_test1(self):
@@ -126,8 +126,8 @@ class TestIntegrationServer:
         """
         states = ["deactivated", "active"]
         s = self.build_server_object()
-        result = s.list(state=states)
-        assert "id" in result["servers"][0]
+        result = s.list_all(state=states)
+        assert "id" in result[0]
 
     def test_server_list_inactive_test2(self):
         """This test requires one server in your account with a status of
@@ -136,8 +136,8 @@ class TestIntegrationServer:
         """
         states = ["deactivated"]
         s = self.build_server_object()
-        result = s.list(state=states)
-        assert "id" in result["servers"][0]
+        result = s.list_all(state=states)
+        assert "id" in result[0]
 
     def test_server_list_inactive_test3(self):
         """This test requires a server with a status of either missing or
@@ -146,8 +146,8 @@ class TestIntegrationServer:
         """
         states = ["missing", "deactivated"]
         s = self.build_server_object()
-        result = s.list(state=states)
-        assert "id" in result["servers"][0]
+        result = s.list_all(state=states)
+        assert "id" in result[0]
 
     def test_server_list_inactive(self):
         """This test requires a server with a status of either missing or
@@ -156,5 +156,5 @@ class TestIntegrationServer:
         """
         states = ["deactivated", "missing"]
         s = self.build_server_object()
-        result = s.list(state=states)
-        assert "id" in result["servers"][0]
+        result = s.list_all(state=states)
+        assert "id" in result[0]

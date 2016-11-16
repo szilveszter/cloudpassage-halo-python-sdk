@@ -44,6 +44,13 @@ class Scan(object):
             "completed_with_errors",
             "failed"
         ]
+        self.supported_search_fields = [
+            "server_id",
+            "module",
+            "status",
+            "since",
+            "until"
+        ]
         return None
 
     def initiate_scan(self, server_id, scan_type):
@@ -122,14 +129,31 @@ class Scan(object):
             date and time for query
             until (str): ISO 8601 formatted string representing the ending \
             date and time for query
+            max_pages (int): maximum number of pages to fetch.  Default: 20.
 
         Returns:
             list: List of scan objects
         """
 
+        max_pages = 20
+        url_params = {}
+        if "server_id" in kwargs:
+            url_params["server_id"] = kwargs["server_id"]
+        if "module" in kwargs:
+            url_params["module"] = self.verify_and_build_module_params(
+                kwargs["module"])
+        if "status" in kwargs:
+            url_params["status"] = self.verify_and_build_status_params(
+                kwargs["status"])
+        if "max_pages" in kwargs:
+            max_pages = kwargs["max_pages"]
         endpoint = "/v1/scans"
+        key = "scans"
         request = HttpHelper(self.session)
-        response = request.get(endpoint, params=kwargs)
+        params = utility.assemble_search_criteria(self.supported_search_fields,
+                                                  url_params)
+        response = request.get_paginated(endpoint, key, max_pages,
+                                         params=params)
         return response
 
     def findings(self, scan_id, findings_id):
@@ -140,7 +164,7 @@ class Scan(object):
             findings_id (str): ID of findings to retrieve
 
         Returns:
-            dict: Dictionary object describing findings
+            dict: Dictionary object descrbing findings
 
         """
 
