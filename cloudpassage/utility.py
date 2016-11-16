@@ -77,42 +77,6 @@ def determine_policy_metadata(policy):
         pass
     return return_body
 
-
-def assemble_search_criteria(supported_search_fields, arguments):
-    """Verifies request params and returns a dict of validated arguments"""
-    request_params_raw = {}
-    for param in supported_search_fields:
-        if param in arguments:
-            request_params_raw[param] = arguments[param]
-    request_params = sanitize_url_params(request_params_raw)
-    return request_params
-
-
-def sanitize_url_params(params):
-    """Sanitize URL arguments for the Halo API
-
-    In most cases, the Halo API will only honor the last value
-    in URL arguments when multiple arguments have the same key.
-    For instance: Requests builds URL arguments from a list a little
-    strangely:
-    {key:[val1, val2]}
-    becomes key=val1&key=val2
-    and not key=val1,val2.  If we let a
-    list type object slide through, only val2 will be evaluated, and
-    val1 is ignored by the Halo API.
-
-    """
-    params_working = params.copy()
-    for key, value in params_working.items():
-        if isinstance(value, list):
-            value_corrected = ",".join(value)
-            params[key] = value_corrected
-        if isinstance(value, datetime.datetime):
-            value_corrected = datetime_to_8601(value)
-            params[key] = value_corrected
-    return params
-
-
 def policy_to_dict(policy):
     """Ensures that policy is a dictionary object"""
     if isinstance(policy, dict):

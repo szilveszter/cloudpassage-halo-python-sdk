@@ -10,15 +10,9 @@ class Policy(object):
 
     def __init__(self, session):
         self.session = session
-        self.max_pages = 30
 
     @classmethod
     def endpoint(cls):
-        """Not implemented at this level.  Raises exception."""
-        raise NotImplementedError
-
-    @classmethod
-    def pagination_key(cls):
         """Not implemented at this level.  Raises exception."""
         raise NotImplementedError
 
@@ -27,20 +21,16 @@ class Policy(object):
         """Not implemented at this level.  Raises exception."""
         raise NotImplementedError
 
-    def list_all(self):
-        """Lists all policies of this type.
+    def list(self):
+        """Lists policies of this type.
 
         Returns:
             list: List of policies (represented as dictionary-type objects)
 
-        Note:
-            This query is limited to 30 pages.
-
         """
 
         request = HttpHelper(self.session)
-        return request.get_paginated(self.endpoint(), self.pagination_key(),
-                                     self.max_pages)
+        return request.get(self.endpoint())
 
     def describe(self, policy_id):
         """Get the detailed configuration of a policy

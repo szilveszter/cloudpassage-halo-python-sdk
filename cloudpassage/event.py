@@ -21,27 +21,14 @@ class Event(object):
 
     def __init__(self, session):
         self.session = session
-        self.supported_search_fields = [
-            "group_id",
-            "server_id",
-            "server_platform",
-            "critical",
-            "type",
-            "since",
-            "until",
-            "pages"
-        ]
         return None
 
-    def list_all(self, pages, **kwargs):
+    def list(self, **kwargs):
         """Returns a list of all events.
 
 
         Default filter returns ALL events.  This is a very verbose \
         and time-consuming operation.
-
-        Args:
-            pages (int): Max number of pages (of ten items each) to retrieve
 
         Keyword Args:
             group_id (list or str): A list or comma-separated string \
@@ -62,16 +49,12 @@ class Event(object):
             date and time for query
 
         Returns:
-            list: List of dictionary objects describing servers
+            list: List of dictionary objects describing events, number of events \
+            and pagination information if any.
 
         """
 
         endpoint = "/v1/events"
-        key = "events"
-        max_pages = pages
         request = HttpHelper(self.session)
-        params = utility.assemble_search_criteria(self.supported_search_fields,
-                                                  kwargs)
-        response = request.get_paginated(endpoint, key, max_pages,
-                                         params=params)
+        response = request.get(endpoint, **kwargs)
         return response
