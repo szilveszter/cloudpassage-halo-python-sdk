@@ -23,6 +23,11 @@ class ConfigurationPolicy(Policy):
         return "/v1/%s" % ConfigurationPolicy.policies
 
     @classmethod
+    def pagination_key(cls):
+        """Defines the pagination key for parsing paged results"""
+        return ConfigurationPolicy.policies
+
+    @classmethod
     def policy_key(cls):
         """Defines the key used to pull the policy from the json document"""
         return ConfigurationPolicy.policy

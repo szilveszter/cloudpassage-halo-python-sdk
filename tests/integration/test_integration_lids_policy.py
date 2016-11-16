@@ -29,7 +29,7 @@ class TestIntgrationLidsPolicy:
 
     def remove_policy_by_name(self, policy_name):
         lids_policy_obj = self.build_lids_policy_object()
-        policy_list = lids_policy_obj.list()["lids_policies"]
+        policy_list = lids_policy_obj.list_all()
         for policy in policy_list:
             if policy["name"] == policy_name:
                 lids_policy_obj.delete(policy["id"])
@@ -39,14 +39,14 @@ class TestIntgrationLidsPolicy:
         If you have no configuration policies in your account, it will fail
         """
         request = self.build_lids_policy_object()
-        response = request.list()["lids_policies"]
+        response = request.list_all()
         assert "id" in response[0]
 
     def test_get_details(self):
         """This test requires at least one LIDS policy in your account.  If
         you don't have one, this test will fail."""
         request = self.build_lids_policy_object()
-        policy_list = request.list()["lids_policies"]
+        policy_list = request.list_all()
         target_policy_id = policy_list[0]["id"]
         target_policy_body = request.describe(target_policy_id)
         assert "id" in target_policy_body

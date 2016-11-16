@@ -25,6 +25,11 @@ class FimPolicy(Policy):
         return "/v1/%s" % FimPolicy.policies
 
     @classmethod
+    def pagination_key(cls):
+        """Defines the pagination key for parsing paged results"""
+        return FimPolicy.policies
+
+    @classmethod
     def policy_key(cls):
         """Defines the key used to pull the policy from the json document"""
         return FimPolicy.policy
@@ -45,21 +50,22 @@ class FimBaseline(object):
         self.session = session
         return None
 
-    def list(self, fim_policy_id):
-        """Returns a list of baselines for the indicated FIM policy
+    def list_all(self, fim_policy_id):
+        """Returns a list of all baselines for the indicated FIM policy
 
         Args:
             fim_policy_id (str): ID of fim policy
 
         Returns:
-            list: List of baselines for the given policy and pagination \
-            information if any
+            list: List of all baselines for the given policy
 
         """
 
         request = HttpHelper(self.session)
         endpoint = "/v1/fim_policies/%s/baselines" % fim_policy_id
-        response = request.get(endpoint)
+        key = "baselines"
+        max_pages = 30
+        response = request.get_paginated(endpoint, key, max_pages)
         return response
 
     def describe(self, fim_policy_id, fim_baseline_id):

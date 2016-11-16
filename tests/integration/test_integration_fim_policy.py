@@ -32,7 +32,7 @@ class TestIntegrationFimPolicy:
 
     def remove_policy_by_name(self, policy_name):
         fim_policy_obj = self.build_fim_policy_object()
-        policy_list = fim_policy_obj.list()["fim_policies"]
+        policy_list = fim_policy_obj.list_all()
         for policy in policy_list:
             if policy["name"] == policy_name:
                 fim_policy_obj.delete(policy["id"])
@@ -42,7 +42,7 @@ class TestIntegrationFimPolicy:
         account.  If you don't have any FIM policies, it will fail.
         """
         request = self.build_fim_policy_object()
-        response = request.list()["fim_policies"]
+        response = request.list_all()
         assert "id" in response[0]
 
     def test_get_details(self):
@@ -50,7 +50,7 @@ class TestIntegrationFimPolicy:
         If you have no configured FIM policies, it will fail.
         """
         request = self.build_fim_policy_object()
-        policy_list = request.list()["fim_policies"]
+        policy_list = request.list_all()
         target_policy_id = policy_list[0]["id"]
         target_policy_body = request.describe(target_policy_id)
         assert "id" in target_policy_body
@@ -105,7 +105,7 @@ class TestIntegrationFimBaseline:
         test will fail.
         """
         request = self.build_fim_policy_object()
-        response = request.list()["fim_policies"]
+        response = request.list_all()
         target_id = None
         for policy in response:
             if (policy["active"] is True and policy["platform"] == "linux"):
@@ -122,8 +122,8 @@ class TestIntegrationFimBaseline:
                                            api_host=api_hostname,
                                            api_port=api_port)
         server = cloudpassage.Server(session)
-        list_of_active_linux_servers = server.list(state="active",
-                                                       platform="linux")["servers"]
+        list_of_active_linux_servers = server.list_all(state="active",
+                                                       platform="linux")
         return list_of_active_linux_servers[0]["id"]
 
     def test_create_update_delete_baseline(self):
@@ -156,7 +156,7 @@ class TestIntegrationFimBaseline:
         """
         baseline_request = self.build_fim_baseline_object()
         target_policy_id = self.get_active_linux_policy()
-        baseline_response = baseline_request.list(target_policy_id)["baselines"]
+        baseline_response = baseline_request.list_all(target_policy_id)
         assert "id" in baseline_response[0]
 
     def test_get_details_of_baseline(self):
@@ -166,7 +166,7 @@ class TestIntegrationFimBaseline:
         """
         baseline_request = self.build_fim_baseline_object()
         target_policy_id = self.get_active_linux_policy()
-        baseline_list = baseline_request.list(target_policy_id)["baselines"]
+        baseline_list = baseline_request.list_all(target_policy_id)
         target_baseline_id = baseline_list[0]["id"]
         baseline_details = baseline_request.describe(target_policy_id,
                                                      target_baseline_id)
