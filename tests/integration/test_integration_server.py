@@ -148,13 +148,3 @@ class TestIntegrationServer:
         s = self.build_server_object()
         result = s.list_all(state=states)
         assert "id" in result[0]
-
-    def test_server_list_inactive(self):
-        """This test requires a server with a status of either missing or
-        deactivated.  If no such server exists in your account, the test will
-        fail.
-        """
-        states = ["deactivated", "missing"]
-        s = self.build_server_object()
-        result = s.list_all(state=states)
-        assert "id" in result[0]

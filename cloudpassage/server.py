@@ -26,40 +26,6 @@ class Server(object):
         self.cve_validator = re.compile(r"^CVE-\d+-\d{4,}$")
         self.kb_validator = re.compile(r"^kb\d+$")
         self.platform_validator = re.compile(r"^[a-z]+$")
-        self.supported_search_fields = ["uid",
-                                        "username",
-                                        "state",
-                                        "group_id",
-                                        "hostname",
-                                        "connecting_ip_address",
-                                        "platform",
-                                        "daemon_version",
-                                        "agent_version",
-                                        "reported_fqdn",
-                                        "platform_version",
-                                        "server_label",
-                                        "connecting_ip_fqdn",
-                                        "kernel_name",
-                                        "os_version",
-                                        "kernel_machine",
-                                        "self_verification_failed",
-                                        "package_name",
-                                        "package_version",
-                                        "cve",
-                                        "kb",
-                                        "missing_kb",
-                                        "read_only",
-                                        "group_name",
-                                        "last_state_change",
-                                        "last_state_change_gte",
-                                        "last_state_change_gt",
-                                        "last_state_change_lte",
-                                        "last_state_change_lt",
-                                        "ip_address",
-                                        "agent_version_gte",
-                                        "agent_version_gt",
-                                        "agent_version_lte",
-                                        "agent_version_lt"]
         return None
 
     def list_all(self, **kwargs):
@@ -90,14 +56,8 @@ class Server(object):
         key = "servers"
         max_pages = 50
         request = HttpHelper(self.session)
-        criteria_valid = self.validate_server_search_criteria(kwargs)
-        if criteria_valid is False:
-            error_text = "Unsupported arguments in " + str(kwargs)
-            raise CloudPassageValidation(error_text)
-        params = utility.assemble_search_criteria(self.supported_search_fields,
-                                                  kwargs)
         response = request.get_paginated(endpoint, key,
-                                         max_pages, params=params)
+                                         max_pages, params=kwargs)
         return response
 
     def assign_group(self, server_id, group_id):
