@@ -27,7 +27,7 @@ class TestIntegrationConfigurationPolicy:
 
     def remove_policy_by_name(self, policy_name):
         config_policy_obj = self.build_config_policy_object()
-        policy_list = config_policy_obj.list_all()
+        policy_list = config_policy_obj.list()["policies"]
         for policy in policy_list:
             if policy["name"] == policy_name:
                 config_policy_obj.delete(policy["id"])
@@ -41,7 +41,7 @@ class TestIntegrationConfigurationPolicy:
         If you have no configuration policies in your account, it will fail
         """
         request = self.build_config_policy_object()
-        response = request.list_all()
+        response = request.list()["policies"]
         assert "id" in response[0]
 
     def test_get_details(self):
@@ -50,7 +50,7 @@ class TestIntegrationConfigurationPolicy:
         it will fail.
         """
         request = self.build_config_policy_object()
-        policy_list = request.list_all()
+        policy_list = request.list()["policies"]
         target_policy_id = policy_list[0]["id"]
         target_policy_body = request.describe(target_policy_id)
         assert "id" in target_policy_body

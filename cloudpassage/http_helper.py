@@ -58,9 +58,9 @@ class HttpHelper(object):
         prefix = self.connection.build_endpoint_prefix()
         url = prefix + endpoint
         headers = self.connection.build_header()
-        if "params" in kwargs:
+        if kwargs:
             response = requests.get(url, headers=headers,
-                                    params=kwargs["params"])
+                                    params=kwargs)
         else:
             response = requests.get(url, headers=headers)
         success, exception = utility.parse_status(url, response.status_code,
