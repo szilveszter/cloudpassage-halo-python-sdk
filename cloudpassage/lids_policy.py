@@ -24,6 +24,11 @@ class LidsPolicy(Policy):
         return "/v1/%s" % LidsPolicy.policies
 
     @classmethod
+    def pagination_key(cls):
+        """Defines the pagination key for parsing paged results"""
+        return LidsPolicy.policies
+
+    @classmethod
     def policy_key(cls):
         """Defines the key used to pull the policy from the json document"""
         return LidsPolicy.policy

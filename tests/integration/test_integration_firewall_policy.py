@@ -61,7 +61,7 @@ def create_firewall_interface_object():
 
 def get_target_linux_firewall_policy():
     firewall_policy = create_firewall_policy_object()
-    policy_list = firewall_policy.list()["firewall_policies"]
+    policy_list = firewall_policy.list_all()
     for policy in policy_list:
         if policy["platform"] == 'linux':
             return policy["id"]
@@ -70,7 +70,7 @@ def get_target_linux_firewall_policy():
 
 def remove_policy_by_name(policy_name):
     fw_policy_obj = create_firewall_policy_object()
-    policy_list = fw_policy_obj.list()["firewall_policies"]
+    policy_list = fw_policy_obj.list_all()
     for policy in policy_list:
         if policy["name"] == policy_name:
             fw_policy_obj.delete(policy["id"])
@@ -88,7 +88,7 @@ class TestIntegrationFirewallPolicy:
         this test will fail.
         """
         firewall_policy = create_firewall_policy_object()
-        firewall_policy_list = firewall_policy.list()["firewall_policies"]
+        firewall_policy_list = firewall_policy.list_all()
         assert "id" in firewall_policy_list[0]
 
     def test_firewall_policy_describe(self):
@@ -97,7 +97,7 @@ class TestIntegrationFirewallPolicy:
         this test will fail.
         """
         firewall_policy = create_firewall_policy_object()
-        firewall_policy_list = firewall_policy.list()["firewall_policies"]
+        firewall_policy_list = firewall_policy.list_all()
         target_firewall_policy_id = firewall_policy_list[0]["id"]
         target_policy = firewall_policy.describe(target_firewall_policy_id)
         assert "id" in target_policy
@@ -124,13 +124,13 @@ class TestIntegrationFirewallRule:
     def test_list_firewall_policy_rules(self):
         firewall_rule = create_firewall_rule_object()
         target_firewall_policy_id = get_target_linux_firewall_policy()
-        policy_rules = firewall_rule.list(target_firewall_policy_id)["firewall_rules"]
+        policy_rules = firewall_rule.list_all(target_firewall_policy_id)
         assert "id" in policy_rules[0]
 
     def test_get_firewall_policy_rule_describe(self):
         firewall_rule = create_firewall_rule_object()
         target_firewall_policy_id = get_target_linux_firewall_policy()
-        policy_rules = firewall_rule.list(target_firewall_policy_id)["firewall_rules"]
+        policy_rules = firewall_rule.list_all(target_firewall_policy_id)
         target_rule_id = policy_rules[0]["id"]
         rule_details = firewall_rule.describe(target_firewall_policy_id,
                                               target_rule_id)
@@ -142,7 +142,7 @@ class TestIntegrationFirewallRule:
         firewall_policy = create_firewall_policy_object()
         firewall_rule = create_firewall_rule_object()
         target_policy_id = firewall_policy.create(firewall_policy_body)
-        rule_imported = firewall_rule.list(target_policy_id)["firewall_rules"][0]
+        rule_imported = firewall_rule.list_all(target_policy_id)[0]
         del rule_imported["url"]
         rule_imported["position"] = 1
         rule_body = {"firewall_rule": rule_imported}
@@ -166,12 +166,12 @@ class TestIntegraationFirewallZone:
 
     def test_list_all_ip_zones(self):
         firewall_zone = create_firewall_zone_object()
-        list_of_zones = firewall_zone.list()["firewall_zones"]
+        list_of_zones = firewall_zone.list_all()
         assert "id" in list_of_zones[0]
 
     def test_get_zone_details(self):
         firewall_zone = create_firewall_zone_object()
-        target_zone_id = firewall_zone.list()["firewall_zones"][0]["id"]
+        target_zone_id = firewall_zone.list_all()[0]["id"]
         details = firewall_zone.describe(target_zone_id)
         assert "id" in details
 
@@ -194,12 +194,12 @@ class TestIntegrationFirewallService:
 
     def test_list_all_services(self):
         firewall_service = create_firewall_service_object()
-        list_of_services = firewall_service.list()["firewall_services"]
+        list_of_services = firewall_service.list_all()
         assert "id" in list_of_services[0]
 
     def test_get_service_details(self):
         firewall_service = create_firewall_service_object()
-        target_service_id = firewall_service.list()["firewall_services"][0]["id"]
+        target_service_id = firewall_service.list_all()[0]["id"]
         details = firewall_service.describe(target_service_id)
         assert "id" in details
 
@@ -223,12 +223,12 @@ class TestIntegrationFirewallInterface:
 
     def test_list_all_interfaces(self):
         interface = create_firewall_interface_object()
-        list_of_interfaces = interface.list()["firewall_interfaces"]
+        list_of_interfaces = interface.list_all()
         assert "id" in list_of_interfaces[0]
 
     def test_get_interface_details(self):
         interface = create_firewall_interface_object()
-        target_interface_id = interface.list()["firewall_interfaces"][0]["id"]
+        target_interface_id = interface.list_all()[0]["id"]
         details = interface.describe(target_interface_id)
         assert "id" in details
 
