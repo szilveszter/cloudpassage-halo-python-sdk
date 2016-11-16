@@ -223,26 +223,6 @@ class Server(object):
         command_status = response["command"]
         return command_status
 
-    def validate_server_search_criteria(self, criteria):
-        """Validate arguments for Server query"""
-        arguments_valid = True
-        if "state" in criteria:
-            if not self.validate_server_state(criteria["state"]):
-                arguments_valid = False
-        if "platform" in criteria:
-            if not self.validate_platform(criteria["platform"]):
-                arguments_valid = False
-        if "cve" in criteria:
-            if not self.validate_cve_id(criteria["cve"]):
-                arguments_valid = False
-        if "kb" in criteria:
-            if not self.validate_kb_id(criteria["kb"]):
-                arguments_valid = False
-        if "missing_kb" in criteria:
-            if not self.validate_kb_id(criteria["missing_kb"]):
-                arguments_valid = False
-        return arguments_valid
-
     def validate_server_state(self, states):
         """Ensure that server state in query is valid"""
         if isinstance(states, list):
