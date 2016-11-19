@@ -110,9 +110,9 @@ class FimBaseline(object):
                                      "expires": None,
                                      "comment": None}}
         if "expires" in kwargs:
-            request_body["expires"] = kwargs["expires"]
+            request_body["baseline"]["expires"] = kwargs["expires"]
         if "comment" in kwargs:
-            request_body["comment"] = kwargs["comment"]
+            request_body["baseline"]["comment"] = kwargs["comment"]
         response = request.post(endpoint, request_body)
         policy_id = response["baseline"]["id"]
         return policy_id
