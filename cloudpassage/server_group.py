@@ -37,6 +37,7 @@ class ServerGroup(object):
         key = "groups"
         endpoint = "/v1/groups"
         request = HttpHelper(session)
+        params = utility.assemble_search_criteria(kwargs)
         groups = request.get_paginated(endpoint, key, max_pages)
         return groups
 

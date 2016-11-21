@@ -56,6 +56,7 @@ class Server(object):
         key = "servers"
         max_pages = 50
         request = HttpHelper(self.session)
+        params = utility.assemble_search_criteria(kwargs)
         response = request.get_paginated(endpoint, key,
                                          max_pages, params=kwargs)
         return response
