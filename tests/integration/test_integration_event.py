@@ -17,7 +17,8 @@ class TestIntegrationEvent:
     def create_event_obj(self):
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
-                                           api_port=api_port)
+                                           api_port=api_port,
+                                           integration_string="SDK-Smoke")
         return cloudpassage.Event(session)
 
     def test_instantiation(self):

@@ -29,7 +29,8 @@ class TestIntegrationHaloSession:
     def create_halo_session_object(self):
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
-                                           api_port=api_port)
+                                           api_port=api_port,
+                                           integration_string="SDK-Smoke")
         return session
 
     def test_halosession_authentication(self):
