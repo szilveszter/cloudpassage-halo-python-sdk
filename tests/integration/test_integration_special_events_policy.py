@@ -16,7 +16,8 @@ class TestIntegrationSpecialEventsPolicy:
     def create_special_events_policy_obj(self):
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
-                                           api_port=api_port)
+                                           api_port=api_port,
+                                           integration_string="SDK-Smoke")
         return cloudpassage.SpecialEventsPolicy(session)
 
     def test_instantiation(self):
@@ -25,7 +26,8 @@ class TestIntegrationSpecialEventsPolicy:
     def test_list_all(self):
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
-                                           api_port=api_port)
+                                           api_port=api_port,
+                                           integration_string="SDK-Smoke")
         se_policy = cloudpassage.SpecialEventsPolicy(session)
         se_policy_list = se_policy.list_all()
         assert "id" in se_policy_list[0]
@@ -45,7 +47,8 @@ class TestIntegrationSpecialEventsPolicy:
         rejected = False
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
-                                           api_port=api_port)
+                                           api_port=api_port,
+                                           integration_string="SDK-Smoke")
         policy = cloudpassage.SpecialEventsPolicy(session)
         try:
             policy.create("DoesNotEvenMatter")
@@ -57,7 +60,8 @@ class TestIntegrationSpecialEventsPolicy:
         rejected = False
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
-                                           api_port=api_port)
+                                           api_port=api_port,
+                                           integration_string="SDK-Smoke")
         policy = cloudpassage.SpecialEventsPolicy(session)
         try:
             policy.update("DoesNotEvenMatter")
@@ -69,7 +73,8 @@ class TestIntegrationSpecialEventsPolicy:
         rejected = False
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
-                                           api_port=api_port)
+                                           api_port=api_port,
+                                           integration_string="SDK-Smoke")
         policy = cloudpassage.SpecialEventsPolicy(session)
         try:
             policy.delete("DoesNotEvenMatter")

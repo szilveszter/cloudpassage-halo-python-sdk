@@ -22,7 +22,8 @@ class TestIntegrationFimPolicy:
     def build_fim_policy_object(self):
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
-                                           api_port=api_port)
+                                           api_port=api_port,
+                                           integration_string="SDK-Smoke")
         return_obj = cloudpassage.FimPolicy(session)
         return(return_obj)
 

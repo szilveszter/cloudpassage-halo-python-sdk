@@ -22,7 +22,8 @@ with open(policy_file, 'r') as p_file:
 def create_firewall_policy_object():
     session = cloudpassage.HaloSession(key_id, secret_key,
                                        api_host=api_hostname,
-                                       api_port=api_port)
+                                       api_port=api_port,
+                                       integration_string="SDK-Smoke")
     firewall_policy_object = cloudpassage.FirewallPolicy(session)
     return firewall_policy_object
 
@@ -30,7 +31,8 @@ def create_firewall_policy_object():
 def create_firewall_rule_object():
     session = cloudpassage.HaloSession(key_id, secret_key,
                                        api_host=api_hostname,
-                                       api_port=api_port)
+                                       api_port=api_port,
+                                       integration_string="SDK-Smoke")
     firewall_rule_object = cloudpassage.FirewallRule(session)
     return firewall_rule_object
 
@@ -38,7 +40,8 @@ def create_firewall_rule_object():
 def create_firewall_zone_object():
     session = cloudpassage.HaloSession(key_id, secret_key,
                                        api_host=api_hostname,
-                                       api_port=api_port)
+                                       api_port=api_port,
+                                       integration_string="SDK-Smoke")
     firewall_zone_object = cloudpassage.FirewallZone(session)
     return firewall_zone_object
 
@@ -46,7 +49,8 @@ def create_firewall_zone_object():
 def create_firewall_service_object():
     session = cloudpassage.HaloSession(key_id, secret_key,
                                        api_host=api_hostname,
-                                       api_port=api_port)
+                                       api_port=api_port,
+                                       integration_string="SDK-Smoke")
     firewall_service_object = cloudpassage.FirewallService(session)
     return firewall_service_object
 
@@ -54,7 +58,8 @@ def create_firewall_service_object():
 def create_firewall_interface_object():
     session = cloudpassage.HaloSession(key_id, secret_key,
                                        api_host=api_hostname,
-                                       api_port=api_port)
+                                       api_port=api_port,
+                                       integration_string="SDK-Smoke")
     firewall_interface_object = cloudpassage.FirewallInterface(session)
     return firewall_interface_object
 

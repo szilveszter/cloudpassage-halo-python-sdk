@@ -29,21 +29,24 @@ class TestIntegrationScan:
     def build_scan_object(self):
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
-                                           api_port=api_port)
+                                           api_port=api_port,
+                                           integration_string="SDK-Smoke")
         return_obj = cloudpassage.Scan(session)
         return(return_obj)
 
     def build_server_group_object(self):
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
-                                           api_port=api_port)
+                                           api_port=api_port,
+                                           integration_string="SDK-Smoke")
         return_obj = cloudpassage.ServerGroup(session)
         return(return_obj)
 
     def build_server_object(self):
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
-                                           api_port=api_port)
+                                           api_port=api_port,
+                                           integration_string="SDK-Smoke")
         return_obj = cloudpassage.Server(session)
         return(return_obj)
 
@@ -302,7 +305,8 @@ class TestIntegrationCveException:
     def create_cve_exception_object(self):
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
-                                           api_port=api_port)
+                                           api_port=api_port,
+                                           integration_string="SDK-Smoke")
         return_obj = cloudpassage.CveException(session)
         return(return_obj)
 

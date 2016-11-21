@@ -2,6 +2,7 @@ import cloudpassage
 import datetime
 import hashlib
 import os
+import re
 
 
 config_file_name = "portal.yaml.local"
@@ -49,6 +50,22 @@ class TestUnitHaloSession:
         session = cloudpassage.HaloSession("", "",
                                            integration_string=override_string)
         assert override_string in session.user_agent
+
+    def test_integration_string_2(self):
+        int_string = "integration/v1.0"
+        ua_string = "sdk/v1.1"
+        session = cloudpassage.HaloSession("", "",
+                                           integration_string=int_string,
+                                           user_agent=ua_string)
+        desired = "%s %s" % (int_string, ua_string)
+        assert desired == session.user_agent
+
+    def test_integration_string_3(self):
+        int_string = "integration/1.0"
+        session = cloudpassage.HaloSession("", "",
+                                           integration_string=int_string)
+        match_rx = "^%s\s[^/]+/\d+" % int_string
+        assert re.match(match_rx, session.user_agent)
 
     def test_build_proxy_struct_ip_only(self):
         proxy_ip = "10.0.0.1"
