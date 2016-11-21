@@ -3,7 +3,6 @@
 import re
 import cloudpassage.sanity as sanity
 import cloudpassage.utility as utility
-from cloudpassage.exceptions import CloudPassageValidation
 from cloudpassage.http_helper import HttpHelper
 
 
@@ -58,7 +57,7 @@ class Server(object):
         request = HttpHelper(self.session)
         params = utility.assemble_search_criteria(kwargs)
         response = request.get_paginated(endpoint, key,
-                                         max_pages, params=kwargs)
+                                         max_pages, params=params)
         return response
 
     def assign_group(self, server_id, group_id):
