@@ -4,8 +4,6 @@
 
 [![Documentation Status](https://readthedocs.org/projects/cloudpassage-halo-python-sdk/badge/?version=latest)](http://cloudpassage-halo-python-sdk.readthedocs.io/en/latest/?badge=latest)
 
-### This is a BETA.  Please don't forget to pin your work against the version you're working with, especially if it's a beta :-)
-
 ### Branch: master
 
 [![Code Climate](https://codeclimate.com/github/cloudpassage/cloudpassage-halo-python-sdk/badges/gpa.svg)](https://codeclimate.com/github/cloudpassage/cloudpassage-halo-python-sdk)

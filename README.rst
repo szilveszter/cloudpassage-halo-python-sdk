@@ -25,8 +25,6 @@ Branch: develop
    :target: https://travis-ci.org/cloudpassage/cloudpassage-halo-python-sdk
 
 
-This is a BETA.  Please don't forget to pin your work against the version you're working with, especially if it's a beta :-)
-
 Installation
 ------------
 

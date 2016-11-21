@@ -34,7 +34,7 @@ setup(
     install_requires=["requests", "pyaml"],
     long_description=get_long_description(["README.rst", "CHANGELOG.rst"]),
     classifiers=[
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "Operating System :: MacOS :: MacOS X",
         "Operating System :: POSIX :: Linux",
