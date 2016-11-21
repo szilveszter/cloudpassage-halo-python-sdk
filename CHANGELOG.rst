@@ -1,8 +1,70 @@
 Changelog
 =========
 
-v0.101
-------
+v1.0
+----
+
+- Changing version to 1.0, removing beta references. [Ash Wilson]
+
+- Adding unit tests for useragent string composition. [Ash Wilson]
+
+- Correcting ordering of user agent string composition. [Ash Wilson]
+
+- Adding integration strings to integration tests. [Ash Wilson]
+
+- Correcting UA string building logic. [Ash Wilson]
+
+- Formatting user agent more like RFC 2616 says we should. [Ash Wilson]
+
+- Fixed sanitizer. [Hana Lee]
+
+- Fixed server.py to align with flake8. [Hana Lee]
+
+- Added url sanitizer. [Hana Lee]
+
+- Fixed expires and comments in fim_baseline create. [Hana Lee]
+
+- Take out whitelist from event. [Hana Lee]
+
+- Updating server.py. [Jye Lee]
+
+- Remove supported_search_fields from servers. [Jye Lee]
+
+- Revert "remove whitelist and pagination for policies and events" [Jye
+  Lee]
+
+  This reverts commit b78e40d52f08984623772417fea1660122584987.
+
+- Revert "remove supported_search fields and get_paginated for scan,
+  server, and server_group class/tests" [Jye Lee]
+
+  This reverts commit 906b1e39e55b8155340cbae340d4e8e2c813f508.
+
+- Remove supported_search fields and get_paginated for scan, server, and
+  server_group class/tests. [Jye Lee]
+
+- Remove whitelist and pagination for policies and events. [Hana Lee]
+
+- Correcting installation document. [Ash Wilson]
+
+- Documentation improvements.  Building changelog into docs, adding
+  version indicator to index. [Ash Wilson]
+
+- Adding links to built documentation. [Ash Wilson]
+
+- Improve README.rst formatting. [Ash Wilson]
+
+- Improving setup.py to include changelog in long description, which is
+  published on PyPI. [Ash Wilson]
+
+v0.101 (2016-10-18)
+-------------------
+
+New
+~~~
+
+- .gitchangelog.rc now takes latest version from
+  cloudpassage/__init__.py. [Ash Wilson]
 
 Fix
 ~~~
