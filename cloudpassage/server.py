@@ -3,7 +3,6 @@
 import re
 import cloudpassage.sanity as sanity
 import cloudpassage.utility as utility
-from cloudpassage.exceptions import CloudPassageValidation
 from cloudpassage.http_helper import HttpHelper
 
 
@@ -26,11 +25,6 @@ class Server(object):
         self.cve_validator = re.compile(r"^CVE-\d+-\d{4,}$")
         self.kb_validator = re.compile(r"^kb\d+$")
         self.platform_validator = re.compile(r"^[a-z]+$")
-        self.supported_search_fields = ["state",
-                                        "platform",
-                                        "cve",
-                                        "kb",
-                                        "missing_kb"]
         return None
 
     def list_all(self, **kwargs):
@@ -61,12 +55,7 @@ class Server(object):
         key = "servers"
         max_pages = 50
         request = HttpHelper(self.session)
-        criteria_valid = self.validate_server_search_criteria(kwargs)
-        if criteria_valid is False:
-            error_text = "Unsupported arguments in " + str(kwargs)
-            raise CloudPassageValidation(error_text)
-        params = utility.assemble_search_criteria(self.supported_search_fields,
-                                                  kwargs)
+        params = utility.sanitize_url_params(kwargs)
         response = request.get_paginated(endpoint, key,
                                          max_pages, params=params)
         return response
@@ -149,6 +138,43 @@ class Server(object):
         # Exceptions fire deeper if this fails.  Otherwise, return True.
         return True
 
+    def issues(self, server_id):
+        """This method retrieves the detail of a server issues.
+
+        Args:
+            server_id (str): ID of server
+
+        Returns:
+            list: issues of the server
+        """
+
+        sanity.validate_object_id(server_id)
+        endpoint = "/v1/servers/%s/issues" % server_id
+
+        request = HttpHelper(self.session)
+        response = request.get(endpoint)
+        return response
+
+    def get_firewall_logs(self, server_id, pages):
+        """This method retrieves the detail of a server firewall log.
+
+        Args:
+            server_id (str): ID of server
+
+        Returns:
+            list: firewall log of the server
+        """
+
+        sanity.validate_object_id(server_id)
+        endpoint = "/v1/servers/%s/firewall_logs" % server_id
+        key = "agent_firewall_logs"
+        max_pages = pages
+
+        request = HttpHelper(self.session)
+        response = request.get_paginated(endpoint, key, max_pages)
+        firewall_log_details = response[key]
+        return firewall_log_details
+
     def command_details(self, server_id, command_id):
         """This method retrieves the details and status of a server command.
 
@@ -196,26 +222,6 @@ class Server(object):
         response = request.get(endpoint)
         command_status = response["command"]
         return command_status
-
-    def validate_server_search_criteria(self, criteria):
-        """Validate arguments for Server query"""
-        arguments_valid = True
-        if "state" in criteria:
-            if not self.validate_server_state(criteria["state"]):
-                arguments_valid = False
-        if "platform" in criteria:
-            if not self.validate_platform(criteria["platform"]):
-                arguments_valid = False
-        if "cve" in criteria:
-            if not self.validate_cve_id(criteria["cve"]):
-                arguments_valid = False
-        if "kb" in criteria:
-            if not self.validate_kb_id(criteria["kb"]):
-                arguments_valid = False
-        if "missing_kb" in criteria:
-            if not self.validate_kb_id(criteria["missing_kb"]):
-                arguments_valid = False
-        return arguments_valid
 
     def validate_server_state(self, states):
         """Ensure that server state in query is valid"""

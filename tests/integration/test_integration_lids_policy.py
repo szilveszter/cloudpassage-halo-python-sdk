@@ -1,7 +1,6 @@
 import cloudpassage
 import json
 import os
-import pytest
 
 policy_file_name = "core-system-centos-v1-1.lids.json"
 config_file_name = "portal.yaml.local"
@@ -20,7 +19,8 @@ class TestIntgrationLidsPolicy:
     def build_lids_policy_object(self):
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
-                                           api_port=api_port)
+                                           api_port=api_port,
+                                           integration_string="SDK-Smoke")
         return_obj = cloudpassage.LidsPolicy(session)
         return(return_obj)
 
@@ -54,7 +54,6 @@ class TestIntgrationLidsPolicy:
 
     def test_lids_policy_create_delete(self):
         deleted = False
-        policy_retrieved = {"lids_policy": None}
         request = self.build_lids_policy_object()
         with open(policy_file, 'r') as policy_file_object:
             policy_body = policy_file_object.read()
@@ -70,7 +69,6 @@ class TestIntgrationLidsPolicy:
 
     def test_lids_policy_create_update_delete(self):
         deleted = False
-        policy_retrieved = {"lids_policy": None}
         request = self.build_lids_policy_object()
         newname = "Functional Test Name Change"
         with open(policy_file, 'r') as policy_file_object:

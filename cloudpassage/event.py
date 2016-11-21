@@ -25,6 +25,7 @@ class Event(object):
             "group_id",
             "server_id",
             "server_platform",
+            "critical",
             "type",
             "since",
             "until",
@@ -48,6 +49,8 @@ class Event(object):
             server_id (list or str): A list or comma-separated string \
             containing the server IDs to retrieve events for.
             server_platform (str): (linux | windows)
+            critical (bool): Returns only critical or \
+            noncritical events.
             type (list or str): A list or comma-separated string containing \
             the event types to query for.  A complete list of event types is \
             available \
@@ -67,8 +70,7 @@ class Event(object):
         key = "events"
         max_pages = pages
         request = HttpHelper(self.session)
-        params = utility.assemble_search_criteria(self.supported_search_fields,
-                                                  kwargs)
+        params = utility.sanitize_url_params(kwargs)
         response = request.get_paginated(endpoint, key, max_pages,
                                          params=params)
         return response

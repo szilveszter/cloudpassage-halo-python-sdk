@@ -1,23 +1,32 @@
-# cloudpassage-halo-python-sdk
+cloudpassage-halo-python-sdk
+============================
 
-## Python SDK for CloudPassage Halo API
+Python SDK for CloudPassage Halo API
+------------------------------------
 
-[![Documentation Status](https://readthedocs.org/projects/cloudpassage-halo-python-sdk/badge/?version=latest)](http://cloudpassage-halo-python-sdk.readthedocs.io/en/latest/?badge=latest)
+.. image:: https://readthedocs.org/projects/cloudpassage-halo-python-sdk/badge/?version=latest
 
-### Branch: master
+Branch: master
 
-[![Code Climate](https://codeclimate.com/github/cloudpassage/cloudpassage-halo-python-sdk/badges/gpa.svg)](https://codeclimate.com/github/cloudpassage/cloudpassage-halo-python-sdk)
+.. image:: https://codeclimate.com/github/cloudpassage/cloudpassage-halo-python-sdk/badges/gpa.svg
+   :target: https://codeclimate.com/github/cloudpassage/cloudpassage-halo-python-sdk
+   :alt: Code Climate
 
-[![Test Coverage](https://codeclimate.com/github/cloudpassage/cloudpassage-halo-python-sdk/badges/coverage.svg)](https://codeclimate.com/github/cloudpassage/cloudpassage-halo-python-sdk/coverage)
+.. image:: https://codeclimate.com/github/cloudpassage/cloudpassage-halo-python-sdk/badges/coverage.svg
+   :target: https://codeclimate.com/github/cloudpassage/cloudpassage-halo-python-sdk/coverage
+   :alt: Test Coverage
 
-[![Build Status](https://travis-ci.org/cloudpassage/cloudpassage-halo-python-sdk.svg?branch=master)](https://travis-ci.org/cloudpassage/cloudpassage-halo-python-sdk)
+.. image:: https://travis-ci.org/cloudpassage/cloudpassage-halo-python-sdk.svg?branch=master
+   :target: https://travis-ci.org/cloudpassage/cloudpassage-halo-python-sdk
 
-### Branch: develop
+Branch: develop
 
-[![Build Status](https://travis-ci.org/cloudpassage/cloudpassage-halo-python-sdk.svg?branch=develop)](https://travis-ci.org/cloudpassage/cloudpassage-halo-python-sdk)
+.. image:: https://travis-ci.org/cloudpassage/cloudpassage-halo-python-sdk.svg?branch=develop
+   :target: https://travis-ci.org/cloudpassage/cloudpassage-halo-python-sdk
 
 
-### Installation
+Installation
+------------
 
 Requirements:
 
@@ -25,12 +34,13 @@ Requirements:
 * pyaml
 
 
-Install from pip with ```pip install cloudpassage```.  If you want to make
+Install from pip with ``pip install cloudpassage``.  If you want to make
 modifications to the SDK you can install it in editable mode by downloading
 the source from this github repo, navigating to the top directory within the
-archive and running ```pip install -e .``` (note the . at the end).
+archive and running ``pip install -e .`` (note the . at the end).
 
-### Quick Start
+Quick Start
+-----------
 
 Here's the premise: you store your session configuration information (API
 credentials, proxy settings, etc) in the cloudpassage.HaloSession object.
@@ -40,34 +50,42 @@ to interact with the CloudPassage Halo API.
 Practical example:
 We'll print a list of all servers in our account:
 
-```python
-import cloudpassage
+::
 
-api_key = MY_HALO_API_KEY
-api_secret = MY_API_SECRET
-session = cloudpassage.HaloSession(api_key, api_secret)
-server = cloudpassage.Server(session)
+    import cloudpassage
 
-list_of_servers = server.list_all()
-for s in list_of_servers:
-    print "ID: %s   Name: %s" % (s["id"], s["hostname"])
+    api_key = MY_HALO_API_KEY
+    api_secret = MY_API_SECRET
+    session = cloudpassage.HaloSession(api_key, api_secret)
+    server = cloudpassage.Server(session)
 
-```
+    list_of_servers = server.list_all()
+    for s in list_of_servers:
+        print "ID: %s   Name: %s" % (s["id"], s["hostname"])
 
-### Docs
 
-#### Browsing and downloading
-Built documentation can be found at http://cloudpassage-halo-python-sdk.readthedocs.io/en/latest/
 
-#### Building documentation
+Docs
+====
+
+Where to download
+-----------------
+Documentation can be found at
+http://cloudpassage-halo-python-sdk.readthedocs.io/en/latest/?badge=latest
+
+Building documentation
+----------------------
+
 1. Clone the repository locally
-1. Navigate to `cloudpassage-halo-python-sdk/docs`
-1. run `sphinx-build -b pdf source build/pdf`
-1. Docs will be located at `cloudpassage-halo-python-sdk/docs/build/pdf/CloudPassage_Python_SDK_$VERSION.pdf`
+1. Navigate to ``cloudpassage-halo-python-sdk/docs``
+1. run ``sphinx-build -b pdf source build/pdf``
+1. Docs will be located at ``cloudpassage-halo-python-sdk/docs/build/pdf/CloudPassage_Python_SDK_$VERSION.pdf``
 
-### Testing
 
-#### Important locations for testing:
+Testing
+=======
+Important locations for testing
+-------------------------------
 
   tests/configs: You'll find a file here called portal.yaml.  Copy it to
   portal.yaml.local and complete the information inside with your API key and
@@ -81,7 +99,8 @@ Built documentation can be found at http://cloudpassage-halo-python-sdk.readthed
   tests/tests: This is where you'll find the actual tests.
 
 
-#### Environmental Requirements
+Environmental Requirements
+--------------------------
 
   You'll need to have a CloudPassage Halo account available for running the
   tests, as many are integration-focused.  These are the things you need to have
@@ -110,7 +129,8 @@ Built documentation can be found at http://cloudpassage-halo-python-sdk.readthed
       * Kick off a CSM scan if it doesn't happen automatically
 
 
-#### Running tests:
+Running tests
+--------------
 
  Navigate to tests/ and run ``py.test ./integration ./unit ./style``
  to run the entire test suite.  You can remove any of these if you
@@ -120,9 +140,3 @@ Built documentation can be found at http://cloudpassage-halo-python-sdk.readthed
  If you've got the coverage module installed,
  ``py.test --cov=cloudpassage ./integration ./unit ./style``
  will show statement test coverage.
-
-
-<!---
-#CPTAGS:community-supported integration api-example
-#TBICON:images/python_icon.png
--->

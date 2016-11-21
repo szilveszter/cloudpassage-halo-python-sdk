@@ -1,7 +1,7 @@
 import cloudpassage
-import datetime
 import json
 import os
+import pytest
 import cloudpassage.utility
 
 
@@ -22,7 +22,8 @@ class TestIntegrationFimPolicy:
     def build_fim_policy_object(self):
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
-                                           api_port=api_port)
+                                           api_port=api_port,
+                                           integration_string="SDK-Smoke")
         return_obj = cloudpassage.FimPolicy(session)
         return(return_obj)
 
@@ -56,8 +57,6 @@ class TestIntegrationFimPolicy:
         assert "id" in target_policy_body
 
     def test_fim_policy_create_delete(self):
-        deleted = False
-        policy_retrieved = {"fim_policy": None}
         request = self.build_fim_policy_object()
         with open(policy_file, 'r') as policy_file_object:
             policy_body = policy_file_object.read()
@@ -65,15 +64,11 @@ class TestIntegrationFimPolicy:
         self.remove_policy_by_name(pol_meta["policy_name"])
         policy_id = request.create(policy_body)
         request.delete(policy_id)
-        try:
+        with pytest.raises(cloudpassage.CloudPassageResourceExistence) as e:
             request.describe(policy_id)
-        except cloudpassage.CloudPassageResourceExistence:
-            deleted = True
-        assert deleted
+        assert policy_id in str(e)
 
     def test_fim_policy_create_update_delete(self):
-        deleted = False
-        policy_retrieved = {"fim_policy": None}
         request = self.build_fim_policy_object()
         newname = "Functional Test Name Change"
         self.remove_policy_by_name(newname)
@@ -85,11 +80,9 @@ class TestIntegrationFimPolicy:
         policy_update["fim_policy"]["id"] = policy_id
         request.update(policy_update)
         request.delete(policy_id)
-        try:
+        with pytest.raises(cloudpassage.CloudPassageResourceExistence) as e:
             request.describe(policy_id)
-        except cloudpassage.CloudPassageResourceExistence:
-            deleted = True
-        assert deleted
+        assert policy_id in str(e)
 
 
 class TestIntegrationFimBaseline:

@@ -3,12 +3,16 @@
 
 import json
 import datetime
+import os
+import re
+import sys
 from cloudpassage.exceptions import CloudPassageValidation
 from cloudpassage.exceptions import CloudPassageInternalError
 from cloudpassage.exceptions import CloudPassageAuthentication
 from cloudpassage.exceptions import CloudPassageAuthorization
 from cloudpassage.exceptions import CloudPassageResourceExistence
 from cloudpassage.exceptions import CloudPassageGeneral
+from distutils.version import LooseVersion
 
 
 def determine_policy_metadata(policy):
@@ -139,20 +143,21 @@ def verify_pages(max_pages):
 
 def parse_status(url, resp_code, resp_text):
     """Parse status from HTTP response"""
-    bad_statuses = {500: CloudPassageInternalError(resp_text),
-                    400: CloudPassageValidation(resp_text),
-                    401: CloudPassageAuthentication(resp_text),
-                    404: CloudPassageResourceExistence(url),
-                    403: CloudPassageAuthorization(resp_text),
-                    422: CloudPassageValidation(resp_text)}
     success = True
     exc = None
     if resp_code not in [200, 201, 202, 204]:
         success = False
+        bad_statuses = {500: CloudPassageInternalError(resp_text, code=500),
+                        400: CloudPassageValidation(resp_text, code=400),
+                        401: CloudPassageAuthentication(resp_text, code=401),
+                        404: CloudPassageResourceExistence(resp_text, code=404,
+                                                           url=url),
+                        403: CloudPassageAuthorization(resp_text, code=403),
+                        422: CloudPassageValidation(resp_text, code=422)}
         if resp_code in bad_statuses:
             return(success, bad_statuses[resp_code])
         else:
-            return(success, CloudPassageGeneral(resp_text))
+            return(success, CloudPassageGeneral(resp_text, code=resp_code))
     return success, exc
 
 
@@ -184,3 +189,38 @@ def datetime_to_8601(original_time):
                   original_time.hour, original_time.minute,
                   original_time.second, original_time.microsecond)
     return "%04d-%02d-%02dT%02d:%02d:%02d.%06dZ" % time_split
+
+
+def verify_python_version(actual_version, target_version):
+    """Verifies that the installed version of Python meets minimum requirements
+
+    Args:
+        str: Actual version, represented as a dotted string "2.4.9"
+        str: Target minimum version, represented as a dotted string "2.7.10"
+
+    Returns:
+        bool: True if it meets or exceeds the target minimum version.
+    """
+    if LooseVersion(actual_version) < LooseVersion(target_version):
+        return False
+    else:
+        return True
+
+
+def get_installed_python_version():
+    """Returns the version of Python currently running as a dotted string"""
+    installed_python_version = "%s.%s.%s" % (str(sys.version_info.major),
+                                             str(sys.version_info.minor),
+                                             str(sys.version_info.micro))
+    return installed_python_version
+
+
+def get_sdk_version():
+    """ Gets the version of the SDK """
+    thisdir = os.path.dirname(__file__)
+    initfile = os.path.join(thisdir, "__init__.py")
+    with open(initfile, 'r') as i_file:
+        raw_init_file = i_file.read()
+    rx_compiled = re.compile(r"\s*__version__\s*=\s*\"(\S+)\"")
+    ver = rx_compiled.search(raw_init_file).group(1)
+    return ver
