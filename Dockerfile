@@ -1,9 +1,10 @@
-FROM ubuntu:16.04
+FROM alpine:3.4
 MAINTAINER toolbox@cloudpassage.com
 
-RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y \
-    python-pip && \apt-get install -y git
+RUN apk add -U \
+    gettext \
+    python \
+    py-pip
 
 COPY ./ /source/
 
@@ -14,6 +15,4 @@ RUN pip install -r requirements-testing.txt && \
 
 RUN pip install codeclimate-test-reporter
 
-WORKDIR /source/tests
-
-CMD py.test style unit
+CMD /source/test_wrapper.sh
