@@ -1,8 +1,45 @@
 Changelog
 =========
 
-v1.0
-----
+v1.0.1
+------
+
+Changes
+~~~~~~~
+
+- Docker image now builds with git inside, syntax fix in testing script.
+  Set default value in ApiKeyManager for api_port to 443.  New testing
+  procedure implemented and documented. [Ash Wilson]
+
+- Re-ordering operations in test_wrapper.sh to better converge testing
+  file for api_key_manager.py.  Altered unit tests to point to converged
+  config file.  Installed package in editable mode within container in
+  order to get coverage module working. [Ash Wilson]
+
+- Changed values in portal.yaml file to facilitate testing automation
+  with test_wrapper.sh. [Ash Wilson]
+
+- Added test_wrapper.sh to replace bare command in Dockerfile.  This
+  allows for dynamic testing behavior, depending on the environment
+  variables passed into the container at runtime. [Ash Wilson]
+
+- Consolidated testing procedure in official, built docs.  Links
+  provided in README.rst and README.md to published docs containing
+  testing procedure. [Ash Wilson]
+
+Fix
+~~~
+
+- Fix: test: Corrected logic for running codeclimate (thanks @mong2)
+  [Ash Wilson]
+
+v1.0 (2016-11-21)
+-----------------
+
+- Revert "remove whitelist and pagination for policies and events"
+  [mong2]
+
+- Updating CHANGELOG. [Ash Wilson]
 
 - Changing version to 1.0, removing beta references. [Ash Wilson]
 

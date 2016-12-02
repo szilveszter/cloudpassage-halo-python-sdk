@@ -16,6 +16,7 @@ Contents:
 
    installation
    getting_started
+   contributing
    testing
    api_key_manager
    halo_session

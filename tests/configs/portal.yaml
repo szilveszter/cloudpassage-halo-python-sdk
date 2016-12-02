@@ -2,9 +2,9 @@ defaults:
   portal: portal.cloudpassage.com
   grid: grid.cloudpassage.com
   repo: packages.cloudpassage.com
-  key_id: KEY_ID
-  secret_key: SECRET_KEY
+  key_id: ${HALO_API_KEY}
+  secret_key: ${HALO_API_SECRET_KEY}
   ro_key_id:
   ro_secret_key:
-  api_hostname: api.cloudpassage.com
-  api_port: 443
+  api_hostname: ${HALO_API_HOSTNAME}
+  api_port: ${HALO_API_PORT}

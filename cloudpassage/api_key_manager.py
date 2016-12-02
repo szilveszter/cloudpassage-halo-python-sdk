@@ -45,7 +45,7 @@ class ApiKeyManager(object):
     Attributes:
         api_hostname: Hostname of api endpoint. \
         Defaults to api.cloudpassage.com
-        api_port: API port
+        api_port: API port.  Defaults to 443
         key_id: API key ID
         secret_key: API key secret
 
@@ -55,7 +55,7 @@ class ApiKeyManager(object):
         self.api_hostname = "api.cloudpassage.com"
         self.key_id = None
         self.secret_key = None
-        self.api_port = None
+        self.api_port = 443
         self.config_file = None
 
         if "config_file" in kwargs:
