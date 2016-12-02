@@ -3,8 +3,9 @@ MAINTAINER toolbox@cloudpassage.com
 
 RUN apk add -U \
     gettext \
+    git \
     python \
-    py-pip
+    py-pip 
 
 COPY ./ /source/
 

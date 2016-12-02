@@ -45,7 +45,7 @@ class ApiKeyManager(object):
     Attributes:
         api_hostname: Hostname of api endpoint. \
         Defaults to api.cloudpassage.com
-        api_port: API port
+        api_port: API port.  Defaults to 443
         key_id: API key ID
         secret_key: API key secret
 
