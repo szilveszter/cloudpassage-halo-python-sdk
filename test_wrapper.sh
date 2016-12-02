@@ -38,7 +38,7 @@ if [ ${RETCODE} != 0 ]; then
   exit ${RETCODE}
 fi
 
-if [ -z ${CODECLIMATE_REPO_TOKEN} ]; then
+if [ ${CODECLIMATE_REPO_TOKEN} ]; then
   ${CODECLIMATE}
 fi
 
