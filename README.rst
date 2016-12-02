@@ -28,6 +28,9 @@ Branch: develop
 Installation
 ------------
 
+.. image:: https://badge.fury.io/py/cloudpassage.svg
+    :target: https://pypi.python.org/pypi/cloudpassage/
+
 Requirements:
 
 * requests

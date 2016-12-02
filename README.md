@@ -19,6 +19,8 @@
 
 ### Installation
 
+[![PyPI version](https://badge.fury.io/py/cloudpassage.svg)](https://pypi.python.org/pypi/cloudpassage/)
+
 Requirements:
 
 * requests
