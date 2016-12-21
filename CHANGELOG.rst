@@ -1,8 +1,17 @@
 Changelog
 =========
 
-v1.0.1
+v1.0.2
 ------
+
+Changes
+~~~~~~~
+
+- Improvements to server group creation, use grid-side input
+  sanitization for post data. [Ash Wilson]
+
+v1.0.1 (2016-12-02)
+-------------------
 
 Changes
 ~~~~~~~
@@ -32,6 +41,12 @@ Fix
 
 - Fix: test: Corrected logic for running codeclimate (thanks @mong2)
   [Ash Wilson]
+
+
+Other
+~~~~~
+
+- Remove -z from codeclimate if statement. [mong2]
 
 v1.0 (2016-11-21)
 -----------------
