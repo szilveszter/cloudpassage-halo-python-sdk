@@ -42,6 +42,7 @@ Fix
 - Fix: test: Corrected logic for running codeclimate (thanks @mong2)
   [Ash Wilson]
 
+
 Other
 ~~~~~
 
