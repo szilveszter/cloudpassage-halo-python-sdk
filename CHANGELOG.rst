@@ -27,6 +27,12 @@ Changes
   provided in README.rst and README.md to published docs containing
   testing procedure. [Ash Wilson]
 
+Fix
+~~~
+
+- Fix: test: Corrected logic for running codeclimate (thanks @mong2)
+  [Ash Wilson]
+
 v1.0 (2016-11-21)
 -----------------
 

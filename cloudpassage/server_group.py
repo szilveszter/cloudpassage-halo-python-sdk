@@ -2,7 +2,6 @@
 
 import cloudpassage.utility as utility
 import cloudpassage.sanity as sanity
-from cloudpassage.exceptions import CloudPassageValidation
 from cloudpassage.http_helper import HttpHelper
 
 
@@ -75,8 +74,7 @@ class ServerGroup(object):
             fim_policy_ids (list): List of Linux FIM policies
             linux_fim_policy_ids (list): List of Linux FIM policies
             windows_fim_policy_ids (list): List of Windows FIM policies
-            linux_lids_policy_ids (list): List of Linux LIDS policy IDs
-            windows_lids_policy_ids (list): List of Windows LIDS policy IDs
+            lids_policy_ids (list): List of LIDS policy IDs
             tag (str): Server group tag-used for auto-assignment of group.
             server_events_policy (str): Special events policy IDs
             alert_profiles (list): List of alert profile IDs
@@ -88,10 +86,6 @@ class ServerGroup(object):
 
         endpoint = "/v1/groups"
         group_data = {"name": group_name, "policy_ids": [], "tag": None}
-        try:
-            sanity.validate_servergroup_create(kwargs)
-        except TypeError as exc:
-            raise CloudPassageValidation(exc)
         body = {"group": utility.merge_dicts(group_data, kwargs)}
         request = HttpHelper(self.session)
         response = request.post(endpoint, body)
@@ -146,10 +140,6 @@ class ServerGroup(object):
         endpoint = "/v1/groups/%s" % group_id
         response = None
         group_data = {}
-        try:
-            sanity.validate_servergroup_update(kwargs)
-        except TypeError as exc:
-            raise CloudPassageValidation(exc)
         body = {"group": utility.merge_dicts(group_data, kwargs)}
         request = HttpHelper(self.session)
         response = request.put(endpoint, body)
