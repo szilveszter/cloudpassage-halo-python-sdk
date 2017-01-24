@@ -1,6 +1,15 @@
 Changelog
 =========
 
+v1.0.3 (2017-01-24)
+-------------------
+
+Fix
+~~~
+
+- Fix: scan.py filtering by scan and until (thanks @sherzberg)
+  [Jye Lee]
+
 v1.0.2
 ------
 
