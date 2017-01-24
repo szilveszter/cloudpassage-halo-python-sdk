@@ -136,7 +136,7 @@ class Scan(object):
         """
 
         max_pages = 20
-        url_params = {}
+        url_params = kwargs
         if "server_id" in kwargs:
             url_params["server_id"] = kwargs["server_id"]
         if "module" in kwargs:
