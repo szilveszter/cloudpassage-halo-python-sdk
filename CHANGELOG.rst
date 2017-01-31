@@ -1,6 +1,16 @@
 Changelog
 =========
 
+v1.0.4 (2017-01-31)
+-------------------
+
+Fix
+~~~
+
+- Fix: server.py get_firewall_log (thanks @sherzberg)
+  [Jye Lee]
+
+
 v1.0.3 (2017-01-24)
 -------------------
 
