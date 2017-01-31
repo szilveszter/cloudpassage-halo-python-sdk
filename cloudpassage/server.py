@@ -172,8 +172,7 @@ class Server(object):
 
         request = HttpHelper(self.session)
         response = request.get_paginated(endpoint, key, max_pages)
-        firewall_log_details = response[key]
-        return firewall_log_details
+        return response
 
     def command_details(self, server_id, command_id):
         """This method retrieves the details and status of a server command.
