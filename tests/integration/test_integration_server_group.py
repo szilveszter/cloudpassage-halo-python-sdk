@@ -74,7 +74,7 @@ class TestIntegrationServerGroup:
     def test_create_update_child_server_group(self):
         s_grp = self.create_server_group_object()
         parent_id = s_grp.create("TEN_FOUR_GOOD_BUDDY")
-        child_id = s_grp.create("TEN_FOUR_GOOD_BUDDY", parent_id=parent_id)
+        child_id = s_grp.create("TEN_FOUR_GOOD_CHILD", parent_id=parent_id)
         assert parent_id == s_grp.describe(child_id)["parent_id"]
 
         groups = s_grp.list_all()
