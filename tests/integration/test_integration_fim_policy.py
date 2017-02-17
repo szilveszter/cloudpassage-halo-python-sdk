@@ -171,4 +171,4 @@ class TestIntegrationFimBaseline:
         target_baseline_id = baseline_list[0]["id"]
         baseline_details = baseline_request.describe(target_policy_id,
                                                      target_baseline_id)
-        assert "id" in baseline_details
+        assert "details" in baseline_details

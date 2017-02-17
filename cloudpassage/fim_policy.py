@@ -81,8 +81,8 @@ class FimBaseline(object):
         """
 
         request = HttpHelper(self.session)
-        endpoint = "/v1/fim_policies/%s/baselines/%s" % (fim_policy_id,
-                                                         fim_baseline_id)
+        endpoint = "/v1/fim_policies/%s/baselines/%s/details" % (fim_policy_id,
+                                                                 fim_baseline_id)
         response = request.get(endpoint)
         result = response["baseline"]
         return result
