@@ -68,7 +68,7 @@ class FimBaseline(object):
         response = request.get_paginated(endpoint, key, max_pages)
         return response
 
-    def describe(self, fim_policy_id, fim_baseline_id):
+    def describe(self, fim_policy_id, baseline_id):
         """Returns the body of the baseline indicated by fim_baseline_id.
 
         Args
@@ -81,8 +81,8 @@ class FimBaseline(object):
         """
 
         request = HttpHelper(self.session)
-        endpoint = "/v1/fim_policies/%s/baselines/%s" % (fim_policy_id,
-                                                         fim_baseline_id)
+        endpoint = "/v1/fim_policies/%s/baselines/%s/details" % (fim_policy_id,
+                                                                 baseline_id)
         response = request.get(endpoint)
         result = response["baseline"]
         return result

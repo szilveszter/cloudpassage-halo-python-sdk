@@ -1,5 +1,12 @@
 Changelog
 =========
+v1.0.5
+------
+
+Changes
+~~~~~~~
+
+- Improvents to list FIM baseline with detail information. [Hana Lee]
 
 v1.0.4 (2017-01-31)
 -------------------
