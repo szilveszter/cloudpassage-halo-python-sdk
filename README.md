@@ -23,14 +23,16 @@
 
 Requirements:
 
+* Python 2.7.10 or newer (CloudPassage Halo Python SDK is not compatiable with Python 3)
+* OpenSSL 1.0.2 or newer
 * requests
 * pyaml
 
 
-Install from pip with ```pip install cloudpassage```.  If you want to make
+Install from pip with ```sudo pip install cloudpassage```.  If you want to make
 modifications to the SDK you can install it in editable mode by downloading
 the source from this github repo, navigating to the top directory within the
-archive and running ```pip install -e .``` (note the . at the end).
+archive and running ```sudo pip install -e .``` (note the . at the end).
 
 ### Quick Start
 
