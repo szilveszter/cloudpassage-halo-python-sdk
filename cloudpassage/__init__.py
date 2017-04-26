@@ -19,6 +19,7 @@ from cloudpassage.firewall_policy import FirewallService  # noqa: F401
 from cloudpassage.firewall_policy import FirewallZone  # noqa: F401
 from cloudpassage.halo import HaloSession  # noqa: F401
 from cloudpassage.http_helper import HttpHelper  # noqa: F401
+from cloudpassage.issue import Issue  # noqa: F401
 from cloudpassage.lids_policy import LidsPolicy  # noqa: F401
 from cloudpassage.scan import CveException  # noqa: F401
 from cloudpassage.scan import Scan  # noqa: F401
