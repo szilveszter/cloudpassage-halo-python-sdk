@@ -7,7 +7,6 @@ import os
 import re
 import sys
 from cloudpassage.exceptions import CloudPassageValidation
-from cloudpassage.exceptions import CloudPassageInternalError
 from cloudpassage.exceptions import CloudPassageAuthentication
 from cloudpassage.exceptions import CloudPassageAuthorization
 from cloudpassage.exceptions import CloudPassageResourceExistence
@@ -147,8 +146,7 @@ def parse_status(url, resp_code, resp_text):
     exc = None
     if resp_code not in [200, 201, 202, 204]:
         success = False
-        bad_statuses = {500: CloudPassageInternalError(resp_text, code=500),
-                        400: CloudPassageValidation(resp_text, code=400),
+        bad_statuses = {400: CloudPassageValidation(resp_text, code=400),
                         401: CloudPassageAuthentication(resp_text, code=401),
                         404: CloudPassageResourceExistence(resp_text, code=404,
                                                            url=url),
