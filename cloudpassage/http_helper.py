@@ -4,7 +4,6 @@ GET / POST / PUT / DELETE requests against API.
 
 import json
 import urlparse
-import re
 from cloudpassage.exceptions import CloudPassageValidation
 import cloudpassage.utility as utility
 from cloudpassage.retry import Retry
@@ -85,7 +84,7 @@ class HttpHelper(object):
             if success is True:
                 return response.json()
 
-        elif re.search('^5.*', response.status_code):
+        if response.status_code >= 500:
             success, response, exception = Retry().get(url,
                                                        headers,
                                                        kwargs["params"])
@@ -209,7 +208,7 @@ class HttpHelper(object):
             if success is True:
                 return response.json()
 
-        elif re.search('^5.*', response.status_code):
+        if response.status_code >= 500:
             success, response, exception = Retry().post(url, headers, reqbody)
             if success is True:
                 return response.json()
@@ -254,7 +253,7 @@ class HttpHelper(object):
                 if success is True:
                     return response.json()
 
-            elif re.search('^5.*', response.status_code):
+            if response.status_code >= 500:
                 success, response, exception = Retry().put(url,
                                                            headers,
                                                            reqbody)
@@ -314,7 +313,7 @@ class HttpHelper(object):
                 if success is True:
                     return response.json()
 
-            elif re.search('^5.*', response.status_code):
+            elif response.status_code >= 500:
                 success, response, exception = Retry().delete(url, headers)
                 if success is True:
                     return response.json()
