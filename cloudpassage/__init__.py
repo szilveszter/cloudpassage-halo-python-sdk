@@ -26,6 +26,7 @@ from cloudpassage.server import Server  # noqa: F401
 from cloudpassage.server_group import ServerGroup  # noqa: F401
 from cloudpassage.special_events_policy import SpecialEventsPolicy  # noqa: F401
 from cloudpassage.system_announcement import SystemAnnouncement  # noqa: F401
+from cloudpassage.retry import Retry  # noqa: F401
 import utility as init_util
 
 
