@@ -150,3 +150,23 @@ class TestIntegrationServer:
         s = self.build_server_object()
         result = s.list_all(state=states)
         assert "id" in result[0]
+
+    def test_server_local_account(self):
+        """This test requires at least one active server in your Halo
+        account.  If you have no active server, this test will fail.
+        """
+        s = self.build_server_object()
+        srv = s.list_all()[0]
+        result = s.list_local_accounts(server_id=srv["id"])
+        assert "username" in result[0]
+
+    def test_server_local_account_detail(self):
+        """This test requires at least one active server in your Halo
+        account.  If you have no active server, this test will fail.
+        """
+        s = self.build_server_object()
+        targeted_srv = s.list_all()[0]
+        srv_local_a = s.list_local_accounts(server_id=targeted_srv["id"])[0]
+        result = s.describe_local_accounts(server_id=targeted_srv["id"],
+                                           username=srv_local_a["username"])
+        assert result["username"] == srv_local_a["username"]
