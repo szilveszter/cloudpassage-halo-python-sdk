@@ -222,6 +222,40 @@ class Server(object):
         command_status = response["command"]
         return command_status
 
+    def list_local_accounts(self, server_id):
+        """This method retrieves all local user accounts on the server\
+            specified by server ID
+
+        Args:
+            server_id (str): Server ID
+
+        Returns:
+            list: List of dictionary objects describing local user account
+
+        """
+        endpoint = "/v1/servers/%s/accounts" % (server_id)
+        request = HttpHelper(self.session)
+        response = request.get(endpoint)
+        local_accounts = response["accounts"]
+        return local_accounts
+
+    def describe_local_account(self, server_id, username):
+        """Get deatils on local user account
+
+        Args:
+            server_id (str): Server ID
+            username (str): username of the local user account
+
+        Returns:
+            dict: Dictionary object describing local user account
+
+        """
+        endpoint = "/v1/servers/%s/accounts/%s" % (server_id, username)
+        request = HttpHelper(self.session)
+        response = request.get(endpoint)
+        account_detail = response["account"]
+        return account_detail
+
     def validate_server_state(self, states):
         """Ensure that server state in query is valid"""
         if isinstance(states, list):
