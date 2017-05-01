@@ -51,7 +51,6 @@ class TestUnitUtility:
                     403: cloudpassage.CloudPassageAuthorization(resp_text),
                     404: cloudpassage.CloudPassageResourceExistence(resp_text),
                     422: cloudpassage.CloudPassageValidation(resp_text),
-                    500: cloudpassage.CloudPassageInternalError(resp_text),
                     999999: cloudpassage.CloudPassageGeneral(resp_text)}
         code_succ = {200: True,
                      201: True,
@@ -62,7 +61,6 @@ class TestUnitUtility:
                      403: False,
                      404: False,
                      422: False,
-                     500: False,
                      "ARBLEGARBLE": False}
         for r, o in code_exc.items():
             success, exc = utility.parse_status(url, r, resp_text)

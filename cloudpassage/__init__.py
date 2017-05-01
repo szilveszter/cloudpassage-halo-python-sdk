@@ -19,13 +19,17 @@ from cloudpassage.firewall_policy import FirewallService  # noqa: F401
 from cloudpassage.firewall_policy import FirewallZone  # noqa: F401
 from cloudpassage.halo import HaloSession  # noqa: F401
 from cloudpassage.http_helper import HttpHelper  # noqa: F401
+from cloudpassage.issue import Issue  # noqa: F401
 from cloudpassage.lids_policy import LidsPolicy  # noqa: F401
+from cloudpassage.local_user_account import LocalUserAccount  # noqa: F401
+from cloudpassage.local_user_group import LocalUserGroup  # noqa: F401
 from cloudpassage.scan import CveException  # noqa: F401
 from cloudpassage.scan import Scan  # noqa: F401
 from cloudpassage.server import Server  # noqa: F401
 from cloudpassage.server_group import ServerGroup  # noqa: F401
 from cloudpassage.special_events_policy import SpecialEventsPolicy  # noqa: F401
 from cloudpassage.system_announcement import SystemAnnouncement  # noqa: F401
+from cloudpassage.retry import Retry  # noqa: F401
 import utility as init_util
 
 
@@ -36,5 +40,5 @@ if init_util.verify_python_version(installed, minimum) is False:
     print err_msg
 
 __author__ = "CloudPassage"
-__version__ = "1.0.5"
+__version__ = "1.0.6"
 __license__ = "BSD"

@@ -1,5 +1,17 @@
 Changelog
 =========
+v1.0.6 (2017-05-01)
+------
+
+Changes
+~~~~~~~
+
+- Added Issues list, describe, and resolve
+- Added Local user accounts list and describe
+- Added Local group accounts list and describe
+- Added Retry logic to API in the case of 500s
+
+
 v1.0.5
 ------
 
