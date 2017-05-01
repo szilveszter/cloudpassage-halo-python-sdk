@@ -168,5 +168,5 @@ class TestIntegrationServer:
         targeted_srv = s.list_all()[0]
         srv_local_a = s.list_local_accounts(server_id=targeted_srv["id"])[0]
         result = s.describe_local_account(server_id=targeted_srv["id"],
-                                           username=srv_local_a["username"])
+                                          username=srv_local_a["username"])
         assert result["username"] == srv_local_a["username"]
