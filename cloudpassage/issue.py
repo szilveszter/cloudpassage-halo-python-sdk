@@ -29,8 +29,8 @@ class Issue(object):
         Default filter returns only issues in the 'active' state.
 
         Keyword Args:
-            server_id (list or str): A list or comma-separated string \
-            containing server ids
+            agent_id (list or str): A list or comma-separated string \
+            containing agent ids
             status (list or str): A list or comma-separated string \
             containing any of these: active, resolved
             since (str): Returns issues created since date in iso8601 format \
