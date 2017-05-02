@@ -1,5 +1,14 @@
 Changelog
 =========
+v1.0.6.1 (2017-05-02)
+------
+
+Changes
+~~~~~~~
+
+- Edit server_id wording to agent_id for issues.py
+
+
 v1.0.6 (2017-05-01)
 ------
 
