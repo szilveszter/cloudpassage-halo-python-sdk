@@ -12,7 +12,7 @@ class Retry(object):
         self.success = False
         self.retries = 0
 
-    def get(self, url, headers, params):
+    def get(self, url, headers, params=None):
         while self.retries < self.max_retries and not self.success:
             time.sleep(self.retry_delays[self.retries])
             self.retries += 1
