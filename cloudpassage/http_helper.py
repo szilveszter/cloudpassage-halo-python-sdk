@@ -85,11 +85,16 @@ class HttpHelper(object):
                 return response.json()
 
         if response.status_code >= 500:
-            success, response, exception = Retry().get(url,
-                                                       headers,
-                                                       kwargs["params"])
-            if success is True:
-                return response.json()
+            if "params" in kwargs:
+                success, response, exception = Retry().get(url,
+                                                           headers,
+                                                           kwargs["params"])
+                if success is True:
+                    return response.json()
+            else:
+                success, response, exception = Retry().get(url, headers)
+                if success is True:
+                    return response.json()
 
         raise exception
 
