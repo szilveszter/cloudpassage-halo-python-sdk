@@ -1,5 +1,14 @@
 Changelog
 =========
+v1.0.6.2 (2017-05-11)
+------
+
+Changes
+~~~~~~~
+
+- Fix kwargs[params] for retry get
+
+
 v1.0.6.1 (2017-05-02)
 ------
 
