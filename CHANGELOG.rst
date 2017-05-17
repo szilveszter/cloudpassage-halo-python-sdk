@@ -1,5 +1,13 @@
 Changelog
 =========
+v1.0.6.3 (2017-05-17)
+------
+
+Changes
+~~~~~~~
+
+- Fix logic in api_key_manager class
+
 v1.0.6.2 (2017-05-11)
 ------
 
