@@ -28,9 +28,6 @@ class TestUnitApiKeyManager:
         assert session_config.api_hostname == api_hostname
 
     def test_keys_from_file(self):
-        del os.environ['HALO_API_HOSTNAME']
-        del os.environ['HALO_API_KEY']
-        del os.environ['HALO_API_SECRET_KEY']
         session = cloudpassage.ApiKeyManager(config_file=config_file)
         with open(config_file, 'r') as config_file_obj:
             file_set_vars = yaml.load(config_file_obj)["defaults"]
