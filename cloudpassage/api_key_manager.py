@@ -58,16 +58,17 @@ class ApiKeyManager(object):
         self.api_port = 443
         self.config_file = None
 
+        env_config = self.get_config_from_env()
+
         if "config_file" in kwargs:
             self.config_file = kwargs["config_file"]
+            file_config = self.get_config_from_file(self.config_file)
+            self.set_config_variables(file_config)
+        elif env_config:
+            self.set_config_variables(env_config)
         else:
             self.config_file = "/etc/cloudpassage.yaml"
-        env_config = self.get_config_from_env()
-        file_config = self.get_config_from_file(self.config_file)
-        if env_config is not None:
-            self.set_config_variables(env_config)
-            return
-        if file_config is not None:
+            file_config = self.get_config_from_file(self.config_file)
             self.set_config_variables(file_config)
         return
 
