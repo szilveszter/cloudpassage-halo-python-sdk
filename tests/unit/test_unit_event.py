@@ -15,12 +15,3 @@ class TestUnitEvent:
     def test_create_event_obj(self):
         session = cloudpassage.Event(None)
         assert session
-
-    def test_too_big(self):
-        rejected = False
-        event = cloudpassage.Event(None)
-        try:
-            event.list_all(101)
-        except cloudpassage.CloudPassageValidation:
-            rejected = True
-        assert rejected

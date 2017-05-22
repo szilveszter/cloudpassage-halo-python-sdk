@@ -134,8 +134,8 @@ def verify_pages(max_pages):
     if not isinstance(max_pages, int):
         fail_msg = "Type wrong for max_pages.  Should be int."
         valid = False
-    if max_pages > 100:
-        fail_msg = "You're asking for too many pages.  100 max."
+    if max_pages > 300:
+        fail_msg = "You're asking for too many pages.  300 max."
         valid = False
     return(valid, fail_msg)
 
