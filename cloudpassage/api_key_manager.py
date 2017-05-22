@@ -40,7 +40,7 @@ class ApiKeyManager(object):
 
     Keyword args:
         config_file (str): full path to yaml config file
-
+        use_config (boolean): set True is hoping to use config_file
 
     Attributes:
         api_hostname: Hostname of api endpoint. \
@@ -59,12 +59,13 @@ class ApiKeyManager(object):
         self.config_file = None
 
         env_config = self.get_config_from_env()
+        if "use_config" in kwargs and kwargs["use_config"]:
+            if sanity.validate_config_path(kwargs["config_file"]):
+                self.config_file = kwargs["config_file"]
+                file_config = self.get_config_from_file(self.config_file)
+                return self.set_config_variables(file_config)
 
-        if "config_file" in kwargs:
-            self.config_file = kwargs["config_file"]
-            file_config = self.get_config_from_file(self.config_file)
-            self.set_config_variables(file_config)
-        elif env_config:
+        if env_config:
             self.set_config_variables(env_config)
         else:
             self.config_file = "/etc/cloudpassage.yaml"
@@ -90,7 +91,7 @@ class ApiKeyManager(object):
         session_yaml = None
         try:
             with open(self.config_file) as y_config_file:
-                session_yaml = yaml.load(y_config_file)["defaults"]
+                session_yaml = yaml.load(y_config_file)['defaults']
         except IOError:
             error_message = "Unable to load config from file: %s" % config_file
             print error_message
