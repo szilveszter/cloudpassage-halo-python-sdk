@@ -30,7 +30,7 @@ class Server(object):
     def list_all(self, **kwargs):
         """Returns a list of all servers.
 
-        This query is limited to 50 pages of 10 items,
+        This query is limited to 50 pages of 100 items,
         totaling 500 servers.
 
         Default filter returns only servers in the 'active' state.
@@ -51,9 +51,9 @@ class Server(object):
 
         """
 
-        endpoint = "/v1/servers"
+        endpoint = "/v1/servers?per_page=100"
         key = "servers"
-        max_pages = 50
+        max_pages = 300
         request = HttpHelper(self.session)
         params = utility.sanitize_url_params(kwargs)
         response = request.get_paginated(endpoint, key,

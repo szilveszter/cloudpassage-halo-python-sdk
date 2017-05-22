@@ -90,7 +90,7 @@ class TestIntegrationGetPaginated:
     def test_get_paginated_toomany(self):
         endpoint = "/v1/events"
         key = "events"
-        pages = 101
+        pages = 301
         session = cloudpassage.HaloSession(key_id, secret_key,
                                            api_host=api_hostname,
                                            api_port=api_port,
@@ -99,7 +99,7 @@ class TestIntegrationGetPaginated:
         req = cloudpassage.HttpHelper(session)
         with pytest.raises(cloudpassage.CloudPassageValidation) as e:
             req.get_paginated(endpoint, key, pages)
-        assert '100 max.' in str(e)
+        assert '300 max.' in str(e)
 
     def test_get_paginated_badkey(self):
         endpoint = "/v1/events"
