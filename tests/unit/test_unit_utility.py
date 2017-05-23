@@ -71,7 +71,7 @@ class TestUnitUtility:
 
     def test_verify_pages(self):
         assert utility.verify_pages("cats")[0] is False
-        assert utility.verify_pages(101)[0] is False
+        assert utility.verify_pages(301)[0] is False
 
     def test_sanitize_url_params(self):
         params = {"states": ["deactivated", "missing"],
