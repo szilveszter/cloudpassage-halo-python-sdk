@@ -3,7 +3,7 @@ import os
 import yaml
 
 
-config_file_name = "portal.yaml.local"
+config_file_name = "portal.yaml.local.test"
 tests_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../"))
 config_file = os.path.join(tests_dir, "configs/", config_file_name)
 
@@ -28,8 +28,7 @@ class TestUnitApiKeyManager:
         assert session_config.api_hostname == api_hostname
 
     def test_keys_from_file(self):
-        session = cloudpassage.ApiKeyManager(config_file=config_file,
-                                             use_config=True)
+        session = cloudpassage.ApiKeyManager(config_file=config_file)
         with open(config_file, 'r') as config_file_obj:
             file_set_vars = yaml.load(config_file_obj)["defaults"]
         assert session.key_id == file_set_vars["key_id"]

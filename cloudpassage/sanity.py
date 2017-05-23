@@ -49,7 +49,4 @@ def validate_api_hostname(api_hostname):
 def validate_config_path(config_path):
     """Validate config file path exists"""
     if not os.path.exists(config_path):
-        error_message = "Config file path does not exist"
-        raise CloudPassageValidation(error_message)
-    else:
-        return True
+        return False
