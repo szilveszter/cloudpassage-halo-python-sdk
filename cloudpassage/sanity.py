@@ -1,5 +1,6 @@
 """Collection of functions for doing validation and sanity checking"""
 
+import os
 import re
 from cloudpassage.exceptions import CloudPassageValidation
 
@@ -43,3 +44,12 @@ def validate_api_hostname(api_hostname):
     if valid_api_host.match(api_hostname):
         hostname_is_valid = True
     return hostname_is_valid
+
+
+def validate_config_path(config_path):
+    """Validate config file path exists"""
+    if not os.path.exists(config_path):
+        error_message = "Config file path does not exist"
+        raise CloudPassageValidation(error_message)
+    else:
+        return True
