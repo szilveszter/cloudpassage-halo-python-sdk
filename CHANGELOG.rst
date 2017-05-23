@@ -1,5 +1,13 @@
 Changelog
 =========
+v1.0.6.4 (2017-5-22)
+------
+
+Changes
+~~~~~~~
+
+- Update server pagination limit
+
 v1.0.6.3 (2017-05-17)
 ------
 
