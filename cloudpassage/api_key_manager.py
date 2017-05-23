@@ -60,7 +60,7 @@ class ApiKeyManager(object):
 
         env_config = self.get_config_from_env()
 
-        if "use_config" in kwargs and kwargs["use_config"]:
+        if "config_file" in kwargs and kwargs["config_file"]:
             if sanity.validate_config_path(kwargs["config_file"]):
                 self.config_file = kwargs["config_file"]
                 file_config = self.get_config_from_file(self.config_file)

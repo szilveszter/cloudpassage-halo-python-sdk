@@ -1,0 +1,10 @@
+defaults:
+  portal: portal.cloudpassage.com
+  grid: grid.cloudpassage.com
+  repo: packages.cloudpassage.com
+  key_id: APIKEYSAMPLE000
+  secret_key: APISECRETKEYSAMPLE000
+  ro_key_id:
+  ro_secret_key:
+  api_hostname: api.nonexist.cloudpassage.com
+  api_port: 443
