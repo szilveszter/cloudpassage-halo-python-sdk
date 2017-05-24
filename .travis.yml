@@ -6,5 +6,4 @@ services:
 before_install:
   - docker build -t cloudpassage_halo_python_sdk .
 script:
-  - pwd
-  - ls
+  - ./travis.sh
