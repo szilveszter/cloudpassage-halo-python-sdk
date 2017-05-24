@@ -5,8 +5,7 @@ services:
 
 before_install:
   - docker build -t cloudpassage_halo_python_sdk .
-  - docker run --rm -e HALO_API_KEY=$HALO_API_KEY -e HALO_API_SECRET_KEY=$HALO_API_SECRET_KEY -e HALO_API_HOSTNAME=$HALO_API_HOSTNAME -e HALO_API_PORT=$HALO_API_PORT cloudpassage_halo_python_sdk
 
 script:
-  - docker exec cloudpassage_halo_python_sdk /test_wrapper.sh
-  - docker images
+  - docker run -it --rm -e HALO_API_KEY=$HALO_API_KEY -e HALO_API_SECRET_KEY=$HALO_API_SECRET_KEY -e HALO_API_HOSTNAME=$HALO_API_HOSTNAME -e HALO_API_PORT=$HALO_API_PORT cloudpassage_halo_python_sdk /bin/sh -c "ls -al; pwd"
+
