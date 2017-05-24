@@ -5,8 +5,8 @@ services:
 
 before_install:
   - docker build -t cloudpassage_halo_python_sdk .
-script: echo "$TRAVIS_BRANCH"
-after_success:
+# script: echo "$TRAVIS_BRANCH"
+script:
   - if [ "$TRAVIS_BRANCH" == "master"; then
     docker run -it --rm -e HALO_API_KEY=$HALO_API_KEY -e HALO_API_SECRET_KEY=$HALO_API_SECRET_KEY -e HALO_API_HOSTNAME=$HALO_API_HOSTNAME -e HALO_API_PORT=$HALO_API_PORT -e CODECLIMATE_REPO_TOKEN=$CODECLIMATE_REPO_TOKEN cloudpassage_halo_python_sdk /bin/sh -c "cd cloudpassage/tests/; py.test ."
     else
