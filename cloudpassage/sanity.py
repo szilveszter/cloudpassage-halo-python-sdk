@@ -48,5 +48,5 @@ def validate_api_hostname(api_hostname):
 
 def validate_config_path(config_path):
     """Validate config file path exists"""
-    if not os.path.exists(config_path):
-        return False
+    if os.path.exists(config_path):
+        return True
