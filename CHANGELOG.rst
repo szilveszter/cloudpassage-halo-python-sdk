@@ -1,5 +1,12 @@
 Changelog
 =========
+v1.0.6.6 (2017-5-25)
+------
+
+Changes
+~~~~~~~
+Fix logic in sanity validate_config_path
+
 v1.0.6.5 (2017-5-23)
 ------
 
