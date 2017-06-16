@@ -6,7 +6,7 @@ from cloudpassage.http_helper import HttpHelper
 
 
 class Issue(object):
-    """Initializing the Server class:
+    """Initializing the Issue class:
 
     Args:
         session (:class:`cloudpassage.HaloSession`): \
