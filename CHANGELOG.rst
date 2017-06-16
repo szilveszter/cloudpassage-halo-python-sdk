@@ -1,5 +1,12 @@
 Changelog
 =========
+v1.0.6.7 (2017-06-16)
+------
+
+Changes
+~~~~~~~
+Fix doc naming problem with Issue class
+
 v1.0.6.6 (2017-5-25)
 ------
 
