@@ -1,5 +1,12 @@
 Changelog
 =========
+v1.0.6.8 (2017-06-27)
+------
+
+Changes
+~~~~~~~
+reupload package to pypi
+
 v1.0.6.7 (2017-06-16)
 ------
 
