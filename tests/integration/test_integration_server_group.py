@@ -92,3 +92,10 @@ class TestIntegrationServerGroup:
 
         assert delete_child is None
         assert delete_parent is None
+
+    def test_list_connections(self):
+        s_grp = self.create_server_group_object()
+        groups = s_grp.list_all()
+        target_group_id = groups[0]["id"]
+        connections = s_grp.list_connections(target_group_id)
+        assert isinstance(connections, list)

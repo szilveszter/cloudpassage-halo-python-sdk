@@ -171,3 +171,10 @@ class TestIntegrationServer:
         result = s.describe_local_account(server_id=targeted_srv["id"],
                                           username=srv_local_a["username"])
         assert result["username"] == srv_local_a["username"]
+
+    def test_list_connections(self):
+        server = self.build_server_object()
+        servers = server.list_all()
+        target_srv_id = servers[0]["id"]
+        connections = server.list_connections(target_srv_id)
+        assert isinstance(connections, list)
