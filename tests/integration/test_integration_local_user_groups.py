@@ -73,7 +73,7 @@ class TestIntegrationLocalUserGroup:
         account.  If you have no active server, this test will fail.
         """
         local_g = self.build_local_user_group_obj()
-        result = local_g.list_all()
+        result = local_g.list_all(os_type="linux")
         assert result is not None
 
         target_server_id = result[0]["server_id"]
