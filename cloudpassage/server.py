@@ -256,6 +256,24 @@ class Server(object):
         account_detail = response["account"]
         return account_detail
 
+    def list_connections(self, server_id, **kwargs):
+        """This method retrieves all recently detected connections on the server\
+            specified by server ID
+
+        Args:
+            server_id (str): Server ID
+
+        Returns:
+            list: List of all recently detected connections on the server
+
+        """
+        endpoint = "/v1/servers/%s/connections" % (server_id)
+        params = utility.sanitize_url_params(kwargs)
+        request = HttpHelper(self.session)
+        response = request.get(endpoint, params=params)
+        connections = response["connections"]
+        return connections
+
     def validate_server_state(self, states):
         """Ensure that server state in query is valid"""
         if isinstance(states, list):

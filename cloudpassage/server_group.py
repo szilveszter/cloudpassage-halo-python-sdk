@@ -169,3 +169,21 @@ class ServerGroup(object):
         else:
             request.delete(endpoint)
         return None
+
+    def list_connections(self, group_id, **kwargs):
+        """This method retrieves all recently detected connections in the server\
+           group specified by Group ID
+
+        Args:
+            server_id (str): Group ID
+
+        Returns:
+            list: List of all recently detected connections in the srever group
+
+        """
+        endpoint = "/v1/groups/%s/connections" % (group_id)
+        params = utility.sanitize_url_params(kwargs)
+        request = HttpHelper(self.session)
+        response = request.get(endpoint, params=params)
+        connections = response["connections"]
+        return connections

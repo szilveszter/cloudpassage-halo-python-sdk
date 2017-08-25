@@ -1,5 +1,12 @@
 Changelog
 =========
+v1.0.7 (2017-08-02)
+-----
+
+Changes
+~~~~~~~
+added traffic discovery api endpoint to Server and ServerGroup classes.
+
 v1.0.6.8 (2017-06-27)
 ------
 
